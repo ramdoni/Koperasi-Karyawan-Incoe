@@ -25,4 +25,3 @@ This project is used by the following companies:
 ## Support
 
 For support, email ramdoni@stalavista.com
-
