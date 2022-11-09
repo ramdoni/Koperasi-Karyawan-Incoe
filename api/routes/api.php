@@ -13,19 +13,20 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//API route for register new user
-Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
-//API route for login user
-Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
 
-//Protecting Routes
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/profile', function(Request $request) {
-        return auth()->user();
-    });
-    Route::get('/anggota/index',[App\Http\Controllers\API\AnggotaController::class,'data']);
-    Route::post('/anggota/insert',[App\Http\Controllers\API\AnggotaController::class,'insert']);
-    Route::get('/type-transaksi/data',[App\Http\Controllers\API\TypeTransaksiController::class,'data']);
-    Route::post('/type-transaksi/store',[App\Http\Controllers\API\TypeTransaksiController::class,'store']);
-    Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
+Route::group(['middleware' => 'cors', 'json.response'], function(){
+	Route::post('auth-login', [\App\Http\Controllers\Api\UserController::class,'login']);
+	Route::post('submit-pendaftaran',[\App\Http\Controllers\Api\UserController::class,'submitPendaftaran'])->name('api.submit-pendaftaran');
+	Route::post('find-no-ktp',[\App\Http\Controllers\Api\UserController::class,'findNoKtp'])->name('api.find-no-ktp');
+	Route::post('konfirmasi-pendaftaran',[\App\Http\Controllers\Api\UserController::class,'konfirmasiPendaftaran'])->name('api.konfirmasi-pendaftaran');
+	Route::get('get-bank',[\App\Http\Controllers\Api\IuranController::class,'get_bank'])->name('api.get-bank');
+});
+
+Route::group(['middleware' => 'auth:api'], function(){
+	Route::get('user/check-token',[\App\Http\Controllers\Api\UserController::class,'checkToken']);
+	Route::post('user/upload-photo',[\App\Http\Controllers\Api\UserController::class,'uploadPhoto'])->name('api.user.upload-photo');
+	Route::post('user/change-password',[\App\Http\Controllers\Api\UserController::class,'changePassword'])->name('api.user.change-password');
+	Route::get('iuran',[\App\Http\Controllers\Api\IuranController::class,'iuran'])->name('api.iuran');
+	Route::get('iuran/get-last',[\App\Http\Controllers\Api\IuranController::class,'getLast'])->name('api.iuran.get-last');
+	Route::post('iuran/store',[\App\Http\Controllers\Api\IuranController::class,'store'])->name('api.iuran.store');
 });
