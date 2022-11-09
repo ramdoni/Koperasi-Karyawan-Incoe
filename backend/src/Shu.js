@@ -6,7 +6,7 @@ class Shu extends React.Component{
         return (
             <div className="hk-pg-wrapper pb-0">
                 <div className="hk-pg-body py-0">
-                    <div className="fmapp-wrap">
+                    <div className="fmapp-wrap fmapp-sidebar-toggle">
                         <nav className="fmapp-sidebar">
                             <div data-simplebar className="nicescroll-bar">
                                 <div className="menu-content-wrap">
@@ -146,7 +146,7 @@ class Shu extends React.Component{
                                             </span>
                                         </a>
                                     </div>
-                                    <div className="hk-sidebar-togglable"></div>
+                                    <div className="hk-sidebar-togglable active"></div>
                                 </header>
                                 <div className="fm-body">
                                     <div data-simplebar className="nicescroll-bar">

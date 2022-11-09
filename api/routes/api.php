@@ -13,7 +13,19 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//API route for register new user
+Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
+//API route for login user
+Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Protecting Routes
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/profile', function(Request $request) {
+        return auth()->user();
+    });
+    Route::get('/anggota/index',[App\Http\Controllers\API\AnggotaController::class,'data']);
+    Route::post('/anggota/insert',[App\Http\Controllers\API\AnggotaController::class,'insert']);
+    Route::get('/type-transaksi/data',[App\Http\Controllers\API\TypeTransaksiController::class,'data']);
+    Route::post('/type-transaksi/store',[App\Http\Controllers\API\TypeTransaksiController::class,'store']);
+    Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
 });
