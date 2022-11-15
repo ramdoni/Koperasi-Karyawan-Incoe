@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+
+class PageInbox extends StatelessWidget {
+  const PageInbox({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // color: const Color(0xffC4DFCB),
+      child: Center(
+        child: Text(
+          "",
+          style: TextStyle(
+            color: Colors.green[900],
+            fontSize: 45,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+}
