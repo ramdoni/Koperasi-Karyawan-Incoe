@@ -1,4 +1,4 @@
-package com.stalavista.koperasi_incoe_application
+package com.stalavista.coopzone_application
 
 import io.flutter.embedding.android.FlutterActivity
 

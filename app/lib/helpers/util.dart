@@ -227,8 +227,7 @@ Future<Response> getData(String url) async {
   try {
     Dio dio = new Dio();
     dio.options.headers["Authorization"] = "Bearer " + session.token;
-    log("URL : " + url);
-    log("Token : " + session.token);
+
     return await dio.get(server_ip + url);
   } on DioError catch (e) {
     if (e.type == DioErrorType.response) {

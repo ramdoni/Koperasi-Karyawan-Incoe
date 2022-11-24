@@ -6,11 +6,9 @@ import 'dart:async';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'helpers/util.dart';
 import 'helpers/validation.dart';
-import 'package:koperasi_incoe_application/helpers/session.dart' as session;
+import 'helpers/session.dart' as session;
 
 final _storage = FlutterSecureStorage();
-
-final GlobalKey<State> _keyLoader = new GlobalKey<State>();
 
 class LoginScreen extends StatefulWidget {
   createState() {
@@ -31,7 +29,7 @@ class LoginScreenState extends State<LoginScreen> with Validation {
   String password = '';
   String deviceToken = "";
   String type_ = "";
-  bool isSubmited = false;
+  bool isSubmited = true;
 
   Widget build(context) {
     return Scaffold(
@@ -47,7 +45,10 @@ class LoginScreenState extends State<LoginScreen> with Validation {
                 child: Form(
                     key: formKey,
                     child: Column(children: [
-                      Image.asset("logo.png", width: 153.0, height: 152.0),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: Image.asset("logo_green.png", width: 153.0, height: 152.0),
+                      ),
                       emailField(),
                       passwordField(),
                       loginButton(),
@@ -63,7 +64,7 @@ class LoginScreenState extends State<LoginScreen> with Validation {
   Widget emailField() {
     return TextFormField(
       decoration: const InputDecoration(
-          hintStyle: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal), hintText: "No Anggota"),
+          hintStyle: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal), hintText: "Nomor Anggota"),
       validator: validateEmail,
       keyboardType: TextInputType.number,
       onSaved: (String value) {
@@ -144,8 +145,16 @@ class LoginScreenState extends State<LoginScreen> with Validation {
           if (res.data['message'].toString() == 'success') {
             setProfile(res.data);
             checkRedirect();
-          } else
+          } else {
             _storage.deleteAll();
+          }
+          setState(() {
+            isSubmited = false;
+          });
+        });
+      } else {
+        setState(() {
+          isSubmited = false;
         });
       }
     });
@@ -190,6 +199,18 @@ class LoginScreenState extends State<LoginScreen> with Validation {
       session.tanggalLahir = data['data']['tanggal_lahir'].toString();
       session.jenisKelamin = data['data']['jenis_kelamin'].toString();
       session.alamat = data['data']['alamat'].toString();
+      session.saldoSimpanan = data['data']['saldo_simpan'].toString();
+      session.shu = data['data']['shu'].toString();
+      session.simpananPokok = data['data']['simpanan_pokok'].toString();
+      session.simpananWajib = data['data']['simpanan_wajib'].toString();
+      session.simpananSukarela = data['data']['simpanan_sukarela'].toString();
+      session.simpananLainlain = data['data']['simpanan_lain_lain'].toString();
+      session.pinjamanUang = data['data']['pinjaman_uang'].toString();
+      session.pinjamanAstra = data['data']['pinjaman_astra'].toString();
+      session.pinjamanToko = data['data']['pinjama_toko'].toString();
+      session.pinjamanAstra = data['data']['pinjama_astra'].toString();
+      session.plafond = data['data']['plafond'].toString();
+      session.sisaPlafond = data['data']['plafond_digunakan'].toString();
     });
   }
 
@@ -199,10 +220,14 @@ class LoginScreenState extends State<LoginScreen> with Validation {
         margin: const EdgeInsets.only(top: 20),
         child: ButtonTheme(
             minWidth: double.infinity,
-            height: 35.0,
+            height: 50.0,
             child: SizedBox(
                 width: double.infinity,
+                height: 50.0,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: getColorFromHex("4ec9b2"),
+                  ),
                   onPressed: () {
                     if (formKey.currentState.validate()) {
                       setState(() {
@@ -237,7 +262,7 @@ class LoginScreenState extends State<LoginScreen> with Validation {
                           child: CircularProgressIndicator(
                             color: Colors.white,
                           ))
-                      : const Text('Login', style: TextStyle(color: Colors.white))),
+                      : const Text('Login', style: TextStyle(color: Colors.white, fontSize: 20))),
                 ))));
   }
 }

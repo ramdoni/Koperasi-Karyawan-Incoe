@@ -1,4 +1,4 @@
-name: koperasi_incoe_application
+name: coopzone_application
 description: Koperasi Karyawan Incoe
 
 # The following line prevents the package from being accidentally published to
@@ -67,7 +67,31 @@ flutter:
   assets:
     - logo.png
     - background.png
-  #   - images/a_dot_ham.jpeg
+    - bg_home.jpg
+    - background-apps.png
+    - logo_white.png
+    - logo_green.png
+    - icon_pokok.png
+    - icon_wajib.png
+    - icon_sukarela.png
+    - icon_lainnya.png
+    - icon_uang.png
+    - icon_astra.png
+    - icon_toko.png
+    - icon_motor.png
+    - icon_simpanan_topup.png
+    - icon_simpanan_penarikan.png
+    - icon_riwayat.png
+    - icon_paket_data.png
+    - background_apps_black.jpg
+    - icon_wallet.png
+    - icon_topup.png
+    - icon_transfer.png
+    - icon_bayar_beli.png
+    - icon_tarik.png
+    - icon_selamat.png
+    - icon_file.png
+    - icon_proteksi.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

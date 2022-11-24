@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'helpers/util.dart';
 import 'helpers/validation.dart';
-import 'package:koperasi_incoe_application/helpers/session.dart' as session;
+import 'helpers/session.dart' as session;
 import 'package:upgrader/upgrader.dart';
 
 final _storage = FlutterSecureStorage();
@@ -32,73 +32,54 @@ class LauncherScreenState extends State<LauncherScreen> with Validation {
     Upgrader().clearSavedSettings();
 
     return Scaffold(
+        backgroundColor: getColorFromHex("4ec9b2"),
         body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      // crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.all(40),
-            child: Center(
-                child: Column(
-              children: [
-                Container(
-                    margin: EdgeInsets.only(bottom: 30),
+          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(40),
+                child: Center(
                     child: Column(
-                      children: [
-                        Container(
-                          height: 100,
-                          child: Image.asset(
-                            "logo.png",
-                          ),
-                        ),
-                        Container(
-                            width: double.infinity,
-                            margin: const EdgeInsets.only(top: 2),
-                            child: const Align(
-                                alignment: Alignment.topCenter,
-                                child: Text(
-                                  "Menjadi koperasi karyawan yang terpercaya dan unggul, dapat memberikan manfaat serta kesejahteraan anggota.",
-                                  textAlign: TextAlign.center,
-                                )))
-                      ],
-                    )),
-                Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    child: ButtonTheme(
-                        minWidth: double.infinity,
-                        height: 35.0,
-                        child: SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed('/login');
-                              },
-                              child: const Text('Login Anggota', style: TextStyle(color: Colors.white)),
-                            )))),
-                // Container(
-                //     width: double.infinity,
-                //     margin: const EdgeInsets.only(bottom: 10),
-                //     child: OutlinedButton(
-                //       onPressed: () {
-                //         Navigator.of(context).pushNamed('/register');
-                //       },
-                //       child: const Text('Daftar', style: TextStyle(color: Colors.green)),
-                //     )),
-                // InkWell(
-                //   child: Text("Konfirmasi Pendaftaran",
-                //       style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue)),
-                //   onTap: () => Navigator.of(context).pushNamed('/confirm-transfer'),
-                // )
-              ],
-            ))),
-        UpgradeAlert(
-          debugLogging: true,
-          child: Center(child: Text('')),
-        ),
-      ],
-    ));
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 239,
+                              child: Image.asset(
+                                "logo_white.png",
+                              ),
+                            ),
+                          ],
+                        )),
+                    Container(
+                        margin: const EdgeInsets.only(bottom: 5),
+                        width: 148,
+                        child: ButtonTheme(
+                            minWidth: double.infinity,
+                            height: 50.0,
+                            child: SizedBox(
+                                width: double.infinity,
+                                height: 50,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(backgroundColor: getColorFromHex("157874")),
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed('/login');
+                                  },
+                                  child: const Text('Masuk', style: TextStyle(color: Colors.white, fontSize: 20)),
+                                )))),
+                  ],
+                ))),
+            UpgradeAlert(
+              debugLogging: true,
+              child: Center(child: Text('')),
+            ),
+          ],
+        ));
   }
 
   void initializeFlutterFire() async {
@@ -208,7 +189,6 @@ class LauncherScreenState extends State<LauncherScreen> with Validation {
 
   void setProfile(data) {
     setState(() {
-      log(data['data']['umur'].toString());
       session.name_ = data['data']['name'];
       session.telepon = data['data']['telepon'].toString();
       session.noAnggota = data['data']['no_anggota'].toString();
