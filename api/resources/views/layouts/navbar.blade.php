@@ -4,13 +4,25 @@
             <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fa fa-bars"></i></button>
         </div>
         <div class="navbar-brand">    
-            @if(get_setting('logo'))<a href="/"><img src="{{ get_setting('logo') }}"  class="img-responsive logo"></a>@endif
+            @if(get_setting('logo'))<a href="/"><img src="{{ get_setting('logo') }}" style="height:28px;width:auto;"  class="img-responsive logo"></a>@endif
         </div>
         <div class="navbar-right">
             <form id="navbar-search" class="navbar-form search-form">
-                @if (trim($__env->yieldContent('title')))
-                    <h6 class="mt-2">@yield('title')</h6>
-                @endif
+                <div id="navbar-menu float-left">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="text-info dropdown-toggle icon-menu px-1" data-toggle="dropdown">Data Master</a>
+                            <ul class="dropdown-menu user-menu menu-icon">
+                                <li><a href="{{ route('jenis-simpanan.index') }}">Jenis Simpanan</a></li>
+                                <li><a href="{{ route('jenis-pinjaman.index') }}">Jenis Pinjaman</a></li>
+                                <li><a href="{{ route('users.index') }}">Users</a></li>
+                                <li><a href="{{ route('setting') }}">Setting</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{route('user-member.index')}}" class="text-info icon-menu px-1">Keanggotaan</a></li>
+                        <li><a href="{{route('transaksi.index')}}" class="text-info icon-menu px-1">Transaksi</a></li>
+                    </ul>
+                </div>
             </form>
             <div id="navbar-menu">
                 <ul class="nav navbar-nav">

@@ -43,33 +43,27 @@
                 <nav id="left-sidebar-nav" class="sidebar-nav">
                     <ul id="main-menu" class="metismenu">    
                         @if(\Auth::user()->user_access_id==1 || \Auth::user()->user_access_id==5)<!--Administrator-->                   
-                        <li class="{{ Request::segment(1) === 'dashboard' ? 'active' : null }}">
-                            <a href="/"><i class="icon-home"></i> <span>Dashboard</span></a>
-                        </li>
-                        <li class="{{ (Request::segment(1) === 'users') ? 'active' : null }}">
-                            <a href="{{route('users.index')}}"><i class="icon-users"></i> <span>User Login</span></a>
-                        </li>
-                        <li class="{{ Request::segment(1) === 'koordinator' ? 'active' : null }}">
-                            <a href="{{route('koordinator.index')}}"><i class="icon-users"></i> <span>Koordinato</span>r</a>
-                        </li>
-                        <li class="{{ Request::segment(1) === 'user-member' ? 'active' : null }}">
-                            <a href="{{route('user-member.index')}}"><i class="icon-users"></i> <span>Anggota</span></a>
-                        </li>
-                        <li class="{{ Request::segment(1) === 'iuran' ? 'active' : null }}">
-                            <a href="{{route('iuran.index')}}"><i class="icon-users"></i> <span>Iuran</span></a>
-                        </li>
-                        <li class="{{ (Request::segment(1) === 'bank-account') ? 'active' : null }}">
-                            <a href="{{route('bank-account.index')}}"><i class="fa fa-bank"></i>Bank Account</a>
-                        </li>
-                        <li class="{{ (Request::segment(1) === 'klaim') ? 'active' : null }}">
-                            <a href="{{route('klaim.index')}}"><i class="fa fa-database"></i>Klaim</a>
-                        </li>
-                        <li class="{{ (Request::segment(1) === 'asuransi') ? 'active' : null }}">
-                            <a href="{{route('asuransi.index')}}"><i class="fa fa-user-md"></i>Asuransi</a>
-                        </li>
-                        <li class="{{ (Request::segment(1) === 'setting') ? 'active' : null }}">
-                            <a href="{{route('setting')}}"><i class="fa fa-gear"></i>Setting</a>
-                        </li>
+                            <li class="{{ Request::segment(1) === 'dashboard' ? 'active' : null }}">
+                                <a href="/"><i class="icon-home"></i> <span>Dashboard</span></a>
+                            </li>
+                            <li class="{{ Request::segment(1) === 'user-member' ? 'active' : null }}">
+                                <a href="{{route('user-member.index')}}"><i class="icon-users"></i> <span>Anggota</span></a>
+                            </li>
+                            <li class="{{ Request::segment(1) === 'iuran' ? 'active' : null }}">
+                                <a href="{{route('simpanan.index')}}"><i class="fa fa-list"></i> <span>Simpanan</span></a>
+                            </li>
+                            <li class="{{ Request::segment(1) === 'iuran' ? 'active' : null }}">
+                                <a href="{{route('pinjaman.index')}}"><i class="fa fa-list"></i> <span>Pinjaman</span></a>
+                            </li>
+                            <li class="{{ Request::segment(1) === 'iuran' ? 'active' : null }}">
+                                <a href="{{route('shu.index')}}"><i class="fa fa-list"></i> <span>SHU</span></a>
+                            </li>
+                            <li class="{{ (Request::segment(1) === 'bank-account') ? 'active' : null }}">
+                                <a href="{{route('bank-account.index')}}"><i class="fa fa-bank"></i>Bank Account</a>
+                            </li>
+                            <li class="{{ (Request::segment(1) === 'setting') ? 'active' : null }}">
+                                <a href="{{route('setting')}}"><i class="fa fa-gear"></i>Setting</a>
+                            </li>
                         @endif
                         @if(\Auth::user()->user_access_id==2)<!--Ketua Yayasan-->     
                         <li class="{{ Request::segment(2) === 'member' ? 'active' : null }}">

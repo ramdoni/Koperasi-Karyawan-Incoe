@@ -85,9 +85,20 @@ class UserController extends Controller
         $data['telepon'] = $member->phone_number ? $member->phone_number : '-';
         $data['umur'] = $member->tanggal_lahir ? hitung_umur($member->tanggal_lahir) : '-';
         $data['tanggal_lahir'] = $member->tanggal_lahir ? date('d-M-Y',strtotime($member->tanggal_lahir)) : '-';
-        $data['telepon'] = $member->jenis_kelaminjenis_kelamin ? $member->jenis_kelamin : '-';
         $data['kota'] = isset($member->kota->name) ? $member->kota->name : '-';
         $data['alamat'] = $member->address ? $member->address : '-';
+        $data['simpanan_pokok'] = $member->simpanan_pokok ? format_idr($member->simpanan_pokok) : '0';
+        $data['simpanan_wajib'] = $member->simpanan_wajib ? format_idr($member->simpanan_wajib) : '0';
+        $data['simpanan_sukarela'] = $member->simpanan_sukarela ? format_idr($member->simpanan_sukarela) : '0';
+        $data['simpanan_lain_lain'] = $member->simpanan_lain_lain ? format_idr($member->simpanan_lain_lain) : '0';
+        $data['pinjaman_uang'] = $member->pinjaman_uang ? format_idr($member->pinjaman_uang) : '0';
+        $data['pinjaman_astra'] = $member->pinjaman_astra ? format_idr($member->pinjaman_astra) : '0';
+        $data['pinjaman_toko'] = $member->pinjaman_toko ? format_idr($member->pinjaman_toko) : '0';
+        $data['pinjaman_motor'] = $member->pinjaman_motor ? format_idr($member->pinjaman_motor) : '0';
+        $data['saldo_simpan'] = format_idr($member->simpanan_pokok+$member->simpanan_wajib+$member->simpanan_sukarela+$member->simpanan_lain_lain);
+        $data['shu'] = $member->shu ? format_idr($member->shu) : '0';
+        $data['plafond'] = $member->plafond ? format_idr($member->plafond-$member->plafond_digunakan) : '0';
+        $data['plafond_digunakan'] = $member->plafond_digunakan ? format_idr($member->plafond_digunakan) : '0';
 
         return $data;
     }

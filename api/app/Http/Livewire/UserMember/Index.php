@@ -16,15 +16,8 @@ class Index extends Component
     public $dataMember,$selected,$password;
     public function render()
     {
-        $data = UserMember::with(['anggota_rekomendasi','user_rekomendasi','koordinatorUser','klaim'])
-                            ->withCount(['user_rekomendasi'])
-                            ->select('user_member.*')->join('users','users.id','=','user_member.user_id')
-                            ->orderBy('user_member.no_anggota_platinum','DESC')
-                            ->where('user_member.is_non_anggota',0)
-                            ->where('user_member.no_anggota_platinum','<>','900000000')
-                            // ->join('users','users.id','=','user_member.user_id')
-                            // ->where('users.user_access_id',4)
-                            ;
+        $data = UserMember::select('user_member.*')->join('users','users.id','=','user_member.user_id')
+                            ->orderBy('user_member.no_anggota_platinum','DESC');
 
         if($this->keyword){
             $data->where(function($table){

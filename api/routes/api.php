@@ -29,4 +29,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 	Route::get('iuran',[\App\Http\Controllers\Api\IuranController::class,'iuran'])->name('api.iuran');
 	Route::get('iuran/get-last',[\App\Http\Controllers\Api\IuranController::class,'getLast'])->name('api.iuran.get-last');
 	Route::post('iuran/store',[\App\Http\Controllers\Api\IuranController::class,'store'])->name('api.iuran.store');
+	Route::get('tagihan/tunai',[\App\Http\Controllers\Api\TagihanController::class,'tagihanTunai'])->name('tagihan.tunai');
+	Route::get('tagihan/first',[\App\Http\Controllers\Api\TagihanController::class,'tagihanFirst'])->name('tagihan.first');
+	Route::get('pinjaman/kuota',[\App\Http\Controllers\Api\PinjamanController::class,'kuota'])->name('pinjaman.kuota');
 });

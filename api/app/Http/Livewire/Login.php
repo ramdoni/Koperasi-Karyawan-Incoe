@@ -40,7 +40,7 @@ class Login extends Component
             // dd($credentials);
             if (Auth::attempt($credentials,$this->remember_me)) {
                 // Authentication passed...
-                return redirect('/');
+                return redirect('/user-member');
             }else $this->message = __('Email / Password incorrect please try again');
         }else{
             if(is_numeric($this->email))

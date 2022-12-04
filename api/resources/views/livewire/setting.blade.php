@@ -51,8 +51,6 @@
             </div>
             <form  wire:submit.prevent="updateBasic">
                 <div class="body">
-                    <h6>Basic Information</h6>
-                    <hr />
                     <div class="row clearfix mb-4">
                         <div class="col-lg-6 col-md-12">
                             <div class="form-group">              
@@ -76,110 +74,14 @@
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label>Iuran</label>                                                
-                                    <input type="text" class="form-control" wire:model="iuran_tetap" />
-                                </div>
-                                <!-- <div class="form-group col-md-6">
-                                    <label>Sumbangan</label>                                                
-                                    <input type="text" class="form-control" wire:model="sumbangan" />
-                                </div> -->
-                                <div class="form-group col-md-6">
-                                    <label>Uang Pendaftaran</label>                                                
-                                    <input type="text" class="form-control" wire:model="uang_pendaftaran" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <h6>PIC Information</h6>
-                    <hr />
-                    <div class="row mb-4 clearfix">
-                        <div class="col-lg-6 col-md-12">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label>Nama</label>                                                
-                                    <input type="text" class="form-control" wire:model="pic_nama" />
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>Tempat Lahir</label>                                                
-                                    <input type="text" class="form-control" wire:model="pic_tempat_lahir" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label>Tanggal Lahir ({{hitung_umur($pic_tanggal_lahir)}} tahun)</label>                                                
-                                    <input type="date" class="form-control" wire:model="pic_tanggal_lahir" />
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>Nomor Telp</label>                                                
-                                    <input type="text" class="form-control" wire:model="pic_nomor_telp" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="fancy-group col-md-6">
-                                    <label>Jenis Kelamin</label><br />
-                                    <label class="fancy-radio"><input type="radio" value="Pria" wire:model="pic_jenis_kelamin" />
-                                        <span><i></i>Pria</span>
-                                    </label>
-                                    <label class="fancy-radio">
-                                        <input type="radio" value="Wanita" wire:model="pic_jenis_kelamin" />
-                                        <span><i></i>Wanita</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Alamat</label>
-                                <textarea class="form-control" wire:model="pic_alamat" style="height:80px;"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label>Tanda Tangan</label>
-                            <div class="media photo">
-                                <div class="media-left m-r-15">
-                                    @if($pic_tanda_tangan)
-                                    <img src="{{$pic_tanda_tangan}}" class="user-photo media-object" style="height:50px;" alt="User">
-                                    @endif
-                                </div>
-                                <div class="media-body">
-                                    @error('pic_tanda_tangan')
-                                    <p class="text-danger">{{$message}}</p>
-                                    @enderror
-                                    <input type="file" wire:model="pic_tanda_tangan">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <h6>Klaim Information</h6>
-                    <hr />
-                    <div class="row clearfix mb-4">
-                        <div class="col-lg-6 col-md-12">
-                            <div class="alert alert-warning" role="alert">Untuk Anggota yang berdomisili di kota Semarang</div>
-                            <div class="row">
-                                <div class="form-group col-md-6">              
-                                    <label>Santunan Pelayanan</label>                                  
-                                    <input type="text" class="form-control" wire:model="santunan_pelayanan_in_semarang">
-                                </div>
-                                <div class="form-group col-md-6">              
-                                    <label>Santunan Uang Duka</label>                                  
-                                    <input type="text" class="form-control" wire:model="santunan_uang_duka_in_semarang">
-                                </div>
-                            </div>
+                            <h6>Pinjaman</h6>
                             <hr />
-                            <div class="alert alert-warning" role="alert">Untuk Anggota yang berdomisili di Kab Semarang, Kota Salatiga, Kab Kendal, Kab Purwodadi</div>
                             <div class="row">
-                                <div class="form-group col-md-6">              
-                                    <label>Santunan Pelayanan</label>                                  
-                                    <input type="text" class="form-control" wire:model="santunan_pelayanan_out_semarang">
-                                </div>
-                                <div class="form-group col-md-6">              
-                                    <label>Santunan Uang Duka</label>                                  
-                                    <input type="text" class="form-control" wire:model="santunan_uang_duka_out_semarang">
+                                <div class="form-group col-md-6">
+                                    <label>Jasa (%)</label>                                                
+                                    <input type="text" class="form-control" wire:model="pinjaman_jasa" />
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
                     <hr />
