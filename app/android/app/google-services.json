@@ -1,0 +1,155 @@
+{
+  "project_info": {
+    "project_number": "965235283798",
+    "project_id": "erp-pmt",
+    "storage_bucket": "erp-pmt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965235283798:android:25dd7b9ca296e08c6f68f7",
+        "android_client_info": {
+          "package_name": "com.example.pmt_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965235283798-tdhjramtrdnip0uc2426uum71a1jk0m1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV1kB_mpR-0RarBBKKbRb2C5c0E8YGxkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965235283798-tdhjramtrdnip0uc2426uum71a1jk0m1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965235283798:android:069e78cb6ba4af586f68f7",
+        "android_client_info": {
+          "package_name": "com.pmt.access"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965235283798-tdhjramtrdnip0uc2426uum71a1jk0m1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV1kB_mpR-0RarBBKKbRb2C5c0E8YGxkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965235283798-tdhjramtrdnip0uc2426uum71a1jk0m1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965235283798:android:d85bf872cd301c306f68f7",
+        "android_client_info": {
+          "package_name": "com.stalavista.koperasi_incoe_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965235283798-tdhjramtrdnip0uc2426uum71a1jk0m1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV1kB_mpR-0RarBBKKbRb2C5c0E8YGxkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965235283798-tdhjramtrdnip0uc2426uum71a1jk0m1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965235283798:android:462aca9937e57b366f68f7",
+        "android_client_info": {
+          "package_name": "com.stalavista.sapphire_yssantamaria_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965235283798-tdhjramtrdnip0uc2426uum71a1jk0m1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV1kB_mpR-0RarBBKKbRb2C5c0E8YGxkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965235283798-tdhjramtrdnip0uc2426uum71a1jk0m1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965235283798:android:7a919f8b3afec9c16f68f7",
+        "android_client_info": {
+          "package_name": "com.stalavista.yssantamaria_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965235283798-tdhjramtrdnip0uc2426uum71a1jk0m1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV1kB_mpR-0RarBBKKbRb2C5c0E8YGxkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965235283798-tdhjramtrdnip0uc2426uum71a1jk0m1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
