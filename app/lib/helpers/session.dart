@@ -10,4 +10,5 @@ String pinjamanUang = '0',
     pinjamanToko = '0',
     pinjamanMotor = '0',
     sisaPlafond = '0',
+    tagihanPaylater = 'Rp. 0',
     plafond = '0';

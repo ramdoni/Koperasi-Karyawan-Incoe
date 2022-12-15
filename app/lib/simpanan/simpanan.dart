@@ -27,7 +27,6 @@ class SimpananScreenState extends State<SimpananScreen> {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-          // <-- wrap this around
           child: Container(
               height: 700,
               color: getColorFromHex("efefef"),
@@ -88,124 +87,128 @@ class SimpananScreenState extends State<SimpananScreen> {
                                     margin: EdgeInsets.only(left: 30, top: 10),
                                     padding: const EdgeInsets.only(left: 13, right: 13, top: 17, bottom: 17),
                                     color: getColorFromHex('efefef'),
-                                    child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Row(
-                                          children: [
-                                            const Expanded(
-                                                flex: 5,
-                                                child: Text("Simpanan Pokok : ", style: TextStyle(fontSize: 12))),
-                                            Expanded(
-                                                flex: 4,
-                                                child: Text("Rp. " + session.simpananPokok,
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: getColorFromHex('cccccc'),
-                                                        fontWeight: FontWeight.w500))),
-                                            Expanded(
-                                                flex: 1,
-                                                child: InkWell(
-                                                    onTap: () {
-                                                      Navigator.of(context).push(MaterialPageRoute(
-                                                          builder: (context) => SimpananPokokScreen()));
-                                                    },
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(builder: (context) => SimpananPokokScreen()));
+                                        },
+                                        child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Row(
+                                              children: [
+                                                const Expanded(
+                                                    flex: 5,
+                                                    child: Text("Simpanan Pokok : ", style: TextStyle(fontSize: 12))),
+                                                Expanded(
+                                                    flex: 4,
+                                                    child: Text("Rp. " + session.simpananPokok,
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: getColorFromHex('cccccc'),
+                                                            fontWeight: FontWeight.w500))),
+                                                Expanded(
+                                                    flex: 1,
                                                     child: Icon(
                                                       CupertinoIcons.chevron_forward,
                                                       color: getColorFromHex('cccccc'),
                                                       size: 25.0,
-                                                    )))
-                                          ],
-                                        ))),
+                                                    ))
+                                              ],
+                                            )))),
                                 Container(
                                     margin: const EdgeInsets.only(left: 30, top: 10),
                                     padding: const EdgeInsets.only(left: 13, right: 13, top: 17, bottom: 17),
                                     color: getColorFromHex('efefef'),
-                                    child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Row(
-                                          children: [
-                                            const Expanded(
-                                                flex: 5,
-                                                child: Text("Simpanan Wajib : ", style: TextStyle(fontSize: 12))),
-                                            Expanded(
-                                                flex: 4,
-                                                child: Text("Rp. " + session.simpananWajib,
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: getColorFromHex('cccccc'),
-                                                        fontWeight: FontWeight.w400))),
-                                            Expanded(
-                                                flex: 1,
-                                                child: InkWell(
-                                                    onTap: () {
-                                                      Navigator.of(context).push(MaterialPageRoute(
-                                                          builder: (context) => SimpananWajibScreen()));
-                                                    },
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(builder: (context) => SimpananWajibScreen()));
+                                        },
+                                        child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Row(
+                                              children: [
+                                                const Expanded(
+                                                    flex: 5,
+                                                    child: Text("Simpanan Wajib : ", style: TextStyle(fontSize: 12))),
+                                                Expanded(
+                                                    flex: 4,
+                                                    child: Text("Rp. " + session.simpananWajib,
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: getColorFromHex('cccccc'),
+                                                            fontWeight: FontWeight.w400))),
+                                                Expanded(
+                                                    flex: 1,
                                                     child: Icon(
                                                       CupertinoIcons.chevron_forward,
                                                       color: getColorFromHex('cccccc'),
                                                       size: 25.0,
-                                                    )))
-                                          ],
-                                        ))),
+                                                    ))
+                                              ],
+                                            )))),
                                 Container(
                                     margin: EdgeInsets.only(left: 30, top: 10),
                                     padding: const EdgeInsets.only(left: 13, right: 13, top: 17, bottom: 17),
                                     color: getColorFromHex('efefef'),
-                                    child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Row(
-                                          children: [
-                                            const Expanded(
-                                                flex: 5,
-                                                child: Text("Simpanan Sukarela : ", style: TextStyle(fontSize: 12))),
-                                            Expanded(
-                                                flex: 4,
-                                                child: Text("Rp. " + session.simpananSukarela,
-                                                    style: TextStyle(fontSize: 12, color: getColorFromHex('cccccc')))),
-                                            Expanded(
-                                                flex: 1,
-                                                child: InkWell(
-                                                    onTap: () {
-                                                      Navigator.of(context).push(MaterialPageRoute(
-                                                          builder: (context) => SimpananSukarelaScreen()));
-                                                    },
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(builder: (context) => SimpananSukarelaScreen()));
+                                        },
+                                        child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Row(
+                                              children: [
+                                                const Expanded(
+                                                    flex: 5,
+                                                    child:
+                                                        Text("Simpanan Sukarela : ", style: TextStyle(fontSize: 12))),
+                                                Expanded(
+                                                    flex: 4,
+                                                    child: Text("Rp. " + session.simpananSukarela,
+                                                        style:
+                                                            TextStyle(fontSize: 12, color: getColorFromHex('cccccc')))),
+                                                Expanded(
+                                                    flex: 1,
                                                     child: Icon(
                                                       CupertinoIcons.chevron_forward,
                                                       color: getColorFromHex('cccccc'),
                                                       size: 25.0,
-                                                    )))
-                                          ],
-                                        ))),
+                                                    ))
+                                              ],
+                                            )))),
                                 Container(
                                     margin: EdgeInsets.only(left: 30, top: 10),
                                     padding: const EdgeInsets.only(left: 13, right: 13, top: 17, bottom: 17),
                                     color: getColorFromHex('efefef'),
-                                    child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Row(
-                                          children: [
-                                            const Expanded(
-                                                flex: 5,
-                                                child: Text("Simpanan Lain-lain : ", style: TextStyle(fontSize: 12))),
-                                            Expanded(
-                                                flex: 4,
-                                                child: Text("Rp. " + session.simpananLainlain,
-                                                    style: TextStyle(fontSize: 12, color: getColorFromHex('cccccc')))),
-                                            Expanded(
-                                                flex: 1,
-                                                child: InkWell(
-                                                    onTap: () {
-                                                      Navigator.of(context).push(MaterialPageRoute(
-                                                          builder: (context) => SimpananLainnyaScreen()));
-                                                    },
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(builder: (context) => SimpananLainnyaScreen()));
+                                        },
+                                        child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Row(
+                                              children: [
+                                                const Expanded(
+                                                    flex: 5,
+                                                    child:
+                                                        Text("Simpanan Lain-lain : ", style: TextStyle(fontSize: 12))),
+                                                Expanded(
+                                                    flex: 4,
+                                                    child: Text("Rp. " + session.simpananLainlain,
+                                                        style:
+                                                            TextStyle(fontSize: 12, color: getColorFromHex('cccccc')))),
+                                                Expanded(
+                                                    flex: 1,
                                                     child: Icon(
                                                       CupertinoIcons.chevron_forward,
                                                       color: getColorFromHex('cccccc'),
                                                       size: 25.0,
-                                                    )))
-                                          ],
-                                        ))),
+                                                    ))
+                                              ],
+                                            )))),
                               ],
                             )))),
                 Positioned(
@@ -263,7 +266,7 @@ class SimpananScreenState extends State<SimpananScreen> {
                               ],
                             )))),
                 Positioned(
-                    top: 540,
+                    top: 535,
                     width: MediaQuery.of(context).size.width,
                     child: Center(
                         child: Container(
@@ -324,31 +327,6 @@ class SimpananScreenState extends State<SimpananScreen> {
                                           flex: 9,
                                           child: Container(
                                               child: const Text(
-                                                  "Jika saldo simpanan sukarela tidak mencukupi maka otomatis akan mengambil saldo simpanan wajib kamu. ",
-                                                  style: TextStyle(fontSize: 10))))
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 8),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                              height: 30,
-                                              alignment: Alignment.topCenter,
-                                              child: Align(
-                                                  alignment: Alignment.topCenter,
-                                                  child: Text("3. ",
-                                                      style: TextStyle(
-                                                          color: getColorFromHex('32C8B1'),
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.w400))))),
-                                      Expanded(
-                                          flex: 9,
-                                          child: Container(
-                                              child: const Text(
                                                   "Saldo simpanan dapat digunakan untuk belanja di toko/mitra Koperasi, dan belanja digital melalui aplikasi Coop Zone. ",
                                                   style: TextStyle(fontSize: 10))))
                                     ],
@@ -365,7 +343,7 @@ class SimpananScreenState extends State<SimpananScreen> {
                                               alignment: Alignment.topCenter,
                                               child: Align(
                                                   alignment: Alignment.topCenter,
-                                                  child: Text("4. ",
+                                                  child: Text("3. ",
                                                       style: TextStyle(
                                                           color: getColorFromHex('32C8B1'),
                                                           fontSize: 16,

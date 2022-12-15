@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -11,25 +10,20 @@ import 'helpers/session.dart' as session;
 final _storage = FlutterSecureStorage();
 
 class LoginScreen extends StatefulWidget {
+  @override
   createState() {
     return LoginScreenState();
   }
 }
 
-Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  log("Handling a background message: ${message.messageId}");
-}
-
 class LoginScreenState extends State<LoginScreen> with Validation {
   final formKey = GlobalKey<FormState>();
-  String messageTitle = "Empty";
-  String notificationAlert = "alert";
 
   String email = '';
   String password = '';
   String deviceToken = "";
   String type_ = "";
-  bool isSubmited = true;
+  bool isSubmited = false;
 
   Widget build(context) {
     return Scaffold(
@@ -71,93 +65,6 @@ class LoginScreenState extends State<LoginScreen> with Validation {
         email = value;
       },
     );
-  }
-
-  void initializeFlutterFire() async {
-    try {
-      await Firebase.initializeApp();
-
-      FirebaseMessaging messaging = FirebaseMessaging.instance;
-      String token = await messaging.getToken();
-
-      NotificationSettings settings = await messaging.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true,
-      );
-
-      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-        log('User granted permission');
-      } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-        log('User granted provisional permission');
-      } else {
-        log('User declined or has not accepted permission');
-      }
-      setState(() {
-        deviceToken = token.toString();
-      });
-
-      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        log("message recieved : " + message.notification.toString());
-
-        RemoteNotification notification = message.notification;
-        AndroidNotification android = message.notification.android;
-        if (notification != null && android != null) {
-          log("hascode : " + notification.hashCode.toString());
-          log("title : " + notification.title.toString());
-          log("body : " + notification.body.toString());
-        }
-      });
-      FirebaseMessaging.onMessageOpenedApp.listen((message) {
-        log('Message clicked!');
-        setState(() {
-          type_ = message.data['type'].toString();
-        });
-        checkLogin();
-      });
-    } catch (e) {
-      log("initializeFlutterFire : " + e.toString());
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initializeFlutterFire();
-    checkLogin();
-  }
-
-  void checkLogin() async {
-    // check session login
-    _storage.readAll().then((result) {
-      if (result['token'] != null) {
-        setState(() {
-          session.token = result['token'];
-        });
-
-        getData('/user/check-token').then((res) {
-          if (res.data['message'].toString() == 'success') {
-            setProfile(res.data);
-            checkRedirect();
-          } else {
-            _storage.deleteAll();
-          }
-          setState(() {
-            isSubmited = false;
-          });
-        });
-      } else {
-        setState(() {
-          isSubmited = false;
-        });
-      }
-    });
   }
 
   void checkRedirect() {
@@ -236,12 +143,13 @@ class LoginScreenState extends State<LoginScreen> with Validation {
                       formKey.currentState.save();
                       log('Submit login');
 
-                      submitLogin('/auth-login', {"email": email, "password": password, "device_token": deviceToken})
+                      submitLogin('/login', {"username": email, "password": password, "device_token": deviceToken})
                           .then((result) {
                         if (result.data != null) {
                           var data = result.data;
-                          if (data['status'].toString() == '200') {
-                            _storage.write(key: "token", value: data['data']['token']);
+                          log(data.toString());
+                          if (data['message'] == 'success') {
+                            _storage.write(key: "token", value: data['access_token']);
                             setProfile(data);
                             checkRedirect();
                           } else {

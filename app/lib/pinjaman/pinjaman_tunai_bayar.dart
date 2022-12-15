@@ -14,7 +14,6 @@ class PinjamanTunaiBayarScreenState extends State<PinjamanTunaiBayarScreen> {
 
   @override
   void initState() {
-    //tambahkan SingleTickerProviderStateMikin pada class _HomeState
     super.initState();
     _loadTagihan();
   }

@@ -17,6 +17,7 @@ class PinjamanTunaiTagihanScreenState extends State<PinjamanTunaiTagihanScreen> 
   //create controller untuk tabBar
   TabController controller;
   List dataLunas, dataBelumlunas;
+
   bool isLoading = false;
 
   @override

@@ -83,7 +83,7 @@ Future<Response> getDataWithoutlogin(String url, Map<String, dynamic> data) asyn
 
 final storage = FlutterSecureStorage();
 // ignore: constant_identifier_names, non_constant_identifier_names
-String server_ip = 'http://kki.stalavista.com/api';
+String server_ip = 'http://api.coopzone.stalavista.com/api';
 
 /// Convert a color hex-string to a Color object.
 Color getColorFromHex(String hexColor) {
@@ -203,7 +203,8 @@ Future<Response> submitLogin(String url, Map<String, dynamic> data) async {
 Future<Response> getDataNoLogin(String url) async {
   try {
     Dio dio = new Dio();
-    // dio.options.headers["Authorization"] = "Bearer " + session.token;
+    dio.options.connectTimeout = 60 * 1000; // 60 detik
+    dio.options.receiveTimeout = 60 * 1000; // 60 detik
     return await dio.get(server_ip + url);
   } on DioError catch (e) {
     if (e.type == DioErrorType.response) {
@@ -224,11 +225,40 @@ Future<Response> getDataNoLogin(String url) async {
 }
 
 Future<Response> getData(String url) async {
+  log(url.toString());
   try {
     Dio dio = new Dio();
     dio.options.headers["Authorization"] = "Bearer " + session.token;
-
+    dio.options.connectTimeout = 60 * 1000; // 60 detik
+    dio.options.receiveTimeout = 60 * 1000; // 60 detik
     return await dio.get(server_ip + url);
+  } on DioError catch (e) {
+    if (e.type == DioErrorType.response) {
+      throw Exception("Connection Timeout");
+    }
+    if (e.type == DioErrorType.connectTimeout) {
+      throw Exception("check your connection");
+    }
+
+    if (e.type == DioErrorType.receiveTimeout) {
+      throw Exception("Unable to connect to the server");
+    }
+
+    if (e.type == DioErrorType.other) {
+      print(e);
+      throw Exception(e);
+    }
+  }
+}
+
+Future<Response> getDataOri(String url) async {
+  log(url.toString());
+  try {
+    Dio dio = new Dio();
+    // dio.options.headers["Authorization"] = "Bearer " + session.token;
+    dio.options.connectTimeout = 60 * 1000; // 60 detik
+    dio.options.receiveTimeout = 60 * 1000; // 60 detik
+    return await dio.get(url);
   } on DioError catch (e) {
     if (e.type == DioErrorType.response) {
       throw Exception("Connection Timeout");
@@ -254,11 +284,11 @@ class Dialogs {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return new WillPopScope(
+          return WillPopScope(
               onWillPop: () async => false,
               child: SimpleDialog(key: key, children: <Widget>[
                 Center(
-                  child: Column(children: [
+                  child: Column(children: const [
                     CircularProgressIndicator(),
                     SizedBox(
                       height: 10,

@@ -11,14 +11,14 @@ import 'package:url_launcher_android/url_launcher_android.dart';
 import 'package:image_picker_ios/image_picker_ios.dart';
 import 'package:shared_preferences_ios/shared_preferences_ios.dart';
 import 'package:url_launcher_ios/url_launcher_ios.dart';
-import 'package:device_info_plus_linux/device_info_plus_linux.dart';
-import 'package:package_info_plus_linux/package_info_plus_linux.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences_linux/shared_preferences_linux.dart';
 import 'package:url_launcher_linux/url_launcher_linux.dart';
 import 'package:shared_preferences_macos/shared_preferences_macos.dart';
 import 'package:url_launcher_macos/url_launcher_macos.dart';
-import 'package:device_info_plus_windows/device_info_plus_windows.dart';
-import 'package:package_info_plus_windows/package_info_plus_windows.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences_windows/shared_preferences_windows.dart';
 import 'package:url_launcher_windows/url_launcher_windows.dart';
 
@@ -81,20 +81,20 @@ class _PluginRegistrant {
 
     } else if (Platform.isLinux) {
       try {
-        DeviceInfoLinux.registerWith();
+        DeviceInfoPlusLinuxPlugin.registerWith();
       } catch (err) {
         print(
-          '`device_info_plus_linux` threw an error: $err. '
+          '`device_info_plus` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
         rethrow;
       }
 
       try {
-        PackageInfoLinux.registerWith();
+        PackageInfoPlusLinuxPlugin.registerWith();
       } catch (err) {
         print(
-          '`package_info_plus_linux` threw an error: $err. '
+          '`package_info_plus` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
         rethrow;
@@ -143,20 +143,20 @@ class _PluginRegistrant {
 
     } else if (Platform.isWindows) {
       try {
-        DeviceInfoWindows.registerWith();
+        DeviceInfoPlusWindowsPlugin.registerWith();
       } catch (err) {
         print(
-          '`device_info_plus_windows` threw an error: $err. '
+          '`device_info_plus` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
         rethrow;
       }
 
       try {
-        PackageInfoWindows.registerWith();
+        PackageInfoPlusWindowsPlugin.registerWith();
       } catch (err) {
         print(
-          '`package_info_plus_windows` threw an error: $err. '
+          '`package_info_plus` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
         rethrow;
