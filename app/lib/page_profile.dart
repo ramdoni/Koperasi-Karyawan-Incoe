@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-import 'page_finance.dart';
-import 'page_home.dart';
-import 'page_inbox.dart';
+import 'helpers/bottomNavBar.dart';
 
 class PageProfileScreen extends StatefulWidget {
   @override
@@ -35,41 +33,7 @@ class PageProfileScreenState extends State<PageProfileScreen> {
   @override
   Widget build(context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Finance',
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.qr_code_scanner,
-                color: Color.fromARGB(255, 44, 188, 25),
-                size: 40,
-              ),
-              label: 'Pay',
-              backgroundColor: Colors.red),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none),
-            label: 'Inbox',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green[800],
-        unselectedItemColor: Colors.grey[600],
-        onTap: (int index) {
-          if (index == 4) {}
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),
+      bottomNavigationBar: bottomNavBar(),
       // extendBodyBehindAppBar: true,
       appBar: AppBar(
           automaticallyImplyLeading: false,

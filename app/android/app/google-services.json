@@ -65,9 +65,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:965235283798:android:d85bf872cd301c306f68f7",
+        "mobilesdk_app_id": "1:965235283798:android:bbe0c61b8957bda86f68f7",
         "android_client_info": {
-          "package_name": "com.stalavista.koperasi_incoe_application"
+          "package_name": "com.stalavista.coopzone_application"
         }
       },
       "oauth_client": [

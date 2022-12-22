@@ -1,4 +1,4 @@
-name: koperasi_incoe_application
+name: coopzone_application
 description: Koperasi Karyawan Incoe
 
 # The following line prevents the package from being accidentally published to
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.1+1
+version: 1.0.3+3
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -36,10 +36,14 @@ dependencies:
   toast: ^0.1.5
   image_picker: ^0.8.0+3
   rflutter_alert: ^2.0.4
-  device_info: ^2.0.0 
-  upgrader: ^3.5.1
+  device_info: ^2.0.0
+  upgrader: ^5.0.0
   cupertino_icons: ^1.0.2
   qr_code_scanner: ^1.0.1
+  carousel_slider: ^4.1.1
+  intl: ^0.17.0
+  contacts_service: ^0.6.3
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +71,39 @@ flutter:
   assets:
     - logo.png
     - background.png
-  #   - images/a_dot_ham.jpeg
+    - bg_home.jpg
+    - background-apps.png
+    - logo_white.png
+    - logo_green.png
+    - icon_pokok.png
+    - icon_wajib.png
+    - icon_sukarela.png
+    - icon_lainnya.png
+    - icon_uang.png
+    - icon_astra.png
+    - icon_toko.png
+    - icon_motor.png
+    - icon_simpanan_topup.png
+    - icon_simpanan_penarikan.png
+    - icon_riwayat.png
+    - icon_paket_data.png
+    - background_apps_black.jpg
+    - icon_wallet.png
+    - icon_topup.png
+    - icon_transfer.png
+    - icon_bayar_beli.png
+    - icon_tarik.png
+    - icon_selamat.png
+    - icon_file.png
+    - icon_proteksi.png
+    - icon_emoney_grey.png
+    - icon_transfer_bank_grey.png
+    - icon_merchant.png
+    - banner_home.png
+    - mitra_1.png
+    - mitra_2.png
+    - mitra_3.png
+    - mitra_4.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:koperasi_incoe_application/Login.dart';
-import 'package:koperasi_incoe_application/confirm_transfer.dart';
-import 'package:koperasi_incoe_application/iuran.dart';
-import 'package:koperasi_incoe_application/register.dart';
+import 'Login.dart';
+import 'confirm_transfer.dart';
+import 'iuran.dart';
+import 'register.dart';
 import 'home.dart';
 import 'launcher.dart';
 
