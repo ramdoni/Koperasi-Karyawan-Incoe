@@ -29,61 +29,82 @@
                                     <input type="file" id="filePhoto" class="sr-only" wire:model="pas_foto">
                                 </div>
                             </div>
+
+                            <table class="table table-hover m-b-0 c_list">
+                                <tr>
+                                    <th>No Anggota</th>
+                                    <td style="width:10"> : </td>
+                                    <td>{{$data->no_anggota_platinum}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nama</th>
+                                    <td style="width:10"> : </td>
+                                    <td>{{$data->name}}</td>
+                                </tr>
+                                <tr>
+                                    <th>No Telepon</th>
+                                    <td style="width:10"> : </td>
+                                    <td>{{$data->phone_number}}</td>
+                                </tr>
+                                <tr>
+                                    <th>No KTP</th>
+                                    <td style="width:10"> : </td>
+                                    <td>{{$data->Id_Ktp}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Jenis Kelamin</th>
+                                    <td style="width:10"> : </td>
+                                    <td>{{$data->jenis_kelamin}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tempat Lahir</th>
+                                    <td style="width:10"> : </td>
+                                    <td>{{$data->tempat_lahir}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tanggal Lahir</th>
+                                    <td style="width:10"> : </td>
+                                    <td>{{$data->tanggal_lahir?date('d-M-Y',strtotime($data->tanggal_lahir)) : '-'}}</td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                </tr>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-md-8">&nbsp;</div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-3 text-center">
+                                <label>Simpanan Pokok</label>
+                                <h4>{{format_idr($data->simpanan_pokok)}}</h4>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <label>Simpanan Wajib</label>
+                                <h4>{{format_idr($data->simpanan_wajib)}}</h4>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <label>Simpanan Sukarela</label>
+                                <h4>{{format_idr($data->simpanan_sukarela)}}</h4>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <label>Simpanan Lain-lain</label>
+                                <h4>{{format_idr($data->simpanan_lainnya)}}</h4>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-4">
-                        <table class="table table-hover m-b-0 c_list">
-                            <tr>
-                                <th>No Anggota</th>
-                                <td style="width:10"> : </td>
-                                <td>{{$data->no_anggota_platinum}}</td>
-                            </tr>
-                            <tr>
-                                <th>Nama</th>
-                                <td style="width:10"> : </td>
-                                <td>{{$data->name}}</td>
-                            </tr>
-                            <tr>
-                                <th>No Telepon</th>
-                                <td style="width:10"> : </td>
-                                <td>{{$data->phone_number}}</td>
-                            </tr>
-                            <tr>
-                                <th>No KTP</th>
-                                <td style="width:10"> : </td>
-                                <td>{{$data->Id_Ktp}}</td>
-                            </tr>
-                            <tr>
-                                <th>Jenis Kelamin</th>
-                                <td style="width:10"> : </td>
-                                <td>{{$data->jenis_kelamin}}</td>
-                            </tr>
-                            <tr>
-                                <th>Tempat Lahir</th>
-                                <td style="width:10"> : </td>
-                                <td>{{$data->tempat_lahir}}</td>
-                            </tr>
-                            <tr>
-                                <th>Tanggal Lahir</th>
-                                <td style="width:10"> : </td>
-                                <td>{{$data->tanggal_lahir?date('d-M-Y',strtotime($data->tanggal_lahir)) : '-'}}</td>
-                            </tr>
-                            <tr>
-                                <th></th>
-                            </tr>
-                        </table>
+                        
                     </div>
                 </div>
             </div>
             <div class="tab-pane" id="tab_simpanan">
-                @livewire('user-member.detail-simpanan')
+                @livewire('user-member.detail-simpanan',['data'=>$data->id])
             </div>
             <div class="tab-pane" id="tab_pinjaman">
-                @livewire('user-member.detail-pinjaman')
+                @livewire('user-member.detail-pinjaman',['data'=>$data->id])
             </div>
             <div class="tab-pane" id="tab_transaksi">
-                @livewire('user-member.detail-transaksi')
+                @livewire('user-member.detail-transaksi',['data'=>$data->id])
             </div>
         </div>
         <div class="form-group">
@@ -96,6 +117,9 @@
     <script>
         $('#btn-upload-photo').on('click', function() {
             $(this).siblings('#filePhoto').trigger('click');
+        });
+        Livewire.on('reload',()=>{
+            $(".modal").modal('hide');
         });
     </script>
 @endpush

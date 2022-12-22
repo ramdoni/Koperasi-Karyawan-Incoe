@@ -16,6 +16,7 @@
                                 <li><a href="{{ route('jenis-simpanan.index') }}">Jenis Simpanan</a></li>
                                 <li><a href="{{ route('jenis-pinjaman.index') }}">Jenis Pinjaman</a></li>
                                 <li><a href="{{ route('users.index') }}">Users</a></li>
+                                <li><a href="{{ route('bank-account.index') }}">Bank Account</a></li>
                                 <li><a href="{{ route('setting') }}">Setting</a></li>
                             </ul>
                         </li>

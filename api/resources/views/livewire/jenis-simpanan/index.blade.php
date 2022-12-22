@@ -10,6 +10,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Jenis Simpanan</th>
+                                <th>Nominal</th>
                                 <th></th>
                             </tr> 
                         </thead>
@@ -18,12 +19,13 @@
                                 <tr>
                                     <td style="width: 50px;">{{$k+1}}</td>
                                     <td>{{$item->name}}</td>
+                                    <td>{{format_idr($item->amount)}}</td>
                                     <td></td>
                                 </tr>
                             @endforeach
                             @if($insert==false)
                                 <tr>
-                                    <td colspan="3" class="text-center">
+                                    <td colspan="4" class="text-center">
                                         <a href="javascript:void(0)" wire:loading.remove wire:click="$set('insert',true)"><i class="fa fa-plus"></i> Tambah</a>
                                         <span wire:loading>
                                             <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
@@ -40,6 +42,15 @@
                                             <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
                                             <span class="sr-only">{{ __('Loading...') }}</span>
                                         </span>
+                                        @error('name')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                        @enderror
+                                    </td>
+                                    <td>
+                                        <input type="text" wire:loading.remove wire:target="save" class="form-control" wire:model="amount" />
+                                        @error('amount')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                        @enderror
                                     </td>
                                     <td>
                                         <a href="javascript:void(0)" wire:click="save"><i class="fa fa-save"></i></a>

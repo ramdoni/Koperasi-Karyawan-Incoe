@@ -5,7 +5,6 @@
     <div class="col-md-7">
         <div class="card">
             <div class="body">
-                <h6>Detail Angsuran</h6>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <div class="table-responsive">
@@ -13,13 +12,26 @@
                                 <thead>
                                     <tr>
                                         <th>Pinjaman</th>
-                                        <td>: {{format_idr($data->amount)}}</td>
+                                        <td style="width:5px;">:</td> 
+                                        <td>{{format_idr($data->amount)}}</td>
                                     </tr>
                                     <tr>
                                         <th>Lama Angsuran</th>
-                                        <td> : {{$data->angsuran}}</td>
+                                        <td>:</td> 
+                                        <td>{{$data->angsuran}} Bulan</td>
                                     </tr>
                                     <tr>
+                                        <th>Jasa</th>
+                                        <td>:</td> 
+                                        <td>{{format_idr($data->jasa)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Keterangan</th>
+                                        <td>:</td> 
+                                        <td>{{$data->description}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                     </tr>
@@ -79,7 +91,10 @@
                         <span class="sr-only">{{ __('Loading...') }}</span>
                     </span>
                 </div>
-                <a href="{{route('pinjaman.index')}}"><i class="fa fa-arrow-left"></i> {{ __('Kembali') }}</a>
+                <hr />
+                <div class="form-group">
+                    <a href="javascript:void(0)" onclick="history.back()"><i class="fa fa-arrow-left"></i> {{ __('Kembali') }}</a>
+                </div>
             </div>
         </div>
     </div>

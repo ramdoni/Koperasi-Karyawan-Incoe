@@ -27,11 +27,15 @@
                         <thead style="background: #eee;">
                            <tr>
                                 <th>No</th>
+                                <th>Status</th>
                                 <th>No Anggota</th>
                                 <th>Anggota</th>
                                 <th>No Transaksi</th>
-                                <th>Transaksi</th>
-                                <th>Amount</th>
+                                <th>Metode Pembayaran</th>
+                                <!-- <th>Transaksi</th> -->
+                                <th>Tanggal Transaksi</th>
+                                <th>Tanggal Pembayaran</th>
+                                <th>Nominal</th>
                                 <th></th>
                            </tr>
                         </thead>
@@ -40,11 +44,24 @@
                             @foreach($data as $k => $item)
                             <tr>
                                 <td style="width: 50px;">{{$number}}</td>
-                                <td>{{isset($item->anggota->no_anggota_platinum) ? $item->anggota->no_anggota_platinum : ''}}</td>
-                                <td>{{isset($item->anggota->name) ? $item->anggota->name : ''}}</td>
-                                <td>{{$item->no_transaksi}}</td>
-                                <td>{{$item->name}}</td>
-                                <td>{{format_idr($item->amount)}}</td>
+                                <td>{!!status_transaksi($item->status)!!}</td>
+                                <td><a href="{{route('user-member.edit',$item->user_member_id)}}">{{isset($item->anggota->no_anggota_platinum) ? $item->anggota->no_anggota_platinum : ''}}</a></td>
+                                <td><a href="{{route('user-member.edit',$item->user_member_id)}}">{{isset($item->anggota->name) ? $item->anggota->name : ''}}</a></td>
+                                <td><a href="{{route('transaksi.items',$item->id)}}">{{$item->no_transaksi}}</a></td>
+                                <td>{{metode_pembayaran($item->metode_pembayaran)}}</td>
+                                <!-- <td>{{$item->name}}</td> -->
+                                <td>{{date('d-M-Y',strtotime($item->created_at))}}</td>
+                                <td>{{$item->payment_date ? date('d-M-Y',strtotime($item->payment_date)) : '-'}}</td>
+                                <td>
+                                    @if($item->type_amount==0)
+                                        <span class="text-success" title="In"><i class="fa fa-arrow-down"></i></span>
+                                    @endif
+                                    @if($item->type_amount==1)
+                                        <span class="text-danger" title="Out"><i class="fa fa-arrow-up"></i></span>
+                                    @endif
+                                    {{format_idr($item->amount)}}
+
+                                </td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-navicon"></i></a>
@@ -58,13 +75,6 @@
                             @php($number--)
                             @endforeach
                         </tbody>
-                        @if($number==0)
-                            <tfoot>
-                                <tr>
-                                    <td colspan="9" class="text-center">Empty data</td>
-                                </tr>
-                            </tfoot>
-                        @endif
                     </table>
                 </div>
                 <br />
@@ -124,31 +134,7 @@
 <div class="modal fade" id="modal_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <livewire:user-member.upload />
-        </div>
-    </div>
-</div>
-
-<div wire:ignore.self class="modal fade" id="modal_konfirmasi_meninggal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="min-width: 90%;" role="document">
-        <div class="modal-content">
-            <livewire:user-member.konfirmasi-meninggal />
-        </div>
-    </div>
-</div>
-
-<div wire:ignore.self class="modal fade" id="modal_detail_meninggal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="min-width: 90%;" role="document">
-        <div class="modal-content">
-            <livewire:user-member.detail-meninggal />
-        </div>
-    </div>
-</div>
-
-<div wire:ignore.self class="modal fade" id="modal_ajukan_klaim" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="min-width: 90%;" role="document">
-        <div class="modal-content">
-            <livewire:user-member.ajukan-klaim />
+            <livewire:transaksi.upload />
         </div>
     </div>
 </div>

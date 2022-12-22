@@ -35,6 +35,9 @@
                                 <span>{{__('Remember me')}}</span>
                             </label>								
                         </div>
+                        <div wire:ignore>
+                            <div class="g-recaptcha" data-callback="verifyCallback" data-sitekey="{{env('CAPTCHA_SITE_KEY')}}"></div>
+                        </div>
                         <button type="submit" class="btn btn-primary btn-lg btn-block mt-1"><i class="fa fa-sign-in mr-2"></i>{{ __('LOGIN') }}</button>
                     </form>
                 </div>
@@ -43,7 +46,11 @@
         <div class="col-md-12" style="position: absolute;bottom:0;">
             <p>Address : {{get_setting('address')}} | Phone : {{get_setting('phone')}} | Mobile : {{get_setting('mobile')}}</p>
         </div>
-
 	</div>
-    
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        var verifyCallback = function(response) {
+            @this.set('token', response);
+        };
+    </script>
 </div>

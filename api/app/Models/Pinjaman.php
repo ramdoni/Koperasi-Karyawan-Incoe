@@ -21,4 +21,9 @@ class Pinjaman extends Model
     {
         return $this->hasOne(UserMember::class,'id','user_member_id');
     }
+
+    public function jenis_pinjaman()
+    {
+        return $this->hasOne(JenisPinjaman::class,'id','jenis_pinjaman_id');
+    }
 }

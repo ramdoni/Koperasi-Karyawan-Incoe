@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'aafbde7d6981cc7bf7707accf936341f01d08db7',
+        'reference' => '58bdc1347812a523cc1b3beac08cb20856083c54',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -292,6 +292,15 @@
             'reference' => '8c3d0a3f6af734494ad8f6fbbee0ba92422859f3',
             'dev_requirement' => true,
         ),
+        'iak-id/iak-api-php' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../iak-id/iak-api-php',
+            'aliases' => array(),
+            'reference' => '5034f440e11063dfb3b16d396d7ffa2c1cea9f65',
+            'dev_requirement' => false,
+        ),
         'illuminate/auth' => array(
             'dev_requirement' => false,
             'replaced' => array(
@@ -535,7 +544,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'aafbde7d6981cc7bf7707accf936341f01d08db7',
+            'reference' => '58bdc1347812a523cc1b3beac08cb20856083c54',
             'dev_requirement' => false,
         ),
         'laravel/passport' => array(
@@ -1075,8 +1084,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0',
-                1 => '1.0.0 || 2.0.0 || 3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
+                1 => '1.0|2.0',
             ),
         ),
         'psr/simple-cache' => array(

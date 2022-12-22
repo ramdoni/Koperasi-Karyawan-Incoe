@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6d68853d2ab2170b707df0afdab6c3f",
+    "content-hash": "e7ec3ec87bd9f54050f87d7b892c5dd7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1694,6 +1694,52 @@
                 }
             ],
             "time": "2022-03-20T21:55:58+00:00"
+        },
+        {
+            "name": "iak-id/iak-api-php",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iak-id/iak-api-php.git",
+                "reference": "5034f440e11063dfb3b16d396d7ffa2c1cea9f65"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iak-id/iak-api-php/zipball/5034f440e11063dfb3b16d396d7ffa2c1cea9f65",
+                "reference": "5034f440e11063dfb3b16d396d7ffa2c1cea9f65",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.5 || ^7.0",
+                "php": "^5.6 || ^7.0",
+                "vlucas/phpdotenv": "^4.2 || ^5.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~1.3",
+                "phpunit/phpunit": "^5.7 || ^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IakID\\IakApiPHP\\": "app"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Indobest Artha Kreasi",
+                    "email": "techsupport@mobilepulsa.com"
+                }
+            ],
+            "description": "PHP-based SDK for IAK API Services",
+            "support": {
+                "issues": "https://github.com/iak-id/iak-api-php/issues",
+                "source": "https://github.com/iak-id/iak-api-php/tree/1.0.0"
+            },
+            "time": "2021-06-22T09:35:33+00:00"
         },
         {
             "name": "jaybizzle/crawler-detect",

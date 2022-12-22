@@ -13,13 +13,38 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::group(['middleware' => 'cors', 'json.response'], function(){
 	Route::post('auth-login', [\App\Http\Controllers\Api\UserController::class,'login']);
 	Route::post('submit-pendaftaran',[\App\Http\Controllers\Api\UserController::class,'submitPendaftaran'])->name('api.submit-pendaftaran');
 	Route::post('find-no-ktp',[\App\Http\Controllers\Api\UserController::class,'findNoKtp'])->name('api.find-no-ktp');
 	Route::post('konfirmasi-pendaftaran',[\App\Http\Controllers\Api\UserController::class,'konfirmasiPendaftaran'])->name('api.konfirmasi-pendaftaran');
 	Route::get('get-bank',[\App\Http\Controllers\Api\IuranController::class,'get_bank'])->name('api.get-bank');
+
+	Route::get('pricelist',function(){
+		$iakPrepaid = new IakID\IakApiPHP\Services\IAKPrepaid([
+			'userHp' => env('IAK_PHONE'),
+			'apiKey' => env('IAK_API_KEY_PROD'),
+			'stage' => env('IAK_STAGE')
+		  ]);
+
+		dd($iakPrepaid->priceList([
+			'type'=>'data',
+			'operator'=>'tri_paket_internet'
+		]));
+	});
+
+	Route::post('get-anggota',function(Request $r){
+
+		if($r->sign!='c3aa6a5a2613a7149c592edd3dc7d7de') return ['code'=>200,'message'=>'access denied'];
+
+		$data = [];
+		foreach(\App\Models\UserMember::get() as $k => $item){
+			$data[$k]['no_anggota'] = $item->no_anggota_platinum;
+			$data[$k]['nama'] = $item->name;
+		}
+
+		return $data;
+	});
 });
 
 Route::group(['middleware' => 'auth:api'], function(){
@@ -32,4 +57,13 @@ Route::group(['middleware' => 'auth:api'], function(){
 	Route::get('tagihan/tunai',[\App\Http\Controllers\Api\TagihanController::class,'tagihanTunai'])->name('tagihan.tunai');
 	Route::get('tagihan/first',[\App\Http\Controllers\Api\TagihanController::class,'tagihanFirst'])->name('tagihan.first');
 	Route::get('pinjaman/kuota',[\App\Http\Controllers\Api\PinjamanController::class,'kuota'])->name('pinjaman.kuota');
+	Route::get('simpanan/pokok',[\App\Http\Controllers\Api\SimpananController::class,'pokok'])->name('simpanan.pokok');
+	Route::get('simpanan/pokok-status',[\App\Http\Controllers\Api\SimpananController::class,'pokokStatus'])->name('simpanan.pokok-status');
+	Route::get('simpanan/wajib',[\App\Http\Controllers\Api\SimpananController::class,'wajib'])->name('simpanan.wajib');
+	Route::get('simpanan/wajib-status',[\App\Http\Controllers\Api\SimpananController::class,'wajibStatus'])->name('simpanan.wajib-status');
+	Route::get('simpanan/sukarela',[\App\Http\Controllers\Api\SimpananController::class,'sukarela'])->name('simpanan.sukarela');
+	Route::get('simpanan/lainnya',[\App\Http\Controllers\Api\SimpananController::class,'lainnya'])->name('simpanan.lainnya');
+	Route::post('simpanan/store',[\App\Http\Controllers\Api\SimpananController::class,'store'])->name('simpanan.store');
+	Route::get('notification/data',[\App\Http\Controllers\Api\NotificationController::class,'data'])->name('notification.data');
+	Route::get('get-bank',[\App\Http\Controllers\Api\BankController::class,'data'])->name('notification.data');
 });

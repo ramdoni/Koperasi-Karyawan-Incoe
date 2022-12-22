@@ -10,7 +10,7 @@ class Index extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $insert=false,$name;
+    public $insert=false,$name,$amount;
     public function render()
     {
         $data = JenisSimpanan::orderBy('id','DESC');
@@ -21,11 +21,13 @@ class Index extends Component
     public function save()
     {
         $this->validate([
-            'name'=>'required'
+            'name'=>'required',
+            'amount'=>'required'
         ]);
 
         $data = new JenisSimpanan();
         $data->name = $this->name;
+        $data->amount = $this->amount;
         $data->save();
 
         $this->insert = false;

@@ -10,7 +10,6 @@ class Index extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-
     public function render()
     {
         $data = Transaksi::orderBy('id','DESC');

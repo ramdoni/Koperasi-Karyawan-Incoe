@@ -81,4 +81,5 @@ Route::group(['middleware' => ['auth','access:1']], function(){
     Route::get('jenis-simpanan',App\Http\Livewire\JenisSimpanan\Index::class)->name('jenis-simpanan.index');
     Route::get('jenis-pinjaman',App\Http\Livewire\JenisPinjaman\Index::class)->name('jenis-pinjaman.index');
     Route::get('transaksi',App\Http\Livewire\Transaksi\Index::class)->name('transaksi.index');
+    Route::get('transaksi/items/{data}',App\Http\Livewire\Transaksi\Items::class)->name('transaksi.items');
 });

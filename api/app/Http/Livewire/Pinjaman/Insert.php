@@ -6,11 +6,15 @@ use Livewire\Component;
 use App\Models\UserMember;
 use App\Models\Pinjaman;
 use App\Models\PinjamanItem;
+use App\Models\JenisPinjaman;
+use App\Models\Transaksi;
 
 class Insert extends Component
 {
     public $user_member_id,$pinjaman,$angsuran,$detail_angsuran,$user_member=[],$angsuran_perbulan,$jasa,$jasa_nominal;
+    public $jenis_pinjaman_id,$description,$jenis_pinjaman;
     public $items=[];
+    protected $queryString = ['user_member_id'];
     public function render()
     {
         return view('livewire.pinjaman.insert');
@@ -19,6 +23,7 @@ class Insert extends Component
     public function mount()
     {
         $this->user_member = UserMember::orderBy('name')->get();
+        $this->jenis_pinjaman = JenisPinjaman::get();
     }
 
     public function updated($propertyName)
@@ -48,18 +53,29 @@ class Insert extends Component
         $this->validate([
             'user_member_id'=>'required',
             'pinjaman'=>'required',
-            'angsuran'=>'required'
+            'angsuran'=>'required',
+            'jenis_pinjaman_id'=>'required'
         ]);
 
         $data = new Pinjaman();
-        $data->no_pengajuan = date('my').$this->user_member_id.str_pad((Pinjaman::count()+1),4, '0', STR_PAD_LEFT);
+        $data->no_pengajuan = "P".date('my').$this->user_member_id.str_pad((Pinjaman::count()+1),4, '0', STR_PAD_LEFT);
         $data->user_member_id = $this->user_member_id;
         $data->amount = $this->pinjaman;
         $data->angsuran = $this->angsuran;
         $data->angsuran_perbulan = $this->angsuran_perbulan;
         $data->jasa_persen = $this->jasa;
         $data->jasa = $this->jasa_nominal;
+        $data->jenis_pinjaman_id = $this->jenis_pinjaman_id;
+        $data->description = $this->description;
         $data->save();
+
+        $transaksi = new Transaksi();
+        $transaksi->no_transaksi = "P".date('my').$this->user_member_id.str_pad((Transaksi::count()+1),4, '0', STR_PAD_LEFT);
+        $transaksi->user_member_id = $this->user_member_id;
+        $transaksi->user_id = \Auth::user()->id;
+        $transaksi->amount = $this->pinjaman;
+        $transaksi->name = $this->description;
+        $transaksi->save();
 
         foreach($this->items as $k => $val){
             $item = new PinjamanItem();
@@ -75,6 +91,6 @@ class Insert extends Component
 
         session()->flash('message-success',__('Pinjaman berhasil diajukan, selanjutnya menunggu proses persetujuan.'));
 
-        return redirect()->route('pinjaman.index');
+        return redirect()->route('user-member.edit',$this->user_member_id);
     }
 }

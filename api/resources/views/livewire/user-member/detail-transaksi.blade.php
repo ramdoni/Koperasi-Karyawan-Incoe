@@ -14,11 +14,23 @@
                     <th>No Transaksi</th>
                     <th>Transaksi</th>
                     <th>Tanggal</th>
+                    <th>Tanggal Pembayaran</th>
                     <th>Nominal</th>
                 </tr>
             </thead>
             <tbody>
-            
+                @php($number= $data->total() - (($data->currentPage() -1) * $data->perPage()) )
+                @foreach($data as $k => $item)
+                    <tr>
+                        <td style="width: 50px;">{{$number}}</td>
+                        <td>{{$item->no_transaksi}}</td>
+                        <td>{{$item->name}}</td>
+                        <td>{{date('d-M-Y',strtotime($item->created_at))}}</td>
+                        <td>{{$item->payment_date ? date('d-M-Y',strtotime($item->payment_date)) : '-'}}</td>
+                        <td class="text-right">{{format_idr($item->amount)}}</td>
+                    </tr>
+                    @php($number--)
+                @endforeach
             </tbody>
         </table>
     </div>

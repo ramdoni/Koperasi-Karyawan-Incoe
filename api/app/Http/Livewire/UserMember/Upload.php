@@ -4,11 +4,9 @@ namespace App\Http\Livewire\UserMember;
 
 use Livewire\Component;
 use App\Models\UserMember;
-use App\Models\User;
-use App\Models\City;
-use App\Models\Iuran;
+use App\Models\Transaksi;
+use App\Models\TransaksiItem;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Hash;
 
 class Upload extends Component
 {
@@ -37,34 +35,52 @@ class Upload extends Component
             foreach($sheetData as $key => $i){
                 if($key==1 || $i[1]=="") continue; // skip header
             
-                $nama = $i[1];
-                $nik = $i[2];
-                $saldo = $i[3];
+                $no_transaksi = $i[1];
+                $tanggal = $i[2];
+                $status = $i[3];
+                $kode_anggota = $i[4];
+                $nama_anggota = $i[5];
+                $produk = $i[6];
+                $qty = $i[7];
+                $harga = $i[8];
+                $total = $i[9];
+                $pembayaran = $i[10];
                 
-                $member = UserMember::where('no_anggota_platinum',$nik)->first();
-                if($member){
-                    $member->simpanan_lain_lain = $saldo;
-                    $member->save();
+                switch($pembayaran){
+                    case 'CASH':
+                        $metode_pembayaran = 4;
+                        break;
+                    case 'CREDIT':
+                        $metode_pembayaran = 3;
+                        break;
+                    default:
+                        $metode_pembayaran = 4;
+                        break;
                 }
-                
-                // $find = User::where('username',$no_anggota)->first();
-                // if($find) continue;
 
-                // $user = new User();
-                // $user->user_access_id = 4; // Member
-                // $user->nik = $nik;
-                // $user->name = $nama;
-                // $user->password = Hash::make('12345678');
-                // $user->username = $no_anggota;
-                // $user->save();
+                $member =\App\Model\UserMember::where('no_anggota_platinum',$kode_anggota)->first();
                 
-                // $data = new UserMember();
-                // $data->name = $nama; 
-                // $data->user_id = $user->id;
-                // $data->no_anggota_platinum = $no_anggota;
-                // $data->seksi = $seksi;
-                // $data->keterangan = $keterangan;
-                // $data->save();
+                $transaksi = Transaksi::where('no_transaksi',$no_transaksi)->first();
+                if(!$transaksi){
+                    $transaksi = new Transaksi();
+                    $transaksi->no_transaksi = $no_transaksi;
+                    $transaksi->user_member_id = $member?$member->id:0;
+                    $transaksi->tanggal_transaksi = date('Y-m-d',strtotime($tanggal));
+                    $transaksi->is_migrate = 1;
+                    $transaksi->metode_pembayaran = $metode_pembayaran;
+                    $transaksi->save();
+                }
+
+                $item = new TransaksiItem();
+                $item->transaksi_id = $transaksi->id;
+                $item->description = $produk;
+                $item->qty = $qty;
+                $item->price = $harga;
+                $item->total = $total;
+                $item->save();
+
+                $transaksi->amount = TransaksiItem::where('transaksi_id',$transaksi->id)->sum('price');
+                $transaksi->save();
             }
         }
 

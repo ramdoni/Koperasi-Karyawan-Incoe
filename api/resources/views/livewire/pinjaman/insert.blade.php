@@ -6,27 +6,34 @@
         <div class="card">
             <div class="body">
                 <form id="basic-form" method="post" wire:submit.prevent="save">
-                    <div class="form-group" wire:ignore>
-                        <label>{{ __('No Anggota / Nama Anggota') }}</label>
-                        <select class="form-control select_anggota" wire:model="user_member_id">
-                            <option value=""> -- Pilih -- </option>
-                            @foreach($user_member as $item)
-                                <option value="{{$item->id}}">{{$item->no_anggota_platinum}} / {{$item->name}}</option>
-                            @endforeach
-                        </select>
-                        @error('user_member_id')
-                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                        @enderror
+                    <div class="row">
+                        <div class="form-group col-md-6" wire:ignore>
+                            <label>{{ __('No Anggota / Nama Anggota') }}</label>
+                            <select class="form-control select_anggota" wire:model="user_member_id">
+                                <option value=""> -- Pilih -- </option>
+                                @foreach($user_member as $item)
+                                    <option value="{{$item->id}}">{{$item->no_anggota_platinum}} / {{$item->name}}</option>
+                                @endforeach
+                            </select>
+                            @error('user_member_id')
+                                <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Keterangan</label>
+                            <input type="text" class="form-control" wire:model="description" />
+                        </div>
                     </div>
+                    
                     <div class="row">
                         <div class="form-group col-md-6">
-                            <label>{{ __('Pinjaman') }}</label>
+                            <label>{{ __('Pinjaman Nominal') }}</label>
                             <input type="number" class="form-control" wire:model="pinjaman" >
                             @error('pinjaman')
                                 <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                             @enderror
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-3">
                             <label>{{ __('Lama Angsuran') }}</label>
                             <select class="form-control" wire:model="angsuran">
                                 <option value="">  -- Pilih -- </option>
@@ -42,6 +49,18 @@
                                 <option value="10">10 Bulan</option>
                                 <option value="11">11 Bulan</option>
                                 <option value="12">12 Bulan</option>
+                            </select>
+                            @error('angsuran')
+                                <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                            @enderror
+                        </div>     
+                        <div class="form-group col-md-3">
+                            <label>{{ __('Jenis Pinjaman') }}</label>
+                            <select class="form-control" wire:model="jenis_pinjaman_id">
+                                <option value="">  -- Pilih -- </option>
+                                @foreach($jenis_pinjaman as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
                             </select>
                             @error('angsuran')
                                 <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
@@ -104,10 +123,12 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/select2/css/select2.min.css') }}"/>
     <script src="{{ asset('assets/vendor/select2/js/select2.min.js') }}"></script>
     <script>
-        select__2 = $('.select_anggota').select2();
-        $('.select_anggota').on('change', function (e) {
-            var data = $(this).select2("val");
-            @this.set("user_member_id", data);
-        });
+        setTimeout(() => {
+            select__2 = $('.select_anggota').select2();
+            $('.select_anggota').on('change', function (e) {
+                var data = $(this).select2("val");
+                @this.set("user_member_id", data);
+            });
+        }, 1000);
     </script>
 @endpush
