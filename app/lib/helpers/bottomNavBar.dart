@@ -1,11 +1,10 @@
-import 'package:coopzone_application/home.dart';
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
+import '../copstore.dart';
+import '../home.dart';
 import '../inbox.dart';
 import '../profile/index.dart';
-
-final _storage = FlutterSecureStorage();
+import '../simpanan/simpanan.dart';
 
 showAlertDialog(BuildContext context) {
   // set up the button
@@ -35,43 +34,63 @@ showAlertDialog(BuildContext context) {
 }
 
 class bottomNavBar extends StatelessWidget {
+  final int tabActive;
+
+  const bottomNavBar({Key key, this.tabActive}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.business),
-          label: 'Finance',
-        ),
-        BottomNavigationBarItem(
+            label: "Home",
             icon: Icon(
-              Icons.qr_code_scanner,
+              Icons.home,
+              size: tabActive == 0 ? 30 : 28,
+            )),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.business,
+            size: tabActive == 1 ? 30 : 28,
+          ),
+          label: 'Koperasi',
+        ),
+        const BottomNavigationBarItem(
+            icon: Icon(
+              Icons.shopping_bag,
               color: Color.fromARGB(255, 44, 188, 25),
               size: 40,
             ),
-            label: 'Pay',
+            label: 'CoopStore',
             backgroundColor: Colors.red),
         BottomNavigationBarItem(
-          icon: Icon(Icons.notifications_none),
+          icon: Icon(
+            Icons.notifications_none,
+            size: tabActive == 3 ? 30 : 28,
+          ),
           label: 'Pesan',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
+          icon: Icon(Icons.person_outline, size: tabActive == 4 ? 30 : 28),
           label: 'Profile',
         ),
       ],
-      // currentIndex: _selectedIndex,
-      selectedItemColor: Colors.green[800],
+      currentIndex: tabActive,
+      selectedItemColor: Color.fromARGB(255, 44, 188, 25),
+      selectedFontSize: 13,
       unselectedItemColor: Colors.grey[600],
       onTap: (int index) {
         if (index == 0) {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));
         }
         if (index == 1) {
-          showAlertDialog(context);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SimpananScreen()));
         }
+        if (index == 2) {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CoopstoreScreen()));
+        }
+
         if (index == 3) {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => InboxScreen()));
         }

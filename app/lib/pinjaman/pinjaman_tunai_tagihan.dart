@@ -1,9 +1,7 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../helpers/util.dart';
-import '../helpers/session.dart' as session;
 
 class PinjamanTunaiTagihanScreen extends StatefulWidget {
   @override
@@ -14,7 +12,6 @@ class PinjamanTunaiTagihanScreen extends StatefulWidget {
 
 class PinjamanTunaiTagihanScreenState extends State<PinjamanTunaiTagihanScreen> with TickerProviderStateMixin {
   int totalTagihan = 0, filterTahun;
-  //create controller untuk tabBar
   TabController controller;
   List dataLunas, dataBelumlunas;
 
@@ -22,7 +19,6 @@ class PinjamanTunaiTagihanScreenState extends State<PinjamanTunaiTagihanScreen> 
 
   @override
   void initState() {
-    //tambahkan SingleTickerProviderStateMikin pada class _HomeState
     super.initState();
     _loadData();
     controller = TabController(
@@ -37,9 +33,10 @@ class PinjamanTunaiTagihanScreenState extends State<PinjamanTunaiTagihanScreen> 
       setState(() {
         isLoading = true;
       });
-      getData('/tagihan/tunai').then((res) {
+      getData('/pembiayaan/tunai').then((res) {
         setState(() {
-          if (res.data['message'] == 'success') {
+          log(res.data.toString());
+          if (res.data['status'] == 'success') {
             dataLunas = res.data['data_lunas'];
             dataBelumlunas = res.data['data_belum_lunas'];
           } else {

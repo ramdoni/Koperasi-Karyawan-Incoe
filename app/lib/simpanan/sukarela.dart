@@ -48,7 +48,7 @@ class SimpananSukarelaScreenState extends State<SimpananSukarelaScreen> {
       getData('/simpanan/sukarela').then((res) {
         log(res.toString());
         setState(() {
-          if (res.data['message'] == 'success') {
+          if (res.data['status'] == 'success') {
             dataTransaksi = res.data['data'];
           } else {
             bottomInfo(context, res.data['message']);

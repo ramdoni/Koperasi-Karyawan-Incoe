@@ -53,9 +53,9 @@ class InboxScreenState extends State<InboxScreen> with TickerProviderStateMixin 
         isLoading = true;
       });
       getData('/notification/data').then((res) {
-        log(res.toString());
+        log(res.data.toString());
         setState(() {
-          if (res.data['message'] == 'success') {
+          if (res.data['status'] == 'success') {
             data = res.data['data'];
           } else {
             bottomInfo(context, res.data['message']);
@@ -70,7 +70,7 @@ class InboxScreenState extends State<InboxScreen> with TickerProviderStateMixin 
 
   Widget build(context) {
     return Scaffold(
-        bottomNavigationBar: bottomNavBar(),
+        bottomNavigationBar: bottomNavBar(tabActive: 3),
         appBar: AppBar(
           iconTheme: IconThemeData(
             color: getColorFromHex('FFFFFF'), //change your color here

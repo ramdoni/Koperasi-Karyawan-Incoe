@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:coopzone_application/belanja/riwayat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../helpers/util.dart';
@@ -68,6 +69,34 @@ class PulsaScreenState extends State<PulsaScreen> {
       bottomInfo(context, error.toString());
     }
   }
+
+  void displayDialog(context, title, message) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+              actions: [
+                ButtonTheme(
+                  minWidth: double.infinity,
+                  height: 50.0,
+                  child: SizedBox(
+                      height: 30.0,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: getColorFromHex("4ec9b2"),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BelanjaRiwayatScreen()));
+                          },
+                          child: const Text("Oke"))),
+                )
+              ],
+              title: Row(children: [
+                Container(
+                    margin: const EdgeInsets.only(right: 10.0), child: Icon(Icons.info, color: Colors.amber[800])),
+                Text(title, style: TextStyle(fontSize: 16))
+              ]),
+              content: Text(message, style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 14))));
 
   Future<void> _openContact() async {
     PermissionStatus permissionStatus = await _getContactPermission();
@@ -139,7 +168,7 @@ class PulsaScreenState extends State<PulsaScreen> {
                               flex: 9,
                               child: Container(
                                   child: TextFormField(
-                                keyboardType: TextInputType.none,
+                                keyboardType: TextInputType.phone,
                                 maxLines: null,
                                 controller: _controllerNo,
                                 validator: (val) {
@@ -154,6 +183,9 @@ class PulsaScreenState extends State<PulsaScreen> {
                                     contentPadding: EdgeInsets.only(top: 0, bottom: 0, right: 5, left: 10),
                                     hintText: "Contoh : 08777534543"),
                                 onTap: () {},
+                                onChanged: (val) {
+                                  _cekPulsa();
+                                },
                               ))),
                           Expanded(
                               flex: 1,
@@ -361,16 +393,8 @@ class PulsaScreenState extends State<PulsaScreen> {
                       margin: const EdgeInsets.only(bottom: 8, top: 10),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border(
-                          bottom: BorderSide(
-                              width: 1.5, color: metodePembayaran == 1 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                          top: BorderSide(
-                              width: 1.5, color: metodePembayaran == 1 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                          left: BorderSide(
-                              width: 1.5, color: metodePembayaran == 1 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                          right: BorderSide(
-                              width: 1.5, color: metodePembayaran == 1 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                        ),
+                        border: Border.all(
+                            width: 1.5, color: metodePembayaran == 1 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
                       child: InkWell(
@@ -385,7 +409,7 @@ class PulsaScreenState extends State<PulsaScreen> {
                               Expanded(
                                   flex: 7,
                                   child: Container(
-                                      child: Text("Simpanan Sukarela",
+                                      child: Text("SimpananKu",
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w600,
@@ -394,49 +418,7 @@ class PulsaScreenState extends State<PulsaScreen> {
                                                   : Colors.black))))),
                               Expanded(
                                   flex: 2,
-                                  child: Text(session.simpananSukarela,
-                                      style: TextStyle(fontSize: 12, color: getColorFromHex('CCCCCC')))),
-                            ],
-                          ))),
-                  Container(
-                      margin: EdgeInsets.only(bottom: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          bottom: BorderSide(
-                              width: 1.5, color: metodePembayaran == 2 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                          top: BorderSide(
-                              width: 1.5, color: metodePembayaran == 2 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                          left: BorderSide(
-                              width: 1.5, color: metodePembayaran == 2 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                          right: BorderSide(
-                              width: 1.5, color: metodePembayaran == 2 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      padding: EdgeInsets.only(bottom: 10, top: 10),
-                      child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              metodePembayaran = 2;
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Expanded(flex: 2, child: Image.asset('icon_wallet.png', height: 30)),
-                              Expanded(
-                                  flex: 7,
-                                  child: Container(
-                                      child: Text("Simpanan Lain-lain",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                              color: (metodePembayaran == 2
-                                                  ? getColorFromHex('#32C8B1')
-                                                  : Colors.black))))),
-                              Expanded(
-                                  flex: 2,
-                                  child: Text(session.simpananLainlain,
+                                  child: Text(session.simpananKu,
                                       style: TextStyle(fontSize: 12, color: getColorFromHex('CCCCCC')))),
                             ],
                           ))),
@@ -444,16 +426,8 @@ class PulsaScreenState extends State<PulsaScreen> {
                       margin: EdgeInsets.only(bottom: 0),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border(
-                          bottom: BorderSide(
-                              width: 1.5, color: metodePembayaran == 3 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                          top: BorderSide(
-                              width: 1.5, color: metodePembayaran == 3 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                          left: BorderSide(
-                              width: 1.5, color: metodePembayaran == 3 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                          right: BorderSide(
-                              width: 1.5, color: metodePembayaran == 3 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
-                        ),
+                        border: Border.all(
+                            width: 1.5, color: metodePembayaran == 3 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
                       padding: EdgeInsets.only(bottom: 10, top: 10),
@@ -517,7 +491,9 @@ class PulsaScreenState extends State<PulsaScreen> {
                               'metode_pembayaran': metodePembayaran
                             }).then((response) {
                               log(response.data.toString());
-                              if (response.data['message'] == 'success') {}
+                              if (response.data['message'] == 'success') {
+                                displayDialog(context, 'Info', "Transaksi anda berhasil di submit, silakan menunggu.");
+                              }
                             });
                           },
                           child: const Text('Submit', style: TextStyle(color: Colors.white, fontSize: 12)),

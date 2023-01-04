@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -24,6 +25,43 @@ class LoginScreenState extends State<LoginScreen> with Validation {
   String deviceToken = "";
   String type_ = "";
   bool isSubmited = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void initializeFlutterFire() async {
+    try {
+      await Firebase.initializeApp();
+
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      String token = await messaging.getToken();
+
+      NotificationSettings settings = await messaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
+
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        log('User granted permission');
+      } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+        log('User granted provisional permission');
+      } else {
+        log('User declined or has not accepted permission');
+      }
+      setState(() {
+        deviceToken = token.toString();
+      });
+    } catch (e) {
+      log("initializeFlutterFire : " + e.toString());
+    }
+  }
 
   Widget build(context) {
     return Scaffold(
@@ -118,6 +156,8 @@ class LoginScreenState extends State<LoginScreen> with Validation {
       session.pinjamanAstra = data['data']['pinjama_astra'].toString();
       session.plafond = data['data']['plafond'].toString();
       session.sisaPlafond = data['data']['plafond_digunakan'].toString();
+      session.simpananKu = data['data']['simpanan_ku'];
+      session.koperasi = data['data']['koperasi'];
     });
   }
 
@@ -150,6 +190,7 @@ class LoginScreenState extends State<LoginScreen> with Validation {
                           log(data.toString());
                           if (data['message'] == 'success') {
                             _storage.write(key: "token", value: data['access_token']);
+                            session.token = data['access_token'];
                             setProfile(data);
                             checkRedirect();
                           } else {

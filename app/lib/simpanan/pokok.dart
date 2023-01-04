@@ -36,7 +36,7 @@ class SimpananPokokScreenState extends State<SimpananPokokScreen> {
       getData('/simpanan/pokok').then((res) {
         log(res.toString());
         setState(() {
-          if (res.data['message'] == 'success') {
+          if (res.data['status'] == 'success') {
             dataTransaksi = res.data['data'];
           } else {
             bottomInfo(context, res.data['message']);
@@ -58,7 +58,7 @@ class SimpananPokokScreenState extends State<SimpananPokokScreen> {
       getData('/simpanan/pokok-status').then((res) {
         log(res.toString());
         setState(() {
-          if (res.data['message'] == 'success') {
+          if (res.data['status'] == 'success') {
             dataStatus = res.data['data'];
           } else {
             bottomInfo(context, res.data['message']);

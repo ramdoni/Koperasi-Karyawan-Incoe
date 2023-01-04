@@ -4,6 +4,7 @@ import 'package:coopzone_application/simpanan/sukarela.dart';
 import 'package:coopzone_application/simpanan/wajib.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../helpers/bottomNavBar.dart';
 import '../helpers/util.dart';
 import '../helpers/session.dart' as session;
 
@@ -17,7 +18,7 @@ class SimpananScreen extends StatefulWidget {
 class SimpananScreenState extends State<SimpananScreen> {
   Widget build(context) {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
+      bottomNavigationBar: bottomNavBar(tabActive: 1),
       appBar: AppBar(
         iconTheme: const IconThemeData(
           color: Colors.white, //change your color here

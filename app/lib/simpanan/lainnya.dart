@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:coopzone_application/simpanan/simpanan_add.dart';
 import 'package:flutter/material.dart';
 import '../helpers/util.dart';
@@ -50,7 +49,7 @@ class SimpananLainnyaScreenState extends State<SimpananLainnyaScreen> {
       getData('/simpanan/lainnya').then((res) {
         log(res.toString());
         setState(() {
-          if (res.data['message'] == 'success') {
+          if (res.data['status'] == 'success') {
             dataTransaksi = res.data['data'];
           } else {
             bottomInfo(context, res.data['message']);
@@ -65,12 +64,10 @@ class SimpananLainnyaScreenState extends State<SimpananLainnyaScreen> {
 
   Widget build(context) {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
         ),
-        // title: const Text('Ajukan Pinjaman', style: TextStyle(color: Colors.black)),
         backgroundColor: getColorFromHex('32c8b1'),
         elevation: 0,
       ),

@@ -117,12 +117,20 @@ class LauncherScreenState extends State<LauncherScreen> with Validation {
           log("hascode : " + notification.hashCode.toString());
           log("title : " + notification.title.toString());
           log("body : " + notification.body.toString());
+          log('Data : ' + message.data.toString());
+          log('Type : ' + message.data['type'].toString());
+          log('value : ' + message.data['value']);
 
+          if (message.data['type'].toString() == '3') {
+            log('value inside : ' + message.data['value']);
+            setState(() {
+              session.simpananKu = message.data['value'];
+            });
+          }
           displayDialog(context, notification.title.toString(), notification.body.toString());
         }
       });
       FirebaseMessaging.onMessageOpenedApp.listen((message) {
-        log('Message clicked!');
         setState(() {
           type_ = message.data['type'].toString();
         });
@@ -144,9 +152,8 @@ class LauncherScreenState extends State<LauncherScreen> with Validation {
       if (result['token'] != null) {
         setState(() {
           session.token = result['token'];
-          log(session.token);
         });
-
+        log('Session Token : ' + session.token);
         sendData('/refresh', {'token': session.token}).then((res) {
           log(res.data.toString());
           if (res.data['message'] == 'success') {
@@ -195,12 +202,30 @@ class LauncherScreenState extends State<LauncherScreen> with Validation {
 
   void setProfile(data) {
     setState(() {
-      session.name_ = data['data']['name'];
-      session.telepon = data['data']['telepon'].toString();
       session.noAnggota = data['data']['no_anggota'].toString();
+      session.noKtp = data['data']['no_ktp'].toString();
+      session.name_ = data['data']['name'].toString();
+      session.email = data['data']['email'];
+      session.telepon = data['data']['telepon'].toString();
       session.umur = data['data']['umur'].toString();
-      session.tanggalAktif = data['data']['tanggal_aktif'].toString();
-      session.kota = data['data']['kota'].toString();
+      session.tanggalLahir = data['data']['tanggal_lahir'].toString();
+      session.jenisKelamin = data['data']['jenis_kelamin'].toString();
+      session.alamat = data['data']['alamat'].toString();
+      session.saldoSimpanan = data['data']['saldo_simpan'].toString();
+      session.shu = data['data']['shu'].toString();
+      session.simpananPokok = data['data']['simpanan_pokok'].toString();
+      session.simpananWajib = data['data']['simpanan_wajib'].toString();
+      session.simpananSukarela = data['data']['simpanan_sukarela'].toString();
+      session.simpananLainlain = data['data']['simpanan_lain_lain'].toString();
+      session.pinjamanUang = data['data']['pinjaman_uang'].toString();
+      session.pinjamanAstra = data['data']['pinjaman_astra'].toString();
+      session.pinjamanToko = data['data']['pinjama_toko'].toString();
+      session.pinjamanAstra = data['data']['pinjama_astra'].toString();
+      session.plafond = data['data']['plafond'].toString();
+      session.sisaPlafond = data['data']['plafond_sisa'].toString();
+      session.plafondDigunakan = data['data']['plafond_sisa'].toString();
+      session.simpananKu = data['data']['simpanan_ku'];
+      session.koperasi = data['data']['koperasi'];
     });
   }
 }

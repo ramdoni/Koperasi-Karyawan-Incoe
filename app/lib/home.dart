@@ -3,18 +3,18 @@ import 'dart:io';
 import 'package:coopzone_application/belanja/riwayat.dart';
 import 'package:coopzone_application/kirim_uang.dart';
 import 'package:coopzone_application/pinjaman/pinjaman_tunai.dart';
-import 'package:coopzone_application/simpanan/simpanan.dart';
 import 'package:coopzone_application/simpanan/simpanan_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:toast/toast.dart';
 import 'package:upgrader/upgrader.dart';
+import 'belanja_digital/listrikToken.dart';
 import 'belanja_digital/pulsa.dart';
+import 'copstore.dart';
 import 'helpers/bottomNavBar.dart';
 import 'helpers/util.dart';
 import 'helpers/session.dart' as session;
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 final _storage = FlutterSecureStorage();
@@ -141,7 +141,9 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(context) {
     return Scaffold(
-      bottomNavigationBar: bottomNavBar(),
+      bottomNavigationBar: bottomNavBar(
+        tabActive: 0,
+      ),
       body: SingleChildScrollView(
         child: Container(
             color: Colors.white,
@@ -152,7 +154,7 @@ class HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      height: (tabActive == 1 ? 460 : 590),
+                      height: 460,
                       child: Stack(
                         children: [
                           Container(
@@ -189,7 +191,8 @@ class HomeScreenState extends State<HomeScreen> {
                                                             "Hi, " +
                                                                 session.name_ +
                                                                 "\n" +
-                                                                "Koperasi Karyawan Incoe | " +
+                                                                session.koperasi +
+                                                                " | " +
                                                                 session.noAnggota,
                                                             style: const TextStyle(
                                                                 fontWeight: FontWeight.w700,
@@ -198,68 +201,68 @@ class HomeScreenState extends State<HomeScreen> {
                                                   ],
                                                 )),
                                             Container(
-                                                margin: const EdgeInsets.only(top: 10, left: 34),
+                                                margin: const EdgeInsets.only(top: 10, left: 24),
                                                 child: Row(
                                                   children: [
                                                     Expanded(
                                                       flex: 5,
                                                       child: Column(children: [
                                                         Container(
-                                                            margin: const EdgeInsets.only(bottom: 7),
+                                                            margin: const EdgeInsets.only(bottom: 4),
                                                             child: Row(
                                                               children: [
                                                                 Expanded(
-                                                                  flex: 8,
-                                                                  child: Container(
-                                                                      child: const Align(
-                                                                          alignment: Alignment.topLeft,
-                                                                          child: Text("Saldo Simpanan",
-                                                                              style: TextStyle(
-                                                                                  color: Colors.white,
-                                                                                  fontWeight: FontWeight.w700,
-                                                                                  fontSize: 13)))),
-                                                                )
+                                                                    flex: 5,
+                                                                    child: Container(
+                                                                        // alignment: Alignment.topRight,
+                                                                        child: const Text("SimpananKu",
+                                                                            style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontWeight: FontWeight.w700,
+                                                                                fontSize: 15))))
                                                               ],
                                                             )),
                                                         Row(
                                                           children: [
-                                                            Container(
-                                                                child: Align(
-                                                                    alignment: Alignment.topLeft,
-                                                                    child: Text(
-                                                                        " Rp. " + session.saldoSimpanan.toString(),
-                                                                        style: const TextStyle(
-                                                                            color: Colors.white,
-                                                                            fontSize: 16,
-                                                                            fontWeight: FontWeight.w700)))),
-                                                            InkWell(
-                                                                onTap: () {
-                                                                  Navigator.of(context).push(MaterialPageRoute(
-                                                                      builder: (context) => SimpananScreen()));
-                                                                },
+                                                            Expanded(
+                                                                flex: 5,
                                                                 child: Container(
-                                                                    decoration: const BoxDecoration(
-                                                                      border: Border(
-                                                                        top:
-                                                                            BorderSide(width: 1.5, color: Colors.white),
-                                                                        bottom:
-                                                                            BorderSide(width: 1.5, color: Colors.white),
-                                                                        left:
-                                                                            BorderSide(width: 1.5, color: Colors.white),
-                                                                        right:
-                                                                            BorderSide(width: 1.5, color: Colors.white),
-                                                                      ),
-                                                                      borderRadius:
-                                                                          BorderRadius.all(Radius.circular(5)),
-                                                                    ),
-                                                                    margin: EdgeInsets.only(left: 10),
-                                                                    padding: const EdgeInsets.only(
-                                                                        left: 5, right: 5, top: 2, bottom: 2),
-                                                                    child: const Text("Detail",
-                                                                        style: TextStyle(
-                                                                            color: Colors.white, fontSize: 12)))),
+                                                                    child: Align(
+                                                                        alignment: Alignment.topLeft,
+                                                                        child: Text(
+                                                                            " Rp. " + session.simpananKu.toString(),
+                                                                            style: const TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.w700)))))
+                                                            // InkWell(
+                                                            //     onTap: () {
+                                                            //       Navigator.of(context).push(MaterialPageRoute(
+                                                            //           builder: (context) => SimpananScreen()));
+                                                            //     },
+                                                            //     child: Container(
+                                                            //         decoration: const BoxDecoration(
+                                                            //           border: Border(
+                                                            //             top:
+                                                            //                 BorderSide(width: 1.5, color: Colors.white),
+                                                            //             bottom:
+                                                            //                 BorderSide(width: 1.5, color: Colors.white),
+                                                            //             left:
+                                                            //                 BorderSide(width: 1.5, color: Colors.white),
+                                                            //             right:
+                                                            //                 BorderSide(width: 1.5, color: Colors.white),
+                                                            //           ),
+                                                            //           borderRadius:
+                                                            //               BorderRadius.all(Radius.circular(5)),
+                                                            //         ),
+                                                            //         margin: EdgeInsets.only(left: 10),
+                                                            //         padding: const EdgeInsets.only(
+                                                            //             left: 5, right: 5, top: 2, bottom: 2),
+                                                            //         child: const Text("Detail",
+                                                            //             style: TextStyle(
+                                                            //                 color: Colors.white, fontSize: 12)))),
                                                           ],
-                                                        )
+                                                        ),
                                                       ]),
                                                     ),
                                                   ],
@@ -376,12 +379,6 @@ class HomeScreenState extends State<HomeScreen> {
                                                   "Sisa Limit",
                                                   textAlign: TextAlign.left,
                                                 ))),
-                                        // Container(
-                                        //     height: 200,
-                                        //     child: QRView(
-                                        //       key: qrKey,
-                                        //       onQRViewCreated: _onQRViewCreated,
-                                        //     )),
                                         Container(
                                             child: Row(
                                           children: [
@@ -564,134 +561,52 @@ class HomeScreenState extends State<HomeScreen> {
                                                                   ],
                                                                 ))),
                                                         Expanded(
-                                                            child: Column(
-                                                          children: [
+                                                            child: InkWell(
+                                                          onTap: () {
+                                                            Navigator.of(context).push(
+                                                                MaterialPageRoute(builder: (context) => PulsaScreen()));
+                                                          },
+                                                          child: Column(children: [
                                                             Container(
                                                                 margin: EdgeInsets.only(bottom: 8),
                                                                 child: Image.asset('icon_paket_data.png', height: 28)),
                                                             const Text('Paket Data')
-                                                          ],
+                                                          ]),
                                                         )),
                                                         Expanded(
-                                                            child: Column(
-                                                          children: [
-                                                            Container(
-                                                                margin: const EdgeInsets.only(bottom: 8),
-                                                                child: Icon(Icons.electric_bolt,
-                                                                    color: getColorFromHex('32c8b1'))),
-                                                            Text('Listrik')
-                                                          ],
+                                                            child: InkWell(
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                  margin: const EdgeInsets.only(bottom: 8),
+                                                                  child: Icon(Icons.electric_bolt,
+                                                                      color: getColorFromHex('32c8b1'))),
+                                                              Text('Listrik')
+                                                            ],
+                                                          ),
+                                                          onTap: () {
+                                                            Navigator.of(context).push(MaterialPageRoute(
+                                                                builder: (context) => ListrikTokenScreen()));
+                                                          },
                                                         )),
                                                         Expanded(
-                                                            child: Column(
-                                                          children: [
-                                                            Container(
-                                                                margin: const EdgeInsets.only(bottom: 8),
-                                                                child: Icon(Icons.list_alt_rounded,
-                                                                    color: getColorFromHex('32c8b1'))),
-                                                            Text('Telepon')
-                                                          ],
-                                                        ))
+                                                          child: InkWell(
+                                                              child: Column(
+                                                                children: [
+                                                                  Container(
+                                                                      margin: const EdgeInsets.only(bottom: 8),
+                                                                      child: Icon(Icons.menu,
+                                                                          color: getColorFromHex('32c8b1'))),
+                                                                  Text('Lainnya')
+                                                                ],
+                                                              ),
+                                                              onTap: () {
+                                                                Navigator.of(context).push(MaterialPageRoute(
+                                                                    builder: (context) => CoopstoreScreen()));
+                                                              }),
+                                                        )
                                                       ],
                                                     ),
-                                                    Container(
-                                                        margin: EdgeInsets.only(top: 20),
-                                                        child: Row(
-                                                          children: [
-                                                            Expanded(
-                                                                child: Column(
-                                                              children: [
-                                                                Container(
-                                                                    margin: EdgeInsets.only(bottom: 8),
-                                                                    child: Icon(Icons.pedal_bike_sharp,
-                                                                        color: getColorFromHex('32c8b1'))),
-                                                                Text('Internet')
-                                                              ],
-                                                            )),
-                                                            Expanded(
-                                                                child: Column(
-                                                              children: [
-                                                                Container(
-                                                                    margin: EdgeInsets.only(bottom: 8),
-                                                                    child: Icon(Icons.note,
-                                                                        color: getColorFromHex('32c8b1'))),
-                                                                Text('Pascabayar')
-                                                              ],
-                                                            )),
-                                                            Expanded(
-                                                                child: Column(
-                                                              children: [
-                                                                Container(
-                                                                    margin: EdgeInsets.only(bottom: 8),
-                                                                    child: Icon(Icons.motorcycle,
-                                                                        color: getColorFromHex('32c8b1'))),
-                                                                Text('TV Kabel')
-                                                              ],
-                                                            )),
-                                                            Expanded(
-                                                                child: Column(
-                                                              children: [
-                                                                Container(
-                                                                    margin: EdgeInsets.only(bottom: 8),
-                                                                    child: Icon(Icons.tv_outlined,
-                                                                        color: getColorFromHex('32c8b1'))),
-                                                                const Text(
-                                                                  'Air PDAM',
-                                                                  textAlign: TextAlign.center,
-                                                                )
-                                                              ],
-                                                            ))
-                                                          ],
-                                                        )),
-                                                    Container(
-                                                        margin: EdgeInsets.only(top: 20),
-                                                        child: Row(
-                                                          children: [
-                                                            Expanded(
-                                                                child: Column(
-                                                              children: [
-                                                                Container(
-                                                                    margin: EdgeInsets.only(bottom: 8),
-                                                                    child: Icon(Icons.pedal_bike_sharp,
-                                                                        color: getColorFromHex('32c8b1'))),
-                                                                Text('Motor')
-                                                              ],
-                                                            )),
-                                                            Expanded(
-                                                                child: Column(
-                                                              children: [
-                                                                Container(
-                                                                    margin: EdgeInsets.only(bottom: 8),
-                                                                    child: Icon(Icons.note,
-                                                                        color: getColorFromHex('32c8b1'))),
-                                                                Text('Mobil')
-                                                              ],
-                                                            )),
-                                                            Expanded(
-                                                                child: Column(
-                                                              children: [
-                                                                Container(
-                                                                    margin: EdgeInsets.only(bottom: 8),
-                                                                    child: Icon(Icons.motorcycle,
-                                                                        color: getColorFromHex('32c8b1'))),
-                                                                Text('PBB')
-                                                              ],
-                                                            )),
-                                                            Expanded(
-                                                                child: Column(
-                                                              children: [
-                                                                Container(
-                                                                    margin: EdgeInsets.only(bottom: 8),
-                                                                    child: Icon(Icons.tv_outlined,
-                                                                        color: getColorFromHex('32c8b1'))),
-                                                                const Text(
-                                                                  'SIM',
-                                                                  textAlign: TextAlign.center,
-                                                                )
-                                                              ],
-                                                            ))
-                                                          ],
-                                                        )),
                                                   ],
                                                 ))
                                             : Text(""))

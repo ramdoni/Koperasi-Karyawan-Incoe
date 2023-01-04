@@ -186,11 +186,35 @@ Future<Response> submitPendaftaran(String url, Map<String, dynamic> data, Map<St
 }
 
 Future<Response> sendData(String url, Map<String, dynamic> data) async {
-  var formData = FormData.fromMap(data);
-  Dio dio = new Dio();
-  dio.options.headers["Authorization"] = "Bearer " + session.token;
+  try {
+    var formData = FormData.fromMap(data);
+    Dio dio = new Dio();
+    dio.options.headers["Authorization"] = "Bearer " + session.token;
 
-  return await dio.post(server_ip + url, data: formData);
+    return await dio.post(server_ip + url, data: formData);
+  } on DioError catch (e) {
+    if (e.type == DioErrorType.response) {
+      log('catched');
+      return null;
+    }
+    if (e.type == DioErrorType.connectTimeout) {
+      log('check your connection');
+      return null;
+    }
+
+    if (e.type == DioErrorType.receiveTimeout) {
+      log('unable to connect to the server');
+      return null;
+    }
+
+    if (e.type == DioErrorType.other) {
+      log('Something went wrong');
+      return null;
+    }
+    log('Others 1 : ' + e.toString());
+  } catch (e) {
+    log("Others 2 : " + e.toString());
+  }
 }
 
 Future<Response> submitLogin(String url, Map<String, dynamic> data) async {
@@ -255,7 +279,6 @@ Future<Response> getDataOri(String url) async {
   log(url.toString());
   try {
     Dio dio = new Dio();
-    // dio.options.headers["Authorization"] = "Bearer " + session.token;
     dio.options.connectTimeout = 60 * 1000; // 60 detik
     dio.options.receiveTimeout = 60 * 1000; // 60 detik
     return await dio.get(url);

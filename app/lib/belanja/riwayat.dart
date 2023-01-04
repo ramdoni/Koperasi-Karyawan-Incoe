@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:coopzone_application/belanja/riwayat_token.dart';
 import 'package:flutter/material.dart';
 import '../helpers/util.dart';
 import '../helpers/session.dart' as session;
@@ -27,7 +26,6 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
       });
       getData('/transaction').then((res) {
         setState(() {
-          log(res.data.toString());
           data = res.data['data'];
           isLoading = false;
         });
@@ -52,17 +50,16 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
     }
   }
 
-  Widget _listItem(label, data) {
+  Widget _listItem(context, label, data) {
     return Column(children: [
       Container(
           alignment: Alignment.topLeft,
-          padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
+          padding: EdgeInsets.only(left: 10, right: 5, top: 10, bottom: 10),
           decoration: BoxDecoration(color: getColorFromHex('afeae1')),
-          child: Text(label)),
+          child: Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
       for (int i = 0; i < data.length; i++)
         InkWell(
           child: Container(
-              //  height: 70,
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border(
@@ -114,8 +111,13 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                 ],
               )),
           onTap: () {
-            // Navigator.of(context).push(
-            //     MaterialPageRoute(builder: (context) => ItSupportDetailScreen(argument: data[index])));
+            if (data[i]['type_produk'] == 'token') {
+              data[i]['data_json']['no_transaksi'] = data[i]['no_transaksi'];
+              data[i]['data_json']['date'] = data[i]['date'];
+              data[i]['data_json']['metode_pembayaran'] = data[i]['metode_pembayaran'];
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => BelanjaRiwayatTokenScreen(argument: data[i]['data_json'])));
+            }
           },
         )
     ]);
@@ -139,6 +141,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
   Widget build(context) {
     return Scaffold(
         // extendBodyBehindAppBar: true,
+        backgroundColor: getColorFromHex('efefef'),
         appBar: AppBar(
           iconTheme: const IconThemeData(
             color: Colors.white, //change your color here
@@ -209,17 +212,19 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                           child: Text("Jumlah yang harus dibayar",
                               style: TextStyle(color: getColorFromHex('666666'), fontSize: 12))),
                       Container(
-                          padding: EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.only(left: 20, bottom: 20),
                           color: Colors.white,
                           child: Align(
                               alignment: Alignment.topLeft,
                               child: Text(session.tagihanPaylater,
                                   style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)))),
                       Container(
-                          padding: EdgeInsets.all(10),
                           color: Colors.white,
+                          margin: EdgeInsets.only(top: 20),
+                          padding: const EdgeInsets.only(top: 15, left: 10, right: 10),
                           alignment: Alignment.topLeft,
-                          child: Text("Jatuh tempo pembayaran")),
+                          child:
+                              Text("Riwayat Transaksi", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
                       Container(
                           color: Colors.white,
                           padding: EdgeInsets.all(10),
@@ -229,7 +234,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                               Container(
                                   width: 130,
                                   height: 30,
-                                  margin: EdgeInsets.only(left: 10, top: 6, bottom: 8),
+                                  margin: EdgeInsets.only(left: 10, top: 6),
                                   padding: EdgeInsets.only(left: 10.0),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(3.0),
@@ -256,7 +261,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                               Container(
                                   width: 140,
                                   height: 30,
-                                  margin: EdgeInsets.only(left: 10, top: 5, bottom: 8),
+                                  margin: EdgeInsets.only(left: 10, top: 5),
                                   padding: EdgeInsets.only(left: 10.0),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(3.0),
@@ -268,7 +273,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                                         style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13)),
                                     value: filterTahun,
                                     underline: Container(),
-                                    items: [2019, 2020, 2021, 2022].map((item) {
+                                    items: ['Transaksi In', 'Transaksi Out'].map((item) {
                                       return DropdownMenuItem(
                                         child: Text(item.toString(), style: TextStyle(fontWeight: FontWeight.normal)),
                                         value: item,
@@ -285,7 +290,6 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                       Container(
                           // height: MediaQuery.of(context).size.height - 420,
                           color: Colors.white,
-                          padding: EdgeInsets.only(top: 10),
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               physics: NeverScrollableScrollPhysics(),
@@ -294,7 +298,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                               itemCount: data == null ? 0 : data.length,
                               itemBuilder: (BuildContext context, int index) {
                                 if (data[index]['data'].length > 0) {
-                                  return _listItem(data[index]['label'], data[index]['data']);
+                                  return _listItem(context, data[index]['label'], data[index]['data']);
                                 } else {
                                   return Container(
                                     height: 0,

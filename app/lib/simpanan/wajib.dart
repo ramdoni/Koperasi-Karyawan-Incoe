@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:coopzone_application/simpanan/simpanan_add.dart';
 import 'package:flutter/material.dart';
 import '../helpers/util.dart';
 import '../helpers/session.dart' as session;
@@ -33,7 +31,8 @@ class SimpananWajibScreenState extends State<SimpananWajibScreen> {
       });
       getData('/simpanan/wajib').then((res) {
         setState(() {
-          if (res.data['message'] == 'success') {
+          log(res.data.toString());
+          if (res.data['status'] == 'success') {
             dataTransaksi = res.data['data'];
           } else {
             bottomInfo(context, res.data['message']);
@@ -54,7 +53,9 @@ class SimpananWajibScreenState extends State<SimpananWajibScreen> {
       });
       getData('/simpanan/wajib-status').then((res) {
         setState(() {
-          if (res.data['message'] == 'success') {
+          log(res.data.toString());
+
+          if (res.data['status'] == 'success') {
             dataStatus = res.data['data'];
           } else {
             bottomInfo(context, res.data['message']);
