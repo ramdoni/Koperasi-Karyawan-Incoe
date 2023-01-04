@@ -35,16 +35,23 @@ Route::group(['middleware' => 'cors', 'json.response'], function(){
 
 	Route::post('get-anggota',function(Request $r){
 
-		if($r->sign!='c3aa6a5a2613a7149c592edd3dc7d7de') return ['code'=>200,'message'=>'access denied'];
+		if($r->sign!=env('COOPZONE_TOKEN')) return ['code'=>200,'message'=>'access denied'];
 
 		$data = [];
 		foreach(\App\Models\UserMember::get() as $k => $item){
 			$data[$k]['no_anggota'] = $item->no_anggota_platinum;
 			$data[$k]['nama'] = $item->name;
+			$data[$k]['simpanan_pokok'] = $item->simpanan_pokok;
+			$data[$k]['simpanan_wajib'] = $item->simpanan_wajib;
+			$data[$k]['simpanan_sukarela'] = $item->simpanan_sukarela;
+			$data[$k]['simpanan_lain_lain'] = $item->simpanan_lain_lain;
 		}
 
 		return $data;
 	});
+
+	// Integrasi Coopzone
+	Route::post('transaction-store',[\App\Http\Controllers\Api\TransactionController::class,'store']);
 });
 
 Route::group(['middleware' => 'auth:api'], function(){
@@ -54,6 +61,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 	Route::get('iuran',[\App\Http\Controllers\Api\IuranController::class,'iuran'])->name('api.iuran');
 	Route::get('iuran/get-last',[\App\Http\Controllers\Api\IuranController::class,'getLast'])->name('api.iuran.get-last');
 	Route::post('iuran/store',[\App\Http\Controllers\Api\IuranController::class,'store'])->name('api.iuran.store');
+	
 	Route::get('tagihan/tunai',[\App\Http\Controllers\Api\TagihanController::class,'tagihanTunai'])->name('tagihan.tunai');
 	Route::get('tagihan/first',[\App\Http\Controllers\Api\TagihanController::class,'tagihanFirst'])->name('tagihan.first');
 	Route::get('pinjaman/kuota',[\App\Http\Controllers\Api\PinjamanController::class,'kuota'])->name('pinjaman.kuota');

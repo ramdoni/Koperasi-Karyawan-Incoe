@@ -49,7 +49,6 @@
                                 <td><a href="{{route('user-member.edit',$item->user_member_id)}}">{{isset($item->anggota->name) ? $item->anggota->name : ''}}</a></td>
                                 <td><a href="{{route('transaksi.items',$item->id)}}">{{$item->no_transaksi}}</a></td>
                                 <td>{{metode_pembayaran($item->metode_pembayaran)}}</td>
-                                <!-- <td>{{$item->name}}</td> -->
                                 <td>{{date('d-M-Y',strtotime($item->created_at))}}</td>
                                 <td>{{$item->payment_date ? date('d-M-Y',strtotime($item->payment_date)) : '-'}}</td>
                                 <td>
@@ -60,14 +59,11 @@
                                         <span class="text-danger" title="Out"><i class="fa fa-arrow-up"></i></span>
                                     @endif
                                     {{format_idr($item->amount)}}
-
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-navicon"></i></a>
                                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                            
-                                            <!-- <a class="dropdown-item" href="javascript:void(0)" wire:click="set_member({{$item->id}})" data-toggle="modal" data-target="#modal_set_password"><i class="fa fa-key"></i> Set Password</a> -->
                                         </div>
                                     </div>    
                                 </td>

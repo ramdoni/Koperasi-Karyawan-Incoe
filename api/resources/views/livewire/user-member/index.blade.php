@@ -48,6 +48,7 @@
                                 <th colspan="4" class="text-center">Pinjaman</th>
                                 <th rowspan="2" style="background:#35a2b869;text-align:center;">SHU</th>
                                 <th colspan="2" class="text-center">Plafond Pinjaman</th>
+                                <th rowspan="2">Simpanan Ku</th>
                                 <th rowspan="2"></th>
                             </tr>
                             <tr>
@@ -88,6 +89,7 @@
                                 <td>@livewire('user-member.editable',['field'=>'shu','data'=>$item->shu,'id'=>$item->id],key('shu'.$item->id))</td>
                                 <td class="text-right">@livewire('user-member.editable',['field'=>'plafond','data'=>$item->plafond,'id'=>$item->id],key('plafond'.$item->id))</td>
                                 <td class="text-right">@livewire('user-member.editable',['field'=>'plafond_digunakan','data'=>$item->plafond_digunakan,'id'=>$item->id],key('plafond_digunakan'.$item->id))</td>
+                                <td class="text-right">@livewire('user-member.editable',['field'=>'simpanan_ku','data'=>$item->simpanan_ku,'id'=>$item->id],key('simpanan_ku'.$item->id))</td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-navicon"></i></a>

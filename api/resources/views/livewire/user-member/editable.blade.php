@@ -25,7 +25,7 @@
         <a href="javascript:void(0)" wire:click="$set('is_edit',false)"><i class="fa fa-close text-danger"></i></a>
         <a href="javascript:void(0)" wire:click="save"><i class="fa fa-save text-success"></i></a>
     @else
-        @if($field=='plafond' || $field=='plafond_digunakan' || $field=="shu" || $field=='amount' || $field=='simpanan_pokok' || $field=='simpanan_wajib' || $field=='simpanan_sukarela' || $field=='simpanan_lain_lain' || $field=='pinjaman_uang' || $field=='pinjaman_astra' || $field=='pinjaman_toko'|| $field=='pinjaman_motor')
+        @if($field=='plafond' || $field=='simpanan_ku' || $field=='plafond_digunakan' || $field=="shu" || $field=='amount' || $field=='simpanan_pokok' || $field=='simpanan_wajib' || $field=='simpanan_sukarela' || $field=='simpanan_lain_lain' || $field=='pinjaman_uang' || $field=='pinjaman_astra' || $field=='pinjaman_toko'|| $field=='pinjaman_motor')
             <a href="javascript:void(0)" wire:click="$set('is_edit',true)">{!!$value?format_idr($value):'<i style="color:grey">-</i>'!!}</a>
         @else
             <a href="javascript:void(0)" wire:click="$set('is_edit',true)">{!!$value?$value:'<i style="color:grey">-</i>'!!}</a>

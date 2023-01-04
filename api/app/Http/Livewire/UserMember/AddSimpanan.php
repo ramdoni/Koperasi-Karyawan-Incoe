@@ -7,6 +7,7 @@ use App\Models\JenisSimpanan;
 use App\Models\Simpanan;
 use App\Models\UserMember;
 use App\Models\Transaksi;
+use Illuminate\Support\Facades\Http;
 
 class AddSimpanan extends Component
 {
@@ -41,6 +42,7 @@ class AddSimpanan extends Component
         if($this->payment_date) $data->payment_date = $this->payment_date;
         $data->tahun = $this->tahun;
         $data->bulan = $this->bulan;
+        $data->status = 1;
         $data->save();
 
         $transaksi = new Transaksi();
@@ -49,8 +51,22 @@ class AddSimpanan extends Component
         $transaksi->user_id = \Auth::user()->id;
         $transaksi->amount = $this->amount;
         $transaksi->name = isset($data->jenis_simpanan->name) ? $data->jenis_simpanan->name :'-';
+        $transaksi->status = 1;
         $transaksi->save();
 
+        // Sinkron Coopzone
+        $response = sinkronCoopzone([
+            'url'=>'koperasi/simpanan/store',
+            'no_transaksi'=>$transaksi->no_transaksi,
+            'no_anggota'=>$data->anggota->no_anggota_platinum,
+            'jenis_simpanan_id'=>$data->jenis_simpanan_id,
+            'payment_date'=>$this->payment_date,
+            'amount'=>$this->amount,
+            'tahun'=>$this->tahun,
+            'bulan'=>$this->bulan,
+            'description'=>$this->description
+        ]);
+        
         session()->flash('message-success',"Simpanan berhasil ditambahkan");
 
         return redirect()->route('user-member.edit',$this->member->id);

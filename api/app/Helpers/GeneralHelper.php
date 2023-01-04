@@ -1,6 +1,14 @@
 <?php
 use Illuminate\Support\Str;
 
+function sinkronCoopzone($param)
+{
+    $param['token'] = env('COOPZONE_TOKEN');
+    
+    $response = Http::post(env('COOPZONE_URL').$param['url'], $param);
+
+    return $response;
+}
 
 function status_transaksi($status){
     switch($status){

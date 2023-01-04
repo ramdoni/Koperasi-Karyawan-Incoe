@@ -89,6 +89,19 @@ class Insert extends Component
             $item->save();
         }
 
+        // Sinkron Coopzone
+        $response = sinkronCoopzone([
+            'url'=>'koperasi/pinjaman/store-tunai',
+            'no_transaksi'=>$transaksi->no_transaksi,
+            'no_anggota'=>$data->anggota->no_anggota_platinum,
+            'jenis_simpanan_id'=>$data->jenis_simpanan_id,
+            'payment_date'=>$this->payment_date,
+            'amount'=>$this->amount,
+            'tahun'=>$this->tahun,
+            'bulan'=>$this->bulan,
+            'description'=>$this->description
+        ]);
+
         session()->flash('message-success',__('Pinjaman berhasil diajukan, selanjutnya menunggu proses persetujuan.'));
 
         return redirect()->route('user-member.edit',$this->user_member_id);
