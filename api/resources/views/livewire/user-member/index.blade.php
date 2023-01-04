@@ -1,17 +1,8 @@
 @section('title', 'Anggota')
-@section('parentPageTitle', 'Home')
 <div class="clearfix row">
     <div class="col-lg-12">
         <div class="card">
             <div class="header row">
-                <div class="col-md-2">
-                    <select class="form-control" wire:model="koordinator_id">
-                        <option value=""> --- Koordinator --- </option>
-                        @foreach(\App\Models\UserMember::select('user_member.*')->join('users','users.id','=','user_member.user_id')->where('users.user_access_id','=',3)->orderBy('user_member.name','ASC')->get() as $koordinator)
-                        <option value="{{$koordinator->id}}">{{$koordinator->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
                 <div class="col-md-2">
                     <input type="text" class="form-control" wire:model="keyword" placeholder="Pencarian" />
                 </div>
@@ -20,14 +11,18 @@
                         <option value=""> --- Status --- </option>
                         <option value="1">Inactive</option>
                         <option value="2">Active</option>
-                        <option value="3">Ditolak</option>
-                        <option value="4">Meninggal</option>
                         <option value="5">Keluar</option>
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <a href="javascript:;" class="ml-2 btn btn-info" wire:click="downloadExcel"><i class="fa fa-download"></i> Download</a>
-                    <a href="{{route('user-member.insert')}}" class="btn btn-primary"><i class="fa fa-plus"></i> Anggota</a>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="javascript:void(0);" wire:click="downloadExcel"><i class="fa fa-download"></i> Download</a>
+                            <a href="{{route('user-member.insert')}}" class="dropdown-item"><i class="fa fa-plus"></i> Anggota</a>
+                            <a href="javascript:void(0)" class="dropdown-item" data-toggle="modal" data-target="#modal_upload"><i class="fa fa-upload"></i> Upload</a>
+                        </div>
+                    </div>
                     <span wire:loading>
                         <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
                         <span class="sr-only">{{ __('Loading...') }}</span>
@@ -37,25 +32,36 @@
             <div class="body pt-0">
                 <div class="table-responsive" style="min-height:400px;">
                     <table class="table table-hover m-b-0 c_list">
-                        <thead>
-                            <tr style="background: #eee;">
-                                <th>No</th>
-                                <th>Koordinator</th>
-                                <th>No Anggota</th>
-                                <th>Nama</th>                                 
-                                <th>No Telepon</th>
-                                <th>No KTP</th>
-                                <th>Jenis Kelamin</th>
-                                <th>Tempat / Tanggal Lahir</th>
-                                <th></th>
-                                <th>Agama</th>
-                                <th>Keanggotaan</th>
-                                <th>Rekomendator</th>
-                                <th>Tanggal Meninggal</th>
-                                <th>Santunan Pelayanan</th>
-                                <th>Santunan Uang Duka</th>
-                                <th>Pembayaran Pendaftaran</th>
-                                <th></th>
+                        <thead style="background: #eee;">
+                            <tr>
+                                <th rowspan="2">No</th>
+                                <th rowspan="2">No Anggota</th>
+                                <th rowspan="2">Nama</th>                                 
+                                <th rowspan="2">No Telepon</th>
+                                <th rowspan="2">No KTP</th>
+                                <th rowspan="2">Jenis Kelamin</th>
+                                <th rowspan="2">Tempat</th>
+                                <th rowspan="2">Tanggal Lahir</th>
+                                <th rowspan="2"></th>
+                                <th rowspan="2">Agama</th>
+                                <th colspan="4" class="text-center">Simpanan</th>
+                                <th colspan="4" class="text-center">Pinjaman</th>
+                                <th rowspan="2" style="background:#35a2b869;text-align:center;">SHU</th>
+                                <th colspan="2" class="text-center">Plafond Pinjaman</th>
+                                <th rowspan="2">Simpanan Ku</th>
+                                <th rowspan="2"></th>
+                            </tr>
+                            <tr>
+                                <th>Pokok</th>
+                                <th>Wajib</th>
+                                <th>Sukarela</th>
+                                <th>Lain-lain</th>
+                                <th>Uang</th>
+                                <th>Astra</th>
+                                <th>Toko</th>
+                                <th>Motor</th>
+                                <th>Kuota</th>
+                                <th>Digunakan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,57 +69,27 @@
                             @foreach($data as $k => $item)
                             <tr>
                                 <td style="width: 50px;">{{$number}}</td>
-                                <td>{{isset($item->koordinatorUser->name)?$item->koordinatorUser->name:$item->koordinator_nama}}</td>
-                                <td>{{$item->no_anggota_platinum?$item->no_anggota_platinum:'-'}}</td>
-                                <td><a href="{{route('user-member.edit',['id'=>$item->id])}}" class="{{$item->status==4?"text-danger" : ""}}">{{$item->name}}</a></td>
-                                <td>{{$item->phone_number}}</td>
-                                <td>{{$item->Id_Ktp}}</td>
-                                <td>@livewire('user-member.editable',['field'=>'jenis_kelamin','data'=>$item],key($item->id))</td>
-                                <td>{{$item->tempat_lahir}} - {{$item->tanggal_lahir ? date('d M Y',strtotime($item->tanggal_lahir)) : ''}}</td>
-                                <td class="px-0"><span class="text-success"> {{$item->tanggal_lahir ? hitung_umur($item->tanggal_lahir) .' thn' : ''}} </span></td>
-                                <td>@livewire('user-member.editable',['field'=>'agama','data'=>$item],key($item->id))</td>
-                                <td> 
-                                    @switch($item->status)
-                                        @case(0)
-                                            <a href="javascript:void(0)" class="badge badge-warning">Inactive</a>
-                                            @break
-                                        @case(1)
-                                            <a href="javascript:void(0)" class="badge badge-warning">Inactive</a>
-                                        @break
-                                        @case(2)
-                                            <?php
-                                                $countrec = $item->user_rekomendasi_count;
-                                                $recmember = 0;
-                                                if(hitung_umur($item->tanggal_lahir) >60 and hitung_umur($item->tanggal_lahir) <=64) $recmember = 1;
-                                                if(hitung_umur($item->tanggal_lahir) >=65 and hitung_umur($item->tanggal_lahir) <=74) $recmember = 3;
-                                                if(hitung_umur($item->tanggal_lahir) >=75) $recmember = 5;
-                                            ?>
-                                            @if(hitung_umur($item->tanggal_lahir) >= 60)
-                                                @if($recmember > $countrec)
-                                                    <a href="javascript:void(0)" class="badge badge-warning" data-toggle="tooltip" title="Perlu menyertakan anggota rekomendasi">Inactive</a>   
-                                                @else
-                                                    <a href="javascript:void(0)" wire:click="$emit('modal-konfirmasi-meninggal',{{$item->id}})" class="badge badge-success" title="{{ $item->tanggal_diterima ?  date('d M Y',strtotime($item->tanggal_diterima)):''}}">Active</a>
-                                                @endif
-                                            @else
-                                                <a href="javascript:void(0)" wire:click="$emit('modal-konfirmasi-meninggal',{{$item->id}})" class="badge badge-success" title="{{ $item->tanggal_diterima ?  date('d M Y',strtotime($item->tanggal_diterima)):''}}">Active</a>
-                                            @endif
-                                        @break
-                                        @case(3)
-                                            <a href="javascript:void(0)" wire:click="$emit('modal-konfirmasi-meninggal',{{$item->id}})" class="badge badge-danger">Ditolak</a>
-                                        @break
-                                        @case(4)
-                                            <a href="javascript:void(0)" wire:click="$emit('modal-detail-meninggal',{{$item->id}})" class="badge badge-danger">Meninggal</a>
-                                        @break
-                                        @case(5)
-                                            <span class="badge badge-danger">Keluar</span>
-                                        @break
-                                    @endswitch
-                                </td>
-                                <td>{{isset($item->user_rekomendasi->name) ? $item->user_rekomendasi->name : '-'}}</td>
-                                <td><a href="javascript:void(0)" wire:click="$emit('modal-detail-meninggal',{{$item->id}})">{{isset($item->klaim->tgl_kematian) ? date('d-M-Y',strtotime($item->klaim->tgl_kematian)) : ''}}</a></td>
-                                <td>{{isset($item->klaim->santunan_pelayanan) ? format_idr($item->klaim->santunan_pelayanan) : ''}}</td>
-                                <td>{{isset($item->klaim->santunan_uang_duka) ? format_idr($item->klaim->santunan_uang_duka) : ''}}</td>
-                                <td>{!!status_registration_payment($item)!!}</td>
+                                <td><a href="{{route('user-member.edit',['id'=>$item->id])}}" class="{{$item->status==4?"text-danger" : ""}}">{{$item->no_anggota_platinum?$item->no_anggota_platinum:'-'}}</a></td>
+                                <td>@livewire('user-member.editable',['field'=>'name','data'=>$item->name,'id'=>$item->id],key('name'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'phone_number','data'=>$item->phone_number,'id'=>$item->id],key('phone_number'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'Id_Ktp','data'=>$item->Id_Ktp,'id'=>$item->id],key('Id_Ktp'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'jenis_kelamin','data'=>$item->jenis_kelamin,'id'=>$item->id],key('jenis_kelamin'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'tempat_lahir','data'=>$item->tempat_lahir,'id'=>$item->id],key('tempat_lahir'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'tanggal_lahir','data'=>$item->tanggal_lahir,'id'=>$item->id],key('tanggal_lahir'.$item->id))</td>
+                                <td>{{$item->tanggal_lahir ? hitung_umur($item->tanggal_lahir) .' thn' : ''}}</td>
+                                <td>@livewire('user-member.editable',['field'=>'agama','data'=>$item->agama,'id'=>$item->id],key('agama'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'simpanan_pokok','data'=>$item->simpanan_pokok,'id'=>$item->id],key('simpanan_pokok'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'simpanan_wajib','data'=>$item->simpanan_wajib,'id'=>$item->id],key('simpanan_wajib'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'simpanan_sukarela','data'=>$item->simpanan_sukarela,'id'=>$item->id],key('simpanan_sukarela'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'simpanan_lain_lain','data'=>$item->simpanan_lain_lain,'id'=>$item->id],key('simpanan_lain_lain'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'pinjaman_uang','data'=>$item->pinjaman_uang,'id'=>$item->id],key('pinjaman_uang'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'pinjaman_astra','data'=>$item->pinjaman_astra,'id'=>$item->id],key('pinjaman_astra'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'pinjaman_toko','data'=>$item->pinjaman_toko,'id'=>$item->id],key('pinjaman_toko'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'pinjaman_motor','data'=>$item->pinjaman_motor,'id'=>$item->id],key('pinjaman_motor'.$item->id))</td>
+                                <td>@livewire('user-member.editable',['field'=>'shu','data'=>$item->shu,'id'=>$item->id],key('shu'.$item->id))</td>
+                                <td class="text-right">@livewire('user-member.editable',['field'=>'plafond','data'=>$item->plafond,'id'=>$item->id],key('plafond'.$item->id))</td>
+                                <td class="text-right">@livewire('user-member.editable',['field'=>'plafond_digunakan','data'=>$item->plafond_digunakan,'id'=>$item->id],key('plafond_digunakan'.$item->id))</td>
+                                <td class="text-right">@livewire('user-member.editable',['field'=>'simpanan_ku','data'=>$item->simpanan_ku,'id'=>$item->id],key('simpanan_ku'.$item->id))</td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-navicon"></i></a>
@@ -139,6 +115,13 @@
                             @php($number--)
                             @endforeach
                         </tbody>
+                        @if($number==0)
+                            <tfoot>
+                                <tr>
+                                    <td colspan="9" class="text-center">Empty data</td>
+                                </tr>
+                            </tfoot>
+                        @endif
                     </table>
                 </div>
                 <br />

@@ -25,14 +25,11 @@
         @livewireStyles
         <style>
             body,.auth-main::before {
-                background-color: #d7e8f2 !important;
+                background-color: #efefef !important;
             }
             .auth-main:after {
-                background:url('{{asset('assets/img/bg-auth.jpg')}}');
-                background-position:center;
-                background-size:auto;
-                background-repeat:no-repeat;
-            }
+                background:#efefef;
+            } 
         </style>
     </head>
     <body class="theme-blue">

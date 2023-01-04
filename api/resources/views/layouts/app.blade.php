@@ -35,7 +35,7 @@
             .theme-blue #wrapper:before, .theme-blue #wrapper:after {background:white !important;}
         </style>
     </head>
-    <body class="theme-blue">
+    <body class="theme-blue  layout-fullwidth">
         <!-- Page Loader -->
         <div class="page-loader-wrapper">
             <div class="loader">
@@ -65,20 +65,13 @@
                             <i class="fa fa-times-circle"></i>  {{session('message-error')}}
                         </div>
                         @endif
-                        {{-- <div class="row">
-                            <div class="col-lg-5 col-md-8 col-sm-12">                        
-                                <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> @yield('title')</h2>
-                                <ul class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="/"><i class="icon-home"></i></a></li>
-                                    @if (trim($__env->yieldContent('parentPageTitle')))
-                                       <li class="breadcrumb-item">@yield('parentPageTitle')</li>
-                                    @endif
-                                    @if (trim($__env->yieldContent('title')))
-                                        <li class="breadcrumb-item active">@yield('title')</li>
-                                    @endif
-                                </ul>
-                            </div>            
-                        </div> --}}
+                        @if (trim($__env->yieldContent('title')))
+                        <div class="row">
+                                <div class="col-lg-5 col-md-8 col-sm-12">                        
+                                    <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> @yield('title')</h2>
+                                </div>            
+                            </div> 
+                        @endif
                     </div>
                     @yield('content')
                     {{$slot}}

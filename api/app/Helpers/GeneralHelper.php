@@ -1,6 +1,112 @@
 <?php
 use Illuminate\Support\Str;
 
+function sinkronCoopzone($param)
+{
+    $param['token'] = env('COOPZONE_TOKEN');
+    
+    $response = Http::post(env('COOPZONE_URL').$param['url'], $param);
+
+    return $response;
+}
+
+function status_transaksi($status){
+    switch($status){
+        case 1:
+          return "<span class=\"badge badge-success\">Sukses</span>";
+          break;
+        case 2:
+          return "<span class=\"badge badge-warning\">Batal</span>"; 
+          break;
+        case 3:
+          return "<span class=\"badge badge-danger\">Gagal</span>"; 
+          break;
+        default:
+          return '-';
+        break;
+      }
+}
+
+function metode_pembayaran($key){
+  switch($key){
+    case 1:
+      return "Simpanan"; // Sukarela
+      break;
+    case 2:
+      return "Simpanan"; // Lain-lain
+      break;
+    case 3:
+      return "Bayar Nanti";
+      break;
+    case 4:
+        return "Cash";
+        break;
+    default:
+      return '-';
+    break;
+  }
+}
+
+function push_notification_android($device_id,$title,$message,$type,$vibrate=0,$sound=0){
+    /**
+     * Store notification
+     */
+    $member = \App\Models\UserMember::where('device_token',$device_id)->first();
+    if($member){
+        $data = new \App\Models\Notification();
+        $data->user_member_id = $member->id;
+        $data->title = $title;
+        $data->message = $message;
+        $data->status = 0;
+        $data->save();
+    }
+    
+    /*api_key available in:
+    Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key*/    
+    $api_key = 'AAAA4LyBl1Y:APA91bFLf-2oSt9e2GMNIsoOiBBHH3tER5vk45_f6xwZESuZzl1s_6F0ZLkDO8QVOlzPHWto-kkCLl0dctRpjvt30IN7AMvxrGV-keRxn8TBG-DyROqzvGSN8YQN1l7qVVBW9T4BN2_g';
+   
+    //API URL of FCM
+    $url = 'https://fcm.googleapis.com/fcm/send';
+    $fields = array (
+        'registration_ids' => array (
+                $device_id
+        ),
+        'notification' => array (
+            "title" => $title,
+            "body" => $message,
+            "sound"=> "default"
+        ),
+        'data' => array(
+            'type' => $type ,
+            'vibrate'	=> $vibrate,
+	        'sound'		=> $sound,
+            'volume' => 5
+        )
+    );
+
+    //header includes Content type and api key
+    $headers = array(
+        'Content-Type:application/json',
+        'Authorization:key='.$api_key
+    );
+                
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+    $result = curl_exec($ch);
+    if ($result === FALSE) {
+        dd('FCM Send Error: ' . curl_error($ch));
+    }
+    curl_close($ch);
+    
+    return $result;
+}
+
 function getRomawi($bln){
     switch ($bln){
         case 1: 

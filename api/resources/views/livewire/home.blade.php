@@ -6,7 +6,7 @@
         <div class="card overflowhidden number-chart">
             <div class="body">
                 <div class="number">
-                    <h6>Anggota Aktif</h6>
+                    <h6>Anggota</h6>
                     <span>{{format_idr(\App\Models\UserMember::where('status',2)->where('is_non_anggota',0)->count())}}</span>
                 </div>
                 {{-- <small class="text-muted">19% compared to last week</small> --}}
@@ -19,7 +19,7 @@
         <div class="card overflowhidden number-chart">
             <div class="body">
                 <div class="number">
-                    <h6>Anggota Klaim</h6>
+                    <h6>Total Simpanan</h6>
                     <span>{{format_idr(\App\Models\Klaim::count())}}</span>
                 </div>
                 {{-- <small class="text-muted">19% compared to last week</small> --}}
@@ -32,7 +32,7 @@
         <div class="card overflowhidden number-chart">
             <div class="body">
                 <div class="number">
-                    <h6>Iuran</h6>
+                    <h6>Total SHU</h6>
                     <span>{{format_idr(\App\Models\Iuran::sum('nominal'))}}</span>
                 </div>
                 {{-- <small class="text-muted">19% compared to last week</small> --}}
@@ -45,7 +45,7 @@
         <div class="card overflowhidden number-chart">
             <div class="body">
                 <div class="number">
-                    <h6>Klaim</h6>
+                    <h6>Total Transaksi</h6>
                     <span>{{format_idr(\App\Models\Klaim::sum('total')+\App\Models\KlaimAdditional::sum('nominal'))}}</span>
                 </div>
                 {{-- <small class="text-muted">19% compared to last week</small> --}}
@@ -57,22 +57,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="body">
-                <ul class="nav nav-tabs">                                
-                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#anggota">Anggota</a></li>
-                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#klaim">Klaim</a></li>
-                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#iuran">Iuran</a></li>
-                </ul>
-                <div class="tab-content px-0">
-                    <div class="tab-pane active" id="anggota">
-                        <livewire:home.anggota />
-                    </div>
-                    <div class="tab-pane" id="klaim">
-                        <livewire:home.klaim />
-                    </div>
-                    <div class="tab-pane" id="iuran">
-                        <livewire:home.iuran />
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>

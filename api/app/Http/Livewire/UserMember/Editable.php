@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\UserMember;
 
 use Livewire\Component;
+use App\Models\UserMember;
 
 class Editable extends Component
 {
@@ -12,18 +13,28 @@ class Editable extends Component
         return view('livewire.user-member.editable');
     }
 
-    public function mount($field,$data)
+    public function mount($field,$data,$id)
     {
         $this->field = $field;
-        $this->data = $data;
-        $this->value = $data->$field;
+        $this->value = $data;
+        $this->data = $id;
     }
 
     public function save()
     {
         $field = $this->field;
-        $this->data->$field = $this->value;
-        $this->data->save();
+        $data = UserMember::find($this->data);
+
+        // Sinkron Coopzone
+        $response = sinkronCoopzone([
+            'url'=>'koperasi/user/edit',
+            'field'=>$field,
+            'value'=>$this->value,
+            'no_anggota'=>$data->no_anggota_platinum
+        ]);
+
+        $data->$field = $this->value;
+        $data->save();
 
         $this->is_edit = false;
     }

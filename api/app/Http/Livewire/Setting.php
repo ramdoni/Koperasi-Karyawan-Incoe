@@ -18,8 +18,9 @@ class Setting extends Component
     public $company;
     public $email;
     public $phone,$mobile;
-    public $website,$santunan_pelayanan_in_semarang,$santunan_uang_duka_in_semarang,$santunan_pelayanan_out_semarang,$santunan_uang_duka_out_semarang;
-    public $address,$iuran_tetap,$sumbangan,$uang_pendaftaran,$pic_nama,$pic_tempat_lahir,$pic_tanggal_lahir,$pic_nomor_telp,$pic_alamat,$pic_jenis_kelamin,$pic_tanda_tangan;
+    public $website;
+    public $address;
+    public $pinjaman_jasa=0;
 
     public function render()
     {
@@ -36,20 +37,8 @@ class Setting extends Component
         $this->address = get_setting('address');
         $this->logoUrl = get_setting('logo');
         $this->faviconUrl = get_setting('favicon');
-        $this->iuran_tetap = get_setting('iuran_tetap');
-        $this->sumbangan = get_setting('sumbangan');
-        $this->uang_pendaftaran = get_setting('uang_pendaftaran');
-        $this->pic_nama = get_setting('pic_nama');
-        $this->pic_tempat_lahir = get_setting('pic_tempat_lahir');
-        $this->pic_tanggal_lahir = get_setting('pic_tanggal_lahir');
-        $this->pic_nomor_telp = get_setting('pic_nomor_telp');
-        $this->pic_alamat = get_setting('pic_alamat');
-        $this->pic_jenis_kelamin = get_setting('pic_jenis_kelamin');
-        $this->santunan_pelayanan_in_semarang = get_setting('santunan_pelayanan_in_semarang');
-        $this->santunan_uang_duka_in_semarang = get_setting('santunan_uang_duka_in_semarang');
-        $this->santunan_pelayanan_out_semarang = get_setting('santunan_pelayanan_out_semarang');
-        $this->santunan_uang_duka_out_semarang = get_setting('santunan_uang_duka_out_semarang');
-        $this->pic_tanda_tangan = asset(get_setting('pic_tanda_tangan'));
+        $this->pinjaman_jasa = get_setting('pinjaman_jasa');
+
     }
 
     public function updateBasic()
@@ -60,29 +49,7 @@ class Setting extends Component
         update_setting('mobile',$this->mobile);
         update_setting('website',$this->website);
         update_setting('address',$this->address);
-        update_setting('iuran_tetap',$this->iuran_tetap);
-        update_setting('sumbangan',$this->sumbangan);
-        update_setting('uang_pendaftaran',$this->uang_pendaftaran);
-        update_setting('pic_nama',$this->pic_nama);
-        update_setting('pic_tempat_lahir',$this->pic_tempat_lahir);
-        update_setting('pic_tanggal_lahir',$this->pic_tanggal_lahir);
-        update_setting('pic_nomor_telp',$this->pic_nomor_telp);
-        update_setting('pic_alamat',$this->pic_alamat);
-        update_setting('pic_jenis_kelamin',$this->pic_jenis_kelamin);
-        update_setting('santunan_pelayanan_in_semarang',$this->santunan_pelayanan_in_semarang);
-        update_setting('santunan_uang_duka_in_semarang',$this->santunan_uang_duka_in_semarang);
-        update_setting('santunan_pelayanan_out_semarang',$this->santunan_pelayanan_out_semarang);
-        update_setting('santunan_uang_duka_out_semarang',$this->santunan_uang_duka_out_semarang);
-
-        if($this->pic_tanda_tangan!=""){
-            $this->validate([
-                'pic_tanda_tangan' => 'image:max:1024', // 1Mb Max
-            ]);
-            $name = 'pic_tanda_tangan.'.$this->pic_tanda_tangan->extension();
-            $this->pic_tanda_tangan->storePubliclyAs('public',$name);
-    
-            update_setting('pic_tanda_tangan',"storage/$name");
-        }
+        update_setting('pinjaman_jasa',$this->pinjaman_jasa);
     }
 
     public function save()
