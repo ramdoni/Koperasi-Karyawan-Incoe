@@ -11,7 +11,7 @@
                 <div class="col-md-2">
                     <select class="form-control" wire:model="user_access_id">
                         <option value="">--- User Access ---</option>
-                        @foreach(\App\Models\UserAccess::whereIn('id',[1,2,5])->get() as $i)
+                        @foreach(\App\Models\UserAccess::get() as $i)
                         <option value="{{$i->id}}">{{$i->name}}</option>
                         @endforeach
                     </select>
@@ -25,12 +25,10 @@
                     <table class="table table-striped table-hover m-b-0 c_list">
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <th>NIK</th>                                    
-                                <th>Name</th>                                    
-                                <th>Phone</th>                                    
-                                <th>Email</th>                                    
-                                <th>Address</th>
+                                <th>No</th>                             
+                                <th>Nama</th>                                    
+                                <th>No Telepon</th>                                    
+                                <th>Email</th>
                                 <th>Access</th>
                                 <th>Updated</th>
                                 <th></th>
@@ -40,17 +38,13 @@
                             @foreach($data as $k => $item)
                             <tr>
                                 <td style="width: 50px;">{{$k+1}}</td>
-                                <td><a href="{{route('users.edit',['id'=>$item->id])}}">{{$item->nik}}</a></td>
                                 <td><a href="#" class="text-success pr-2" onclick="autologin('{{ route('users.autologin',['id'=>$item->id]) }}','{{$item->nik}}')" title="Autologin"><i class="fa fa-sign-in"></i></a> <a href="{{route('users.edit',['id'=>$item->id])}}">{{$item->name}}</a></td>
                                 <td>{{$item->telepon}}</td> 
-                                <td>{{$item->email}}</td>                                   
-                                <td>{{$item->address}}</td>
+                                <td>{{$item->email}}</td>  
                                 <td>{{isset($item->access->name)?$item->access->name:''}}</td>
                                 <td>{{$item->updated_at}}</td>
                                 <td>  
                                     <a href="#" class="text-success pr-2" onclick="autologin('{{ route('users.autologin',['id'=>$item->id]) }}','{{$item->name}}')" title="Autologin"><i class="fa fa-sign-in"></i></a>
-                                    <a href="#" class="text-danger" wire:click="delete({{$item->id}})" title="Delete"><i class="fa fa-trash-o"></i></a>
-                                    {{-- <a href="#" class="text-danger" data-toggle="modal" data-target="#confirm_delete" wire:click="setActiveId({{$item->id}})" title="Delete"><i class="fa fa-trash-o"></i></a> --}}
                                 </td>
                             </tr>
                             @endforeach

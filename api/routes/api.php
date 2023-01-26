@@ -51,7 +51,11 @@ Route::group(['middleware' => 'cors', 'json.response'], function(){
 	});
 
 	// Integrasi Coopzone
-	Route::post('transaction-store',[\App\Http\Controllers\Api\TransactionController::class,'store']);
+	Route::post('transaction-store-pulsa',[\App\Http\Controllers\Api\TransactionController::class,'storePulsa']);
+	Route::post('transaction-update',[\App\Http\Controllers\Api\TransactionController::class,'update']);
+	Route::post('transaction/submit-qrcode',[\App\Http\Controllers\Api\TransactionController::class,'submitQrcode']);
+	Route::post('pembiayaan-store',[\App\Http\Controllers\Api\PinjamanController::class,'store']);
+	Route::post('product/update',[\App\Http\Controllers\Api\ProductController::class,'update']);
 });
 
 Route::group(['middleware' => 'auth:api'], function(){

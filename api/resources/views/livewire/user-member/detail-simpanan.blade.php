@@ -37,7 +37,7 @@
                 @foreach($data as $k => $item)
                     <tr>
                         <td style="width: 50px;">{{$number}}</td>
-                        <td><a href="{{route('pinjaman.edit',$item->id)}}">{{$item->no_transaksi}}</a></td>
+                        <td>{{$item->no_transaksi}}</td>
                         <td class="text-center">
                             @if($item->status==0)
                                 <span class="badge badge-warning">Belum Lunas</span>

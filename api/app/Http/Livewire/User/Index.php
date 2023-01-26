@@ -18,7 +18,7 @@ class Index extends Component
 
     public function render()
     {
-        $data = User::orderBy('id','desc')->whereIn('user_access_id',[1,2,5]);
+        $data = User::orderBy('id','desc')->where('user_access_id','<>',4);
 
         if($this->keyword) $data = $data->where('name','LIKE', '%'.$this->keyword.'%')
                                         ->orWhere('email','LIKE', '%'.$this->keyword.'%')

@@ -8,7 +8,10 @@ class Home extends Component
 {
     public function render()
     { 
-        $this->redirect('user-member'); // anggota
+        /**
+         * if kasir
+         */
+        if(\Auth::user()->user_access_id==6) redirect()->route('kasir.index');
         
         return view('livewire.home');
     }

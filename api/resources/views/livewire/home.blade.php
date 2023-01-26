@@ -20,7 +20,7 @@
             <div class="body">
                 <div class="number">
                     <h6>Total Simpanan</h6>
-                    <span>{{format_idr(\App\Models\Klaim::count())}}</span>
+                    <span></span>
                 </div>
                 {{-- <small class="text-muted">19% compared to last week</small> --}}
             </div>
@@ -33,7 +33,7 @@
             <div class="body">
                 <div class="number">
                     <h6>Total SHU</h6>
-                    <span>{{format_idr(\App\Models\Iuran::sum('nominal'))}}</span>
+                    <span></span>
                 </div>
                 {{-- <small class="text-muted">19% compared to last week</small> --}}
             </div>
@@ -46,7 +46,7 @@
             <div class="body">
                 <div class="number">
                     <h6>Total Transaksi</h6>
-                    <span>{{format_idr(\App\Models\Klaim::sum('total')+\App\Models\KlaimAdditional::sum('nominal'))}}</span>
+                    <span></span>
                 </div>
                 {{-- <small class="text-muted">19% compared to last week</small> --}}
             </div>

@@ -1,6 +1,58 @@
 <?php
 use Illuminate\Support\Str;
 
+function digiflazz($param){
+    $username = env('DIGIFLAZZ_USERNAME');  
+    $apiKey = env('DIGIFLAZZ_KEY_PROD');
+    // $apiKey = env('DIGIFLAZZ_KEY_DEV');
+  
+    $url = "";
+    if($param['action']=='topup'){
+      $url = 'transaction';
+      $data = [
+          "username"=> $username,
+          "buyer_sku_code"=> $param['product'],
+          "customer_no"=> $param['no'],
+          "ref_id"=> $param['ref_id'],
+          "sign"=> md5("$username$apiKey" . $param['ref_id']),
+        //   "testing"=> ($param['type']=="demo"?true:false),
+          "msg"=>$param['id']
+        ];
+  
+      if(isset($param['commands'])) $data['commands'] = $param['commands'];
+      
+      $data = json_encode($data);
+    }
+  
+    if($param['action']=='cek-tagihan-token'){
+      $url = 'transaction';
+      $data = json_encode(
+        [
+          "username"=> $username,
+          "customer_no"=> $param['no'],
+          "commands"=>$param['commands'],
+          "ref_id"=> $param['ref_id'],
+          "sign"=> md5("$username$apiKey" . $param['ref_id']),
+        //   "testing"=> ($param['type']=="demo"?true:false),
+          "msg"=>$param['id']
+        ]);
+    }
+    
+    $header = array(
+      'Content-Type: application/json',
+    );
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "https://api.digiflazz.com/v1/{$url}");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    $result = curl_exec($ch);
+    
+    return $result;
+}
+
 function sinkronCoopzone($param)
 {
     $param['token'] = env('COOPZONE_TOKEN');
@@ -8,6 +60,20 @@ function sinkronCoopzone($param)
     $response = Http::post(env('COOPZONE_URL').$param['url'], $param);
 
     return $response;
+}
+
+function status_product($status){
+    switch($status){
+        case 1:
+          return "<span class=\"badge badge-success\">Aktif</span>";
+          break;
+        case 2:
+          return "<span class=\"badge badge-warning\">Tidak Aktif</span>"; 
+          break;
+        default:
+          return '-';
+        break;
+      }
 }
 
 function status_transaksi($status){
@@ -27,24 +93,33 @@ function status_transaksi($status){
       }
 }
 
-function metode_pembayaran($key){
-  switch($key){
-    case 1:
-      return "Simpanan"; // Sukarela
-      break;
-    case 2:
-      return "Simpanan"; // Lain-lain
-      break;
-    case 3:
-      return "Bayar Nanti";
-      break;
-    case 4:
-        return "Cash";
+function metode_pembayaran($key=''){
+
+    if($key=='') return [1=>'SIMPANAN',2=>'SIMPANAN',3=>'BAYAR NANTI',4=>'TUNAI',5=>'COOPAY'];
+
+    switch($key){
+        case 1:
+            return "Simpanan"; // Sukarela
         break;
-    default:
-      return '-';
-    break;
-  }
+        case 2:
+            return "Simpanan"; // Lain-lain
+        break;
+        case 3:
+            return "BAYAR NANTI";
+        break;
+        case 4:
+            return "TUNAI";
+            break;
+        case 5:
+            return "COOPAY";
+            break;
+        case 6:
+            return "PAYROLL";
+            break;
+        default:
+            return '-';
+        break;
+    }
 }
 
 function push_notification_android($device_id,$title,$message,$type,$vibrate=0,$sound=0){
@@ -223,7 +298,8 @@ function get_setting($key,$absolute_path=false)
     {
         if($key=='logo' || $key=='favicon' ){
             if($absolute_path)
-                return  public_path("storage/{$setting->value}");
+                // return  public_path("storage/{$setting->value}");
+                return  "/public/storage/{$setting->value}";
             else
                 return  asset("storage/{$setting->value}");
         }

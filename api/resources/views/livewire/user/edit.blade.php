@@ -4,20 +4,10 @@
 <div class="row clearfix">
     <div class="col-md-6">
         <div class="card">
-            <div class="header">
-                <h2>{{ __('Insert User') }}</h2>
-            </div>
             <div class="body">
                 <form id="basic-form" method="post" wire:submit.prevent="save">
                     <div class="form-group">
-                        <label>{{ __('NIK') }}</label>
-                        <input type="text" class="form-control" wire:model="nik" >
-                        @error('nik')
-                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label>{{ __('Name') }}</label>
+                        <label>{{ __('Nama') }}</label>
                         <input type="text" class="form-control" wire:model="name" >
                         @error('name')
                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
@@ -38,16 +28,9 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label>{{ __('Address') }}</label>
-                        <textarea class="form-control" wire:model="address"></textarea>
-                        @error('address')
-                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label>{{ __('User Access') }}</label>
+                        <label>{{ __('Akses') }}</label>
                         <select class="form-control" name="user_access_id">
-                            <option value="">{{__('--- User Access --- ')}} </option>
+                            <option value="">{{__('--- Akses --- ')}} </option>
                             @foreach($access as $item)
                             <option value="{{$item->id}}" {{$item->id==$data->user_access_id?'selected':''}}>{{$item->name}}</option>
                             @endforeach
@@ -63,25 +46,9 @@
                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                         @enderror
                     </div>
-                     @if($user_access_id==3)
-                    <div class="form-group" name="barcodeDiv" id="referalCodeDiv">
-                        <label>{{ __('Referal Code') }}</label>
-                        <input type="text" class="form-control"  wire:model="referal_code">
-                        @error('referal_code')
-                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                        @enderror
-                    </div>
-                    <div class="form-group" name="urlDiv" id="urlDiv">
-                        <label>{{ __('URL') }}</label>
-                        <input type="text" class="form-control"  wire:model="url" readonly="true">
-                        @error('url')
-                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                        @enderror
-                    </div>
-                    @endif
                     <br>
                     <a href="{{route('users.index')}}"><i class="fa fa-arrow-left"></i> {{ __('Back') }}</a>
-                    <button type="submit" class="btn btn-primary ml-3"><i class="fa fa-save"></i> {{ __('Save') }}</button>
+                    <button type="submit" class="btn btn-primary ml-3"><i class="fa fa-save"></i> {{ __('Simpan') }}</button>
                 </form>
             </div>
         </div>

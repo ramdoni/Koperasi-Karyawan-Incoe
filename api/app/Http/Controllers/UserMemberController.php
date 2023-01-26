@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserMember;
 use App\Models\Iuran;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class UserMemberController extends Controller
 {
@@ -13,6 +14,17 @@ class UserMemberController extends Controller
         $data = \App\Models\UserMember::find($id);
         $pdf->loadView('user-member.print-member',['data'=>$data])->setPaper('a4', 'potrait');
         
+        return $pdf->stream();
+    }
+
+    public function qrcode()
+    {
+        QrCode::format('png')->size(400)->generate(get_setting('no_koperasi'), '../public/qrcode.png');
+
+        $pdf = \App::make('dompdf.wrapper');
+
+        $pdf->loadView('user-member.qrcode');
+
         return $pdf->stream();
     }
 

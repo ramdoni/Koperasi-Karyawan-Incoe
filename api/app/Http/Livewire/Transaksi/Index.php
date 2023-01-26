@@ -12,7 +12,7 @@ class Index extends Component
     protected $paginationTheme = 'bootstrap';
     public function render()
     {
-        $data = Transaksi::orderBy('id','DESC');
+        $data = Transaksi::where('is_temp',0)->orderBy('id','DESC');
 
         return view('livewire.transaksi.index')->with(['data'=>$data->paginate(500)]);
     }

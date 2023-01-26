@@ -1,66 +1,223 @@
-@section('title', 'Dashboard')
-@section('parentPageTitle', 'Kasir')
+@section('title', 'Kasir')
 <div class="row clearfix">
-    <div class="col-lg-12">
+    <div class="col-6">
         <div class="card">
-            <div class="header row">
-                <div class="col-md-2">
-                    <input type="text" class="form-control" wire:model="keyword" placeholder="Searching..." />
+            <div class="body">
+                <div class="row mb-4">
+                    @if(!$transaksi)
+                        <div class="col-4 form-group">
+                            <label>JENIS TRANSAKSI</label>
+                            <br />
+                            <label class="fancy-radio">
+                                <input type="radio" wire:model="jenis_transaksi" value="1" >
+                                <span><i></i>ANGGOTA</span>
+                            </label>
+                            <label class="fancy-radio">
+                                <input type="radio" wire:model="jenis_transaksi" value="2">
+                                <span><i></i>NON ANGGOTA</span>
+                            </label>
+                            @if($jenis_transaksi==1)
+                                <input type="text" class="form-control" wire:model="no_anggota"  wire:keydown.enter="start_transaction" placeholder="NO ANGGOTA" />
+                            @endif
+                            @error('jenis_transaksi') <h4 class="text-danger">{{ $message }}</h4> @enderror
+                            @if($msg_error_jenis_transaksi) <h6 class="text-danger">{{ $msg_error_jenis_transaksi }}</h6> @endif
+                        </div>
+                    @endif
+                    @if($status_transaksi==0)
+                        <div class="col-md-4">
+                            <a href="javascript:void(0)" wire:click="start_transaction" class="btn btn-info btn-lg mt-4"><i class="fa fa-star"></i> MULAI TRANSAKSI</a>
+                        </div>
+                    @endif
+                    @if($status_transaksi==1)
+                        <div class="col-md-4">
+                            <label>KODE PRODUKSI / SKU</label>
+                            <input type="text" class="form-control" wire:model="kode_produksi" wire:keydown.enter="getProduct" placeholder="Kode Produksi / SKU" />
+                            @error('kode_product') <h4 class="text-danger">{{ $message }}</h4> @enderror
+                            @if($msg_error) <h6 class="text-danger">{{ $msg_error }}</h6> @endif
+                        </div>
+                        <div class="col-md-1 px-0">
+                            <label>QTY</label>
+                            <input type="number" class="form-control"  wire:keydown.enter="getProduct" wire:model="qty" />
+                        </div>
+                    @endif
                 </div>
-                <div class="col-md-2 px-0">
-                    <select class="form-control" wire:model="koordinator_id">
-                        <option value=""> --- Koordinator --- </option>
-                        @foreach(\App\Models\Koordinator::orderBy('name','ASC')->get() as $koor)
-                        <option value="{{$koor->id}}">{{$koor->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2 pr-0">
-                    <select class="form-control" wire:model="user_member_id">
-                        <option value=""> --- Anggota --- </option>
-                        @foreach(\App\Models\UserMember::orderBy('name','ASC')->get() as $anggota)
-                        <option value="{{$anggota->id}}">{{$anggota->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <a href="{{route('kasir.pembayaran')}}" class="btn btn-info"><i class="fa fa-plus"></i> Pembayaran</a>
-                </div>
-            </div>
-            <div class="body pt-0">
                 <div class="table-responsive">
-                    <table class="table table-striped m-b-0 c_list">
+                    <table class="table center-aligned-table table-bordered">
                         <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Koordinator</th>                                    
-                                <th>Member</th>                                    
-                                <th>Periode</th>                                    
-                                <th>Nominal</th>                                    
-                                <th>Payment Date</th>
-                                <th>Bank Account</th>
-                                <th>Bukti Pembayaran</th>
+                            <tr style="background:#16a3b8;color:white;">
+                                <th class="text-center">NO</th>
+                                <th>KODE PRODUKSI / SKU</th>
+                                <th>PRODUK</th>
+                                <th class="text-right">HARGA</th>
+                                <th class="text-center">QTY</th>
+                                <th class="text-center">SISA STOK</th>
+                                <th class="text-right">TOTAL</th>
+                                <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach($data as $k => $item)
+                        @if(!$data)
                             <tr>
-                                <td style="width: 50px;">{{$k+1}}</td>
-                                <td>{{isset($item->user_member->koordinator->name)?$item->user_member->koordinator->name:''}}</td>
-                                <td>{{isset($item->user_member->name)?$item->user_member->name:''}}</td>
-                                <td>{{$item->from_periode}} - {{$item->to_periode}}</td>
-                                <td>{{format_idr($item->nominal)}}</td>
-                                <td>{{$item->payment_date}}</td>
-                                <td>{{isset($item->bank_account->bank)?$item->bank_account->bank .'  '.$item->bank_account->no_rekening .' a/n '.$item->bank_account->owner:''}}</td>
-                                <td><a href="{{ asset('storage/'. $item->file) }}" target="_blank"><i class="fa fa-image"></i></a></td>
+                                <td class="text-center" colspan="7">KOSONG</td>
                             </tr>
-                            @endforeach
-                        </tbody>
+                        @endif
+                        @php($num=1)
+                        @foreach($data as $k => $item)
+                            <tr>
+                                <td class="text-center">{{$num}}@php($num++)</td>
+                                <td>{{$item['kode_produksi']}}</td>
+                                <td>{{$item['keterangan']}}</td>
+                                <td class="text-right">{{format_idr($item['harga_jual'])}}</td>
+                                <td class="text-center">{{$item['qty']}}</td>
+                                <td class="text-center">{{$item['stock']}}</td>
+                                <td class="text-right">{{format_idr($item['harga_jual'] * $item['qty']);}}</td>
+                                <td class="text-center">
+                                    <a href="javascript:void(0)" class="btn btn-danger" wire:click="delete({{$k}})" title="Hapus"><i class="fa fa-close"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
                     </table>
                 </div>
-                <br />
-                {{$data->links()}}
             </div>
         </div>
     </div>
+
+    <div class="col-md-4">
+        @if($jenis_transaksi==1)
+            <div style="background:#eeeeee4f;" class="mb-3">
+                <table class="table table_total">
+                    <tr>
+                        <th>NO ANGGOTA</th>
+                        <td class="text-right">{{isset($anggota->no_anggota_platinum) ? $anggota->no_anggota_platinum : ''}}</td>
+                    </tr>    
+                    <tr>
+                        <th>NAMA</th>
+                        <td class="text-right">{{isset($anggota->name) ? $anggota->name : ''}}</td>
+                    </tr>
+                    <tr>
+                        <th>COOPAY</th>
+                        <td class="text-right">Rp. {{isset($anggota->simpanan_ku) ? format_idr($anggota->simpanan_ku) : '0'}}</td>
+                    </tr>   
+                    <tr>
+                        <th>SALDO LIMIT</th>
+                        <td class="text-right">Rp. {{isset($anggota->plafond) ? format_idr($anggota->plafond - $anggota->plafond_digunakan) : '0'}}</td>
+                    </tr>    
+                </table>
+            </div>
+        @endif
+        <div style="background:#eeeeee4f">
+            <table class="table table_total">
+                <tr>
+                    <th>NO TRANSAKSI</th>
+                    <td class="text-right">{{isset($transaksi->no_transaksi) ? $transaksi->no_transaksi : ''}}</td>
+                </tr>    
+                <tr>
+                    <th>QTY</th>
+                    <td class="text-right">{{format_idr($total_qty)}}</td>
+                </tr>
+                <tr>
+                    <th>PPN</th>
+                    <td class="text-right">Rp. {{format_idr($ppn)}}</td>
+                </tr>
+                <tr>
+                    <th>TOTAL</th>
+                    <td class="text-right">Rp. {{format_idr($total_and_ppn)}}</td>
+                </tr>
+                <tr>
+                    <th>METODE PEMBAYARAN</th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        @if($message_metode_pembayaran)
+                            <div class="alert alert-danger" role="alert">{{$message_metode_pembayaran}}</div> 
+                        @endif
+                        <select class="form-control" wire:model="metode_pembayaran">
+                            <option value="1">TUNAI</option>
+                            @if($anggota)
+                                <option value="5">COOPAY - {{format_idr($anggota->simpanan_ku)}}</option>
+                                <option value="3">SALDO LIMIT - {{format_idr($anggota->plafond - $anggota->plafond_digunakan)}}</option>
+                            @endif
+                        </select>
+                    </th>
+                </tr>
+                @if($metode_pembayaran==4)
+                    <tr>
+                        <th colspan="2">
+                            <div class="mt-2"> 
+                                <div class="form-group">
+                                    <span>UANG TUNAI</span>
+                                    <input type="number" class="form-control" wire:model="uang_tunai" />
+                                </div>
+                            </div>
+                        </th>
+                        <tr>
+                            <th>KEMBALI</th>
+                            <td class="text-right" style="font-size:20px;color:red;font-weight:bold;">Rp. {{format_idr($total_kembali)}}</td>
+                        </tr>
+                    </tr>
+                @endif
+            </table>
+            @if($status_transaksi==1)
+                <span wire:loading wire:target="bayar">
+                    <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                    <span class="sr-only">{{ __('Loading...') }}</span>
+                </span>
+                <button type="button" wire:loading.remove wire:target="bayar,cancel_transaction" class="btn btn-info btn-lg col-12" wire:click="bayar" style=""><i class="fa fa-arrow-right"></i> <span>BAYAR</span></button>
+                <a href="javascript:void(0)" wire:click="cancel_transaction" wire:loading.remove wire:target="bayar,cancel_transaction" class="btn btn-danger btn-lg mt-2 col-12"><i class="fa fa-close"></i> BATALKAN TRANSAKSI</a>
+            @endif
+        </div>
+    </div>
+    <style>
+        .table_total tr td {
+            font-size:16px;
+        }
+        .table_total tr th,.table_total tr td {padding-top:10px;padding-bottom:10px;}
+    </style>
+
+    <div class="modal fade" id="modal_start_work" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <livewire:kasir.start-work />
+            </div>
+        </div>
+    </div>
+
+    @push('after-scripts')
+        <script>
+            var transaction_id;
+            @if(!$user_kasir)
+                $("#modal_start_work").modal("show");
+            @endif
+            // Livewire.on('show-start-work',()=>{
+            //     console.log('modal start work');
+            //     setTimeout(function(){
+            //         $("#modal_start_work").modal("show");
+            //     },1000);
+            // });
+
+            Livewire.on('on-print',(url)=>{
+                var ifrm = document.createElement("iframe");
+                ifrm.setAttribute("src", url);
+                ifrm.setAttribute('id','printf_struk');
+                ifrm.style.width = "640px";
+                ifrm.style.height = "480px";
+                ifrm.style.display = "none";
+                document.body.appendChild(ifrm);
+                        
+                document.getElementById("printf_struk").contentWindow.print();
+            });
+
+            Livewire.on('set_transaction_id',(id)=>{
+                transaction_id = id;
+            });
+            var channel = pusher.subscribe('kasir');
+            channel.bind('bayar_qrcode', function(data) {
+                if(data.transaction_id==transaction_id){
+                    alert('Pembayaran berhasil');
+                    @this.set('success',true)
+                    console.log(data);
+                }
+            });
+        </script>
+    @endpush
+
 </div>

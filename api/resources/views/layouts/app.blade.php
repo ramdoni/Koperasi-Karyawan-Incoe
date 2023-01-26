@@ -60,10 +60,10 @@
                         </div>
                         @endif
                         @if(session()->has('message-error'))
-                        <div class="alert alert-danger alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <i class="fa fa-times-circle"></i>  {{session('message-error')}}
-                        </div>
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <i class="fa fa-times-circle"></i>  {{session('message-error')}}
+                            </div>
                         @endif
                         @if (trim($__env->yieldContent('title')))
                         <div class="row">
@@ -86,7 +86,13 @@
         <script src="{{ asset('assets/bundles/jvectormap.bundle.js') }}"></script> <!-- JVectorMap Plugin Js -->
         <script src="{{ asset('assets/bundles/knob.bundle.js') }}"></script>
         <script src="{{ asset('assets/bundles/mainscripts.bundle.js') }}"></script>
+        <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
         @livewireScripts
+        <script>
+            var pusher = new Pusher('983d12bba94ed6c8c3f9', {
+                cluster: 'ap1'
+            });
+        </script>   
         @stack('after-scripts')
         @if (trim($__env->yieldContent('page-script')))
             <script>

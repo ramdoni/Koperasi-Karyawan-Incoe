@@ -28,11 +28,9 @@
                            <tr>
                                 <th>No</th>
                                 <th>Status</th>
-                                <th>No Anggota</th>
-                                <th>Anggota</th>
+                                <th>Jenis Transaksi</th>
                                 <th>No Transaksi</th>
                                 <th>Metode Pembayaran</th>
-                                <!-- <th>Transaksi</th> -->
                                 <th>Tanggal Transaksi</th>
                                 <th>Tanggal Pembayaran</th>
                                 <th>Nominal</th>
@@ -45,10 +43,16 @@
                             <tr>
                                 <td style="width: 50px;">{{$number}}</td>
                                 <td>{!!status_transaksi($item->status)!!}</td>
-                                <td><a href="{{route('user-member.edit',$item->user_member_id)}}">{{isset($item->anggota->no_anggota_platinum) ? $item->anggota->no_anggota_platinum : ''}}</a></td>
-                                <td><a href="{{route('user-member.edit',$item->user_member_id)}}">{{isset($item->anggota->name) ? $item->anggota->name : ''}}</a></td>
+                                <td>
+                                    @if($item->jenis_transaksi==1)
+                                        <span class="badge badge-info">Anggota</span>
+                                    @endif
+                                    @if($item->jenis_transaksi==2)
+                                        <span class="badge badge-warning">Non Anggota</span>
+                                    @endif
+                                </td>
                                 <td><a href="{{route('transaksi.items',$item->id)}}">{{$item->no_transaksi}}</a></td>
-                                <td>{{metode_pembayaran($item->metode_pembayaran)}}</td>
+                                <td>{{$item->metode_pembayaran ? metode_pembayaran($item->metode_pembayaran) : '-'}}</td>
                                 <td>{{date('d-M-Y',strtotime($item->created_at))}}</td>
                                 <td>{{$item->payment_date ? date('d-M-Y',strtotime($item->payment_date)) : '-'}}</td>
                                 <td>

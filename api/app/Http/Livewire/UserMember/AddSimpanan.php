@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\JenisSimpanan;
 use App\Models\Simpanan;
 use App\Models\UserMember;
+use App\Models\UserMemberSimpanan;
 use App\Models\Transaksi;
 use Illuminate\Support\Facades\Http;
 
@@ -53,6 +54,42 @@ class AddSimpanan extends Component
         $transaksi->name = isset($data->jenis_simpanan->name) ? $data->jenis_simpanan->name :'-';
         $transaksi->status = 1;
         $transaksi->save();
+
+        $user_member_simpanan = UserMemberSimpanan::where(['jenis_simpanan_id'=>$this->jenis_simpanan_id,'user_member_id'=>$this->member->id])->first();
+        if(!$user_member_simpanan){
+            $user_member_simpanan = new UserMemberSimpanan;
+            $user_member_simpanan->user_member_id = $this->member->id;
+            $user_member_simpanan->jenis_simpanan_id = $this->jenis_simpanan_id;
+            $user_member_simpanan->amount = $this->amount;
+        }else{
+            $user_member_simpanan->amount = $user_member_simpanan->amount + $this->amount;
+        }
+        $user_member_simpanan->save();
+
+        $value = UserMemberSimpanan::where(['jenis_simpanan_id'=>$this->jenis_simpanan_id,'user_member_id'=>$this->member->id])->sum('amount');
+        $field = '';
+        if($this->jenis_simpanan_id==1){ // Pokok
+            $field = 'simpanan_pokok';
+        }
+        if($this->jenis_simpanan_id==2){ // Wajib
+            $field = 'simpanan_wajib';
+        }
+        if($this->jenis_simpanan_id==3){ // Sukarela
+            $field = 'simpanan_sukarela';
+        }
+        if($this->jenis_simpanan_id==4){ // Lain-lain
+            $field = 'simpanan_lain_lain';
+        }
+
+        // Sinkron Coopzone
+        $response = sinkronCoopzone([
+            'url'=>'koperasi/user/edit',
+            'field'=>$field,
+            'value'=>$value,
+            'no_anggota'=>$this->member->no_anggota_platinum
+        ]);
+
+        $this->member->save();
 
         // Sinkron Coopzone
         $response = sinkronCoopzone([
