@@ -39,6 +39,7 @@ class Upload extends Component
                 $produk = $i[3];
                 $price = $i[4];
                 $uom = $i[5];
+                $qty = $i[6];
 
                 $product = Product::where('kode_produksi',$barcode)->first();
                 if(!$product){
@@ -63,7 +64,7 @@ class Upload extends Component
                     $product_uom->save(); 
                 }
                 $product->product_uom_id = $product_uom->id;
-                $product->qty = 1;
+                $product->qty = $qty;
                 $product->save();
             }
         }

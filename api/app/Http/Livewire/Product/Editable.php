@@ -24,8 +24,8 @@ class Editable extends Component
     {
         $this->reset('msg_error');
         $field = $this->field;
-        if($field=='kode_produksi' and strlen($this->value)<13){
-            $this->msg_error = "Kode barcode harus 13 digit";
+        if($field=='kode_produksi' and strlen($this->value)<10){
+            $this->msg_error = "Kode barcode minimal harus 10 digit";
             return;
         }
         $data = Product::find($this->data);

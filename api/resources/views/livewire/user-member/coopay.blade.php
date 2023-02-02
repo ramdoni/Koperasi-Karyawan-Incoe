@@ -19,6 +19,10 @@
             <thead>
                 <tr style="background:#eee;">
                     <th style="width:50">No</th>
+                    <th>No Transaksi</th>
+                    <th>Metode Pembayaran</th>
+                    <th>Created</th>
+                    <th>Amount</th>
                 </tr>
             </thead>
         </table>

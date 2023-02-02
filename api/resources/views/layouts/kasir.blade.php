@@ -25,7 +25,6 @@
         <link rel="stylesheet" href="{{ asset('assets/css/custom.css').(env('APP_DEBUG')==true?'?date='.date('YmdHis') : '') }}">
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
         @stack('after-styles')
-
         @if (trim($__env->yieldContent('page-styles')))
             @yield('page-styles')
         @endif
@@ -48,22 +47,61 @@
             </div>
         </div>
         <div id="wrapper">
-            @include('layouts.navbar')
+        <nav class="navbar navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-btn">
+                    <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fa fa-bars"></i></button>
+                </div>
+                <div class="navbar-brand">    
+                    @if(get_setting('logo'))<a href="/"><img src="{{ get_setting('logo') }}" style="height:28px;width:auto;"  class="img-responsive logo"></a>@endif
+                </div>
+                <div class="navbar-right">
+                    <form id="navbar-search" class="navbar-form search-form">
+                        @php($kasir = \App\Models\UserKasir::where(['user_id'=>\Auth::user()->id,'status'=>0])->first())
+                        <div id="navbar-menu float-left">
+                            <ul class="nav navbar-nav">
+                                <li class="pr-5">
+                                    Starting Cash<br />
+                                    <label>Rp. {{$kasir ? format_idr($kasir->starting_cash) : '0'}}</label>
+                                </li>
+                                <li  class="pr-5">
+                                    <p>
+                                        Start Work<br />
+                                        <strong>{{$kasir ? date('d M Y H:i',strtotime($kasir->start_work_date)) : ''}}</strong>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                    <div id="navbar-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="d-none d-sm-inline-block d-md-none d-lg-inline-block">
+                                {{\Auth::user()->name}} <small>({{\Auth::user()->access->name}})</small>
+                            </li>
+                            <li class="mx-2">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_end_work"  class="btn btn-danger">End Work <i class="fa fa-arrow-right"></i></a>
+                            </li>
+                            <li><a href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="icon-menu"><i class="icon-login"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
             @include('layouts.sidebar')
             <div id="main-content">
                 <div class="container-fluid">
                     <div class="block-header">
                         @if(session()->has('message-success'))
-                        <div class="alert alert-success alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <i class="fa fa-check-circle"></i> {{session('message-success')}}
-                        </div>
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <i class="fa fa-check-circle"></i> {{session('message-success')}}
+                            </div>
                         @endif
                         @if(session()->has('message-error'))
-                        <div class="alert alert-danger alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <i class="fa fa-times-circle"></i>  {{session('message-error')}}
-                        </div>
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <i class="fa fa-times-circle"></i>  {{session('message-error')}}
+                            </div>
                         @endif
                     </div>
                     @yield('content')

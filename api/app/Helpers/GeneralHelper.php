@@ -88,7 +88,7 @@ function status_transaksi($status){
           return "<span class=\"badge badge-danger\">Gagal</span>"; 
           break;
         default:
-          return '-';
+            return "<span class=\"badge badge-warning\">Batal</span>"; 
         break;
       }
 }
@@ -117,7 +117,7 @@ function metode_pembayaran($key=''){
             return "PAYROLL";
             break;
         default:
-            return '-';
+            return 'TUNAI';
         break;
     }
 }

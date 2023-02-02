@@ -65,13 +65,13 @@
                                 <i class="fa fa-times-circle"></i>  {{session('message-error')}}
                             </div>
                         @endif
-                        @if (trim($__env->yieldContent('title')))
+                        <!-- @if (trim($__env->yieldContent('title')))
                         <div class="row">
                                 <div class="col-lg-5 col-md-8 col-sm-12">                        
                                     <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> @yield('title')</h2>
                                 </div>            
                             </div> 
-                        @endif
+                        @endif -->
                     </div>
                     @yield('content')
                     {{$slot}}
@@ -105,6 +105,9 @@
         <script>
             Livewire.on('error-message',(msg)=>{
                 alert(msg);
+            });
+            Livewire.on('close-modal',()=>{
+                $('.modal').modal('hide');
             });
 
             @if(Auth::check())

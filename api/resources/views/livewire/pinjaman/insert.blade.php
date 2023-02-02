@@ -83,7 +83,7 @@
                         <thead>
                             <tr>
                                 <th rowspan="2">Bulan</th>                                    
-                                <th rowspan="2">Pembiayan</th>                                    
+                                <th rowspan="2">Pembiayaan</th>                                    
                                 <th colspan="2" class="text-center">Angsuran</th>                                    
                                 <th colspan="2" class="text-center">Jasa</th>                                    
                                 <th rowspan="2" class="text-center">Tagihan</th>

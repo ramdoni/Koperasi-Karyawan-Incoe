@@ -32,10 +32,8 @@
                                 <th>Kode Produksi / Barcode</th>
                                 <th>Produk</th>
                                 <th>UOM</th>
-                                <th>Stok</th>
+                                <th class="text-center">Stok</th>
                                 <th>Expired</th>
-                                <th class="text-right">HPP</th>
-                                <th class="text-right">Margin</th>
                                 <th class="text-right">Harga Jual</th>
                                 <th></th>
                            </tr>
@@ -55,14 +53,10 @@
                                     </td>
                                     <td></td>
                                     <td>@livewire('product.editable',['field'=>'kode_produksi','data'=>$item->kode_produksi,'id'=>$item->id],key('kode_produksi'.$item->id))</td>
-                                    <td>
-                                        <a href="{{route('product.detail',$item->id)}}">{{$item->keterangan}}</a>
-                                    </td>
+                                    <td><a href="{{route('konsinyasi.detail',$item->id)}}">{{$item->keterangan}}</a></td>
                                     <td>@livewire('product.editable',['field'=>'product_uom_id','data'=>(isset($item->uom->name) ? $item->uom->name : ''),'id'=>$item->id],key('uom'.$item->id))</td>
-                                    <td>@livewire('product.editable',['field'=>'qty','data'=>$item->qty,'id'=>$item->id],key('qty'.$item->id))</td>
+                                    <td class="text-center">@livewire('product.editable',['field'=>'qty','data'=>$item->qty,'id'=>$item->id],key('qty'.$item->id))</td>
                                     <td>{{$item->expired_date ? date('d//M/Y',strtotime($item->expired_date)) : '-'}}</td>
-                                    <td class="text-right">{{format_idr($item->harga)}}</td>
-                                    <td class="text-right">{{format_idr($item->harga_jual-$item->harga)}}</td>
                                     <td class="text-right">{{format_idr($item->harga_jual)}}</td>
                                     <td></td>
                                 </tr>
@@ -73,31 +67,6 @@
                 </div>
                 <br />
                 {{$data->links()}}
-            </div>
-        </div>
-    </div>
-
-    <div wire:ignore.self class="modal fade" id="modal_set_password" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form wire:submit.prevent="changePassword">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sign-in"></i> Set Password</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true close-btn">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="text" class="form-control" wire:model="password" />
-                            @error('password') <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger close-modal">Submit</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

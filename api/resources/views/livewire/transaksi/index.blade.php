@@ -30,10 +30,10 @@
                                 <th>Status</th>
                                 <th>Jenis Transaksi</th>
                                 <th>No Transaksi</th>
-                                <th>Metode Pembayaran</th>
+                                <th class="text-center">Metode Pembayaran</th>
                                 <th>Tanggal Transaksi</th>
                                 <th>Tanggal Pembayaran</th>
-                                <th>Nominal</th>
+                                <th class="text-right">Nominal</th>
                                 <th></th>
                            </tr>
                         </thead>
@@ -52,10 +52,10 @@
                                     @endif
                                 </td>
                                 <td><a href="{{route('transaksi.items',$item->id)}}">{{$item->no_transaksi}}</a></td>
-                                <td>{{$item->metode_pembayaran ? metode_pembayaran($item->metode_pembayaran) : '-'}}</td>
+                                <td class="text-center">{{$item->metode_pembayaran ? metode_pembayaran($item->metode_pembayaran) : 'TUNAI'}}</td>
                                 <td>{{date('d-M-Y',strtotime($item->created_at))}}</td>
                                 <td>{{$item->payment_date ? date('d-M-Y',strtotime($item->payment_date)) : '-'}}</td>
-                                <td>
+                                <td class="text-right">
                                     @if($item->type_amount==0)
                                         <span class="text-success" title="In"><i class="fa fa-arrow-down"></i></span>
                                     @endif
