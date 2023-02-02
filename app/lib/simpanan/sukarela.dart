@@ -63,7 +63,6 @@ class SimpananSukarelaScreenState extends State<SimpananSukarelaScreen> {
 
   Widget build(context) {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
@@ -98,17 +97,6 @@ class SimpananSukarelaScreenState extends State<SimpananSukarelaScreen> {
                                   margin: EdgeInsets.only(top: 15),
                                   child: Row(
                                     children: [
-                                      Expanded(
-                                          child: Column(
-                                        children: [
-                                          Container(
-                                              margin: EdgeInsets.only(bottom: 5),
-                                              child: Image.asset('icon_transfer.png')),
-                                          const Text("Transfer",
-                                              style: TextStyle(
-                                                  fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white))
-                                        ],
-                                      )),
                                       Expanded(
                                           child: Column(
                                         children: [

@@ -1,4 +1,5 @@
 // ignore: file_names
+import 'package:coopzone_application/helpers/util.dart';
 import 'package:flutter/material.dart';
 import '../copstore.dart';
 import '../home.dart';
@@ -54,12 +55,12 @@ class bottomNavBar extends StatelessWidget {
             Icons.business,
             size: tabActive == 1 ? 30 : 28,
           ),
-          label: 'Koperasi',
+          label: 'Simpanan',
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
             icon: Icon(
               Icons.shopping_bag,
-              color: Color.fromARGB(255, 44, 188, 25),
+              color: getColorFromHex('4ec9b2'),
               size: 40,
             ),
             label: 'CoopStore',
@@ -77,7 +78,7 @@ class bottomNavBar extends StatelessWidget {
         ),
       ],
       currentIndex: tabActive,
-      selectedItemColor: Color.fromARGB(255, 44, 188, 25),
+      selectedItemColor: getColorFromHex('4ec9b2'),
       selectedFontSize: 13,
       unselectedItemColor: Colors.grey[600],
       onTap: (int index) {

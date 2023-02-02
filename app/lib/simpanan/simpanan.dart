@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:coopzone_application/simpanan/lainnya.dart';
 import 'package:coopzone_application/simpanan/pokok.dart';
 import 'package:coopzone_application/simpanan/sukarela.dart';
@@ -16,6 +18,38 @@ class SimpananScreen extends StatefulWidget {
 }
 
 class SimpananScreenState extends State<SimpananScreen> {
+  bool isLoading = false;
+  Future _loadSimpanan() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      getData('/simpanan').then((res) {
+        log(res.data.toString());
+        setState(() {
+          if (res.data['status'] == 'success') {
+            session.simpananPokok = res.data['data']['simpanan_pokok'];
+            session.simpananWajib = res.data['data']['simpanan_wajib'];
+            session.simpananSukarela = res.data['data']['simpanan_sukarela'];
+            session.simpananLainlain = res.data['data']['simpanan_lain_lain'];
+            session.shu = res.data['data']['shu'];
+          } else {
+            bottomInfo(context, res.data['message']);
+          }
+          isLoading = false;
+        });
+      });
+    } catch (error) {
+      bottomInfo(context, error.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSimpanan();
+  }
+
   Widget build(context) {
     return Scaffold(
       bottomNavigationBar: bottomNavBar(tabActive: 1),

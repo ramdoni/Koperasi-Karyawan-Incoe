@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:coopzone_application/belanja/riwayat.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../helpers/util.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,7 +14,7 @@ class PulsaScreen extends StatefulWidget {
 }
 
 class PulsaScreenState extends State<PulsaScreen> {
-  bool isLoading = false;
+  bool isLoading = false, isSubmit = false;
   final TextEditingController _controllerNo = TextEditingController();
   Contact _contact;
   List dataPulsa, dataPaketdata;
@@ -150,19 +149,19 @@ class PulsaScreenState extends State<PulsaScreen> {
             child: Column(
           children: [
             Container(
-                margin: EdgeInsets.only(top: 10),
+                // margin: EdgeInsets.only(top: 10),
                 padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
                 color: Colors.white,
                 child: Column(
                   children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(top: 20, bottom: 5),
+                      // margin: const EdgeInsets.only(bottom: 5),
                       child:
                           const Text("Masukan No Telepon", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
                     ),
                     Container(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
                         child: Row(children: [
                           Expanded(
                               flex: 9,
@@ -208,7 +207,7 @@ class PulsaScreenState extends State<PulsaScreen> {
                       labelColor: getColorFromHex('32c8b1'),
                       unselectedLabelColor: Colors.black,
                       indicatorColor: getColorFromHex('32c8b1'),
-                      tabs: [Tab(text: 'Pulsa'), Tab(text: 'Paket Data')],
+                      tabs: const [Tab(text: 'Pulsa'), Tab(text: 'Paket Data')],
                     ),
                   ),
                   Container(
@@ -295,7 +294,6 @@ class PulsaScreenState extends State<PulsaScreen> {
                                           );
                                         })))),
                         Container(
-                            // height: MediaQuery.of(context).size.height - 320,
                             height: 350,
                             padding: EdgeInsets.only(top: 10),
                             child: (isLoading
@@ -386,11 +384,11 @@ class PulsaScreenState extends State<PulsaScreen> {
             Container(
                 width: MediaQuery.of(context).size.width * 0.95,
                 alignment: Alignment.topLeft,
-                padding: EdgeInsets.only(top: 5, bottom: 10),
+                padding: EdgeInsets.only(top: 5, bottom: 5),
                 child: Column(children: [
                   Container(
                       padding: EdgeInsets.only(bottom: 10, top: 10),
-                      margin: const EdgeInsets.only(bottom: 8, top: 10),
+                      margin: const EdgeInsets.only(bottom: 5, top: 10),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(
@@ -400,7 +398,7 @@ class PulsaScreenState extends State<PulsaScreen> {
                       child: InkWell(
                           onTap: () {
                             setState(() {
-                              metodePembayaran = 1;
+                              metodePembayaran = 5;
                             });
                           },
                           child: Row(
@@ -409,17 +407,17 @@ class PulsaScreenState extends State<PulsaScreen> {
                               Expanded(
                                   flex: 7,
                                   child: Container(
-                                      child: Text("SimpananKu",
+                                      child: Text("Co-Pay",
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w600,
-                                              color: (metodePembayaran == 1
-                                                  ? getColorFromHex('#32C8B1')
+                                              color: (metodePembayaran == 5
+                                                  ? getColorFromHex('32C8B1')
                                                   : Colors.black))))),
                               Expanded(
                                   flex: 2,
                                   child: Text(session.simpananKu,
-                                      style: TextStyle(fontSize: 12, color: getColorFromHex('CCCCCC')))),
+                                      style: TextStyle(fontSize: 12, color: Colors.grey[600]))),
                             ],
                           ))),
                   Container(
@@ -427,7 +425,7 @@ class PulsaScreenState extends State<PulsaScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(
-                            width: 1.5, color: metodePembayaran == 3 ? getColorFromHex('#32C8B1') : Colors.grey[200]),
+                            width: 1.5, color: metodePembayaran == 3 ? getColorFromHex('32C8B1') : Colors.grey[200]),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
                       padding: EdgeInsets.only(bottom: 10, top: 10),
@@ -453,7 +451,7 @@ class PulsaScreenState extends State<PulsaScreen> {
                               Expanded(
                                   flex: 2,
                                   child: Text(session.sisaPlafond,
-                                      style: TextStyle(fontSize: 12, color: getColorFromHex('CCCCCC')))),
+                                      style: TextStyle(fontSize: 12, color: Colors.grey[600]))),
                             ],
                           )))
                 ])),
@@ -467,6 +465,9 @@ class PulsaScreenState extends State<PulsaScreen> {
                         height: 40.0,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32.0),
+                            ),
                             backgroundColor: getColorFromHex("4ec9b2"),
                           ),
                           // ignore: void_checks
@@ -476,8 +477,10 @@ class PulsaScreenState extends State<PulsaScreen> {
                               return false;
                             }
 
-                            if (metodePembayaran == "") {
+                            // ignore: unrelated_type_equality_checks
+                            if (metodePembayaran.isNaN) {
                               bottomInfo(context, "Metode Pembayaran harus dipilih");
+
                               return false;
                             }
                             if (productCode == "") {
@@ -485,18 +488,36 @@ class PulsaScreenState extends State<PulsaScreen> {
                               return false;
                             }
 
-                            sendData('/pulsa/transaction', {
-                              'no': _controllerNo.text,
-                              'product_code': productCode,
-                              'metode_pembayaran': metodePembayaran
-                            }).then((response) {
-                              log(response.data.toString());
-                              if (response.data['message'] == 'success') {
-                                displayDialog(context, 'Info', "Transaksi anda berhasil di submit, silakan menunggu.");
-                              }
-                            });
+                            if (isSubmit == false) {
+                              setState(() {
+                                isSubmit = true;
+                              });
+                              sendData('/pulsa/transaction', {
+                                'no': _controllerNo.text,
+                                'product_code': productCode,
+                                'metode_pembayaran': metodePembayaran
+                              }).then((response) {
+                                if (response.data['message'] == 'success') {
+                                  displayDialog(
+                                      context, 'Info', "Transaksi anda berhasil di submit, silakan menunggu.");
+                                } else {
+                                  displayDialog(context, 'Info', response.data['message']);
+                                }
+
+                                setState(() {
+                                  isSubmit = false;
+                                });
+                              });
+                            }
                           },
-                          child: const Text('Submit', style: TextStyle(color: Colors.white, fontSize: 12)),
+                          child: (isSubmit
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ))
+                              : const Text('Submit', style: TextStyle(color: Colors.white, fontSize: 12))),
                         ))))
           ],
         )));

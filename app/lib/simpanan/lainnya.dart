@@ -3,7 +3,6 @@ import 'package:coopzone_application/simpanan/simpanan_add.dart';
 import 'package:flutter/material.dart';
 import '../helpers/util.dart';
 import '../helpers/session.dart' as session;
-import '../kirim_uang.dart';
 
 class SimpananLainnyaScreen extends StatefulWidget {
   @override
@@ -46,7 +45,7 @@ class SimpananLainnyaScreenState extends State<SimpananLainnyaScreen> {
       setState(() {
         isLoading = true;
       });
-      getData('/simpanan/lainnya').then((res) {
+      getData('/simpanan').then((res) {
         log(res.toString());
         setState(() {
           if (res.data['status'] == 'success') {
@@ -101,24 +100,6 @@ class SimpananLainnyaScreenState extends State<SimpananLainnyaScreen> {
                                           child: InkWell(
                                               onTap: () {
                                                 Navigator.of(context)
-                                                    .push(MaterialPageRoute(builder: (context) => KirimUangScreen()));
-                                              },
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                      margin: EdgeInsets.only(bottom: 5),
-                                                      child: Image.asset('icon_transfer.png')),
-                                                  const Text("Transfer",
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.w700,
-                                                          color: Colors.white))
-                                                ],
-                                              ))),
-                                      Expanded(
-                                          child: InkWell(
-                                              onTap: () {
-                                                Navigator.of(context)
                                                     .push(MaterialPageRoute(builder: (context) => SimpananAddScreen()));
                                               },
                                               child: Column(
@@ -133,16 +114,6 @@ class SimpananLainnyaScreenState extends State<SimpananLainnyaScreen> {
                                                           color: Colors.white))
                                                 ],
                                               ))),
-                                      Expanded(
-                                          child: Column(
-                                        children: [
-                                          Container(
-                                              margin: EdgeInsets.only(bottom: 5), child: Image.asset('icon_tarik.png')),
-                                          const Text("Tarik",
-                                              style: TextStyle(
-                                                  fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white))
-                                        ],
-                                      ))
                                     ],
                                   ))
                             ],

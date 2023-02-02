@@ -1,11 +1,13 @@
 import 'package:coopzone_application/helpers/bottomNavBar.dart';
+import 'package:coopzone_application/profile/scan_product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../helpers/util.dart';
 import '../helpers/session.dart' as session;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import '../home.dart';
+import 'change_password.dart';
+import 'change_profile.dart';
 
 final _storage = FlutterSecureStorage();
 
@@ -59,7 +61,7 @@ class ProfileIndexScreenState extends State<ProfileIndexScreen> {
                                   margin: EdgeInsets.only(bottom: 15),
                                   alignment: Alignment.topLeft,
                                   child: const Text("Profile",
-                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                                 ),
                                 Container(
                                     child: Row(children: [
@@ -69,7 +71,9 @@ class ProfileIndexScreenState extends State<ProfileIndexScreen> {
                                   ),
                                   Expanded(
                                       flex: 9,
-                                      child: Container(margin: EdgeInsets.only(left: 5), child: Text(session.name_))),
+                                      child: Container(
+                                          margin: EdgeInsets.only(left: 5),
+                                          child: Text(session.name_ + " / " + session.noAnggota))),
                                 ]))
                               ],
                             )),
@@ -82,63 +86,319 @@ class ProfileIndexScreenState extends State<ProfileIndexScreen> {
                               children: [
                                 Container(
                                     alignment: Alignment.topLeft,
-                                    child: Text("Akun", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600))),
-                                Container(
-                                    padding: EdgeInsets.only(bottom: 15),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(width: 1.5, color: getColorFromHex('eeeeee')),
+                                    child: Text("Akun", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
+                                InkWell(
+                                  child: Container(
+                                      padding: EdgeInsets.only(bottom: 15),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(width: 1.5, color: getColorFromHex('eeeeee')),
+                                        ),
                                       ),
-                                    ),
-                                    margin: EdgeInsets.only(top: 20),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                                margin: EdgeInsets.only(right: 10),
-                                                child: Icon(CupertinoIcons.person_crop_circle_badge_exclam))),
-                                        Expanded(flex: 8, child: Text("Ubah Profile")),
-                                        Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                                child: InkWell(
-                                                    onTap: () {
-                                                      // Navigator.of(context).push(MaterialPageRoute(
-                                                      //     builder: (context) => SimpananSukarelaScreen()));
-                                                    },
-                                                    child: Icon(
-                                                      CupertinoIcons.chevron_forward,
-                                                      color: getColorFromHex('0f0f0f'),
-                                                      size: 25.0,
-                                                    ))))
-                                      ],
-                                    )),
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  margin: EdgeInsets.only(right: 10),
+                                                  child: Icon(CupertinoIcons.person_crop_circle_badge_exclam,
+                                                      color: getColorFromHex("4ec9b2")))),
+                                          Expanded(
+                                              flex: 8,
+                                              child:
+                                                  Text("Ubah Profile", style: TextStyle(fontWeight: FontWeight.w600))),
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  child: Icon(
+                                                CupertinoIcons.chevron_forward,
+                                                color: getColorFromHex('0f0f0f'),
+                                                size: 25.0,
+                                              )))
+                                        ],
+                                      )),
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(builder: (context) => ProfileChangeScreen()));
+                                  },
+                                ),
+                                InkWell(
+                                  child: Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  margin: EdgeInsets.only(right: 10),
+                                                  child: Icon(CupertinoIcons.lock_circle,
+                                                      color: getColorFromHex("4ec9b2")))),
+                                          const Expanded(
+                                              flex: 8,
+                                              child:
+                                                  Text("Ubah Password", style: TextStyle(fontWeight: FontWeight.w600))),
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  child: InkWell(
+                                                      onTap: () {
+                                                        // Navigator.of(context).push(MaterialPageRoute(
+                                                        //     builder: (context) => SimpananSukarelaScreen()));
+                                                      },
+                                                      child: Icon(
+                                                        CupertinoIcons.chevron_forward,
+                                                        color: getColorFromHex('0f0f0f'),
+                                                        size: 25.0,
+                                                      ))))
+                                        ],
+                                      )),
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(builder: (context) => ChangePasswordScreen()));
+                                  },
+                                ),
+                              ],
+                            )),
+                        Container(
+                            margin: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.all(20),
+                            color: Colors.white,
+                            alignment: Alignment.topLeft,
+                            child: Column(
+                              children: [
                                 Container(
-                                    margin: EdgeInsets.only(top: 20),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                                margin: EdgeInsets.only(right: 10),
-                                                child: Icon(CupertinoIcons.lock_circle))),
-                                        const Expanded(flex: 8, child: Text("Ubah Password")),
-                                        Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                                child: InkWell(
-                                                    onTap: () {
-                                                      // Navigator.of(context).push(MaterialPageRoute(
-                                                      //     builder: (context) => SimpananSukarelaScreen()));
-                                                    },
-                                                    child: Icon(
+                                    alignment: Alignment.topLeft,
+                                    child:
+                                        Text("Tentang", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
+                                InkWell(
+                                  child: Container(
+                                      padding: EdgeInsets.only(bottom: 15),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(width: 1.5, color: getColorFromHex('eeeeee')),
+                                        ),
+                                      ),
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  margin: EdgeInsets.only(right: 10),
+                                                  child: Icon(CupertinoIcons.star_circle,
+                                                      color: getColorFromHex("4ec9b2")))),
+                                          Expanded(
+                                              flex: 8,
+                                              child: Text("Keuntungan Menggunakan Coopzone",
+                                                  style: TextStyle(fontWeight: FontWeight.w600))),
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  child: Icon(
+                                                CupertinoIcons.chevron_forward,
+                                                color: getColorFromHex('0f0f0f'),
+                                                size: 25.0,
+                                              )))
+                                        ],
+                                      )),
+                                  onTap: () {
+                                    bottomInfo(context, "Fitur masih dalam pengembangan");
+                                  },
+                                ),
+                                InkWell(
+                                  child: Container(
+                                      margin: EdgeInsets.only(top: 15),
+                                      padding: EdgeInsets.only(bottom: 15),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(width: 1.5, color: getColorFromHex('eeeeee')),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  margin: EdgeInsets.only(right: 10),
+                                                  child: Icon(Icons.lightbulb, color: getColorFromHex("4ec9b2")))),
+                                          const Expanded(
+                                              flex: 8,
+                                              child: Text("Panduan Coopzone",
+                                                  style: TextStyle(fontWeight: FontWeight.w600))),
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  child: InkWell(
+                                                      onTap: () {
+                                                        // Navigator.of(context).push(MaterialPageRoute(
+                                                        //     builder: (context) => SimpananSukarelaScreen()));
+                                                      },
+                                                      child: Icon(
+                                                        CupertinoIcons.chevron_forward,
+                                                        color: getColorFromHex('0f0f0f'),
+                                                        size: 25.0,
+                                                      ))))
+                                        ],
+                                      )),
+                                  onTap: () {
+                                    bottomInfo(context, "Fitur masih dalam pengembangan");
+                                  },
+                                ),
+                                InkWell(
+                                  child: Container(
+                                      margin: EdgeInsets.only(top: 15),
+                                      padding: EdgeInsets.only(bottom: 15),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(width: 1.5, color: getColorFromHex('eeeeee')),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  margin: EdgeInsets.only(right: 10),
+                                                  child:
+                                                      Icon(Icons.list_alt_outlined, color: getColorFromHex("4ec9b2")))),
+                                          const Expanded(
+                                              flex: 8,
+                                              child: Text("Syarat dan Ketentuan",
+                                                  style: TextStyle(fontWeight: FontWeight.w600))),
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  child: InkWell(
+                                                      onTap: () {
+                                                        // Navigator.of(context).push(MaterialPageRoute(
+                                                        //     builder: (context) => SimpananSukarelaScreen()));
+                                                      },
+                                                      child: Icon(
+                                                        CupertinoIcons.chevron_forward,
+                                                        color: getColorFromHex('0f0f0f'),
+                                                        size: 25.0,
+                                                      ))))
+                                        ],
+                                      )),
+                                  onTap: () {
+                                    bottomInfo(context, "Fitur masih dalam pengembangan");
+                                  },
+                                ),
+                                InkWell(
+                                  child: Container(
+                                      margin: EdgeInsets.only(top: 15),
+                                      padding: EdgeInsets.only(bottom: 15),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(width: 1.5, color: getColorFromHex('eeeeee')),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  margin: EdgeInsets.only(right: 10),
+                                                  child: Icon(Icons.shield, color: getColorFromHex("4ec9b2")))),
+                                          const Expanded(
+                                              flex: 8,
+                                              child: Text("Kebijakan Privacy",
+                                                  style: TextStyle(fontWeight: FontWeight.w600))),
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  child: InkWell(
+                                                      onTap: () {
+                                                        // Navigator.of(context).push(MaterialPageRoute(
+                                                        //     builder: (context) => SimpananSukarelaScreen()));
+                                                      },
+                                                      child: Icon(
+                                                        CupertinoIcons.chevron_forward,
+                                                        color: getColorFromHex('0f0f0f'),
+                                                        size: 25.0,
+                                                      ))))
+                                        ],
+                                      )),
+                                  onTap: () {
+                                    bottomInfo(context, "Fitur masih dalam pengembangan");
+                                  },
+                                ),
+                              ],
+                            )),
+                        Container(
+                            margin: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.all(20),
+                            color: Colors.white,
+                            alignment: Alignment.topLeft,
+                            child: Column(
+                              children: [
+                                Container(
+                                    alignment: Alignment.topLeft,
+                                    child:
+                                        Text("Bantuan", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
+                                InkWell(
+                                  child: Container(
+                                      padding: EdgeInsets.only(bottom: 15),
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  margin: EdgeInsets.only(right: 10),
+                                                  child: Icon(CupertinoIcons.info, color: getColorFromHex("4ec9b2")))),
+                                          Expanded(
+                                              flex: 8,
+                                              child:
+                                                  Text("Pusat Bantuan", style: TextStyle(fontWeight: FontWeight.w600))),
+                                          Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                  child: Icon(
+                                                CupertinoIcons.chevron_forward,
+                                                color: getColorFromHex('0f0f0f'),
+                                                size: 25.0,
+                                              )))
+                                        ],
+                                      )),
+                                  onTap: () {
+                                    bottomInfo(context, 'Fitur masih dalam pengembananga.');
+                                  },
+                                ),
+                                (session.isKasir == 1
+                                    ? InkWell(
+                                        child: Container(
+                                            padding: EdgeInsets.only(bottom: 15),
+                                            margin: EdgeInsets.only(top: 20),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                        margin: EdgeInsets.only(right: 10),
+                                                        child: Icon(CupertinoIcons.barcode,
+                                                            color: getColorFromHex("4ec9b2")))),
+                                                Expanded(
+                                                    flex: 8,
+                                                    child: Text("Scan Produk",
+                                                        style: TextStyle(fontWeight: FontWeight.w600))),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                        child: Icon(
                                                       CupertinoIcons.chevron_forward,
                                                       color: getColorFromHex('0f0f0f'),
                                                       size: 25.0,
-                                                    ))))
-                                      ],
-                                    )),
+                                                    )))
+                                              ],
+                                            )),
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(builder: (context) => ScanProductScreen()));
+                                        },
+                                      )
+                                    : Container(height: 0)),
                               ],
                             )),
                         Container(

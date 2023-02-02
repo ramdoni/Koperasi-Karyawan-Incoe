@@ -187,6 +187,8 @@ Future<Response> submitPendaftaran(String url, Map<String, dynamic> data, Map<St
 
 Future<Response> sendData(String url, Map<String, dynamic> data) async {
   try {
+    log("URL : $url");
+    log('Data : ' + data.toString());
     var formData = FormData.fromMap(data);
     Dio dio = new Dio();
     dio.options.headers["Authorization"] = "Bearer " + session.token;

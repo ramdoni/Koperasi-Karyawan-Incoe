@@ -124,13 +124,18 @@ class InboxScreenState extends State<InboxScreen> with TickerProviderStateMixin 
                                               // height: 70,
                                               padding: const EdgeInsets.only(
                                                   left: 10.0, right: 10.0, top: 15.0, bottom: 0.0),
-                                              decoration: BoxDecoration(color: Colors.white),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                              ),
                                               margin: const EdgeInsets.only(bottom: 10),
                                               child: Column(
                                                 children: [
                                                   Container(
+                                                      alignment: Alignment.topLeft,
                                                       child: Text(data[index]['message'],
-                                                          style: TextStyle(color: getColorFromHex('798289')))),
+                                                          style: TextStyle(
+                                                              color: getColorFromHex('798289'), fontSize: 12))),
                                                   Container(
                                                     alignment: Alignment.bottomRight,
                                                     margin: EdgeInsets.only(top: 5, bottom: 5),

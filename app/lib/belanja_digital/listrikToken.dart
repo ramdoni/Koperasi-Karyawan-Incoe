@@ -456,7 +456,7 @@ class ListrikTokenScreenState extends State<ListrikTokenScreen> with TickerProvi
             (_msgErrorTagihan != ""
                 ? Container(
                     alignment: Alignment.topLeft,
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    margin: EdgeInsets.only(left: 20, bottom: 10),
                     child: Text(_msgErrorTagihan, style: TextStyle(color: Colors.red, fontSize: 12)))
                 : Container(
                     height: 0,
@@ -653,7 +653,7 @@ class ListrikTokenScreenState extends State<ListrikTokenScreen> with TickerProvi
                               Expanded(
                                   flex: 7,
                                   child: Container(
-                                      child: Text("Simpanan Ku",
+                                      child: Text("Co-Pay",
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w600,

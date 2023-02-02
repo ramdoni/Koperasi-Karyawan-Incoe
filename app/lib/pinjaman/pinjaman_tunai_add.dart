@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../helpers/util.dart';
+import 'pinjaman_tunai.dart';
 
 class PinjamanTunaiAddScreen extends StatefulWidget {
   @override
@@ -11,11 +13,14 @@ class PinjamanTunaiAddScreen extends StatefulWidget {
 }
 
 class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
+  final TextEditingController _controller = TextEditingController();
+  String _formatNumber(String s) => NumberFormat.decimalPattern('en').format(int.parse(s));
+
   Map dataKuotaPinjaman = {}, data = {};
   List dataDurasi = [];
   int durasiPinjaman = 0, metodePencairan = 0, bankId = 0;
   bool proteksiPinjaman = false, isSubmitPinjaman = false, isHitung = false;
-  String angsuranPerbulan;
+  String angsuranPerbulan = "", proteksiPinjamanAmount = "", platformFee = "", keperuntukan = "";
   final TextEditingController _controllerJumlahPinjaman = TextEditingController();
 
   @override
@@ -42,11 +47,6 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
 
   Future _hitung() async {
     try {
-      if (int.parse(_controllerJumlahPinjaman.text) < 500000) {
-        bottomInfo(context, "Minimal Peminjaman Rp. 500.000,-");
-
-        return false;
-      }
       setState(() {
         isHitung = true;
       });
@@ -54,15 +54,18 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
         sendData('/pembiayaan/tunai/hitung',
             {'jumlah_pinjaman': _controllerJumlahPinjaman.text, 'bulan': durasiPinjaman}).then((res) {
           setState(() {
-            log(res.data.toString());
             if (res.data['status'] == 'success') {
               angsuranPerbulan = res.data['angsuran_perbulan'];
               data = res.data['data'];
               dataDurasi = res.data['items'];
+              proteksiPinjamanAmount = res.data['proteksi_pinjaman'];
+              platformFee = res.data['platform_fee'];
             } else {
               bottomInfo(context, res.data['message']);
             }
-            isHitung = false;
+            setState(() {
+              isHitung = false;
+            });
           });
         });
       }
@@ -71,26 +74,73 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
     }
   }
 
+  void displayDialog(context, title, message) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+              actions: [
+                ButtonTheme(
+                  minWidth: double.infinity,
+                  height: 50.0,
+                  child: SizedBox(
+                      height: 30.0,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: getColorFromHex("4ec9b2"),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => PinjamanTunaiScreen()));
+                          },
+                          child: const Text("Oke"))),
+                )
+              ],
+              title: Row(children: [
+                Container(
+                    margin: const EdgeInsets.only(right: 10.0), child: Icon(Icons.info, color: Colors.amber[800])),
+                Text(title, style: TextStyle(fontSize: 16))
+              ]),
+              content: Text(message, style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 14))));
+
   Future _submit() async {
-    setState(() {
-      isSubmitPinjaman = true;
-    });
     try {
+      if (_controllerJumlahPinjaman.text == "") {
+        bottomInfo(context, "Nominal Pinjaman harus diisi");
+
+        return false;
+      }
+      if (durasiPinjaman == 0) {
+        bottomInfo(context, "Durasi Pinjaman harus dipilih");
+
+        return false;
+      }
+
+      if (keperuntukan == "") {
+        bottomInfo(context, "Peruntukan harus diisi");
+
+        return false;
+      }
+
+      setState(() {
+        isSubmitPinjaman = true;
+      });
       if (_controllerJumlahPinjaman.text != "" && durasiPinjaman > 0 && metodePencairan > 0) {
         sendData('/pembiayaan/tunai/store', {
           'jumlah_pinjaman': _controllerJumlahPinjaman.text,
           'bulan': durasiPinjaman,
           'metode_pencairan': metodePencairan,
-          'bank_id': bankId
+          'bank_id': bankId,
+          'keperuntukan': keperuntukan
         }).then((res) {
           setState(() {
             log(res.data.toString());
             if (res.data['status'] == 'success') {
+              displayDialog(context, "Success", res.data['message']);
             } else {
               bottomInfo(context, res.data['message']);
             }
             setState(() {
-              isSubmitPinjaman = true;
+              isSubmitPinjaman = false;
             });
           });
         });
@@ -238,10 +288,10 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
   List<Container> _buildListToken(int count) => List.generate(
       count,
       (i) => Container(
-          // padding: EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
-            border:
-                Border.all(width: 1.5, color: (i + 1) == durasiPinjaman ? getColorFromHex("4ec9b2") : Colors.grey[200]),
+            border: Border(
+              bottom: BorderSide(width: 0.5, color: getColorFromHex('32C8B1')),
+            ),
           ),
           child: InkWell(
             child: Row(
@@ -254,14 +304,25 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: durasiPinjaman == (i + 1) ? getColorFromHex("4ec9b2") : Colors.black)))),
-                Expanded(flex: 5, child: Text(dataDurasi[i]['total_angsuran_perbulan']))
+                                color: dataDurasi[i]['number'] == durasiPinjaman
+                                    ? getColorFromHex("4ec9b2")
+                                    : Colors.black)))),
+                Expanded(
+                    flex: 3,
+                    child: Text(dataDurasi[i]['total_angsuran_perbulan'],
+                        style: TextStyle(
+                            color:
+                                dataDurasi[i]['number'] == durasiPinjaman ? getColorFromHex("4ec9b2") : Colors.black))),
+                Expanded(
+                    flex: 2,
+                    child: dataDurasi[i]['number'] == durasiPinjaman
+                        ? Container(child: Icon(Icons.check_outlined, color: getColorFromHex("4ec9b2")))
+                        : Container(height: 0, width: 0))
               ],
             ),
             onTap: () {
               setState(() {
-                // durasiPinjaman = i + 1;
-                // _hitung();
+                durasiPinjaman = dataDurasi[i]['number'];
               });
             },
           )));
@@ -305,25 +366,28 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
                               flex: 7,
                               child: Container(
                                   child: TextFormField(
-                                keyboardType: TextInputType.number,
-                                maxLines: null,
-                                controller: _controllerJumlahPinjaman,
-                                validator: (val) {
-                                  if (val.isEmpty) {
-                                    return "Nominal pinjaman harus isi";
-                                  }
-                                  return null;
-                                },
-                                style: const TextStyle(fontWeight: FontWeight.normal),
-                                decoration: const InputDecoration(
-                                    hintStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 13.0),
-                                    contentPadding: EdgeInsets.only(top: 0, bottom: 0, right: 5, left: 10),
-                                    hintText: "Min : Rp. 500.000,-"),
-                                onTap: () {},
-                                // onChanged: (val) {
-                                //   _hitung();
-                                // },
-                              ))),
+                                      keyboardType: TextInputType.number,
+                                      maxLines: null,
+                                      controller: _controllerJumlahPinjaman,
+                                      validator: (val) {
+                                        if (val.isEmpty) {
+                                          return "Nominal pinjaman harus isi";
+                                        }
+                                        return null;
+                                      },
+                                      style: const TextStyle(fontWeight: FontWeight.normal),
+                                      decoration: const InputDecoration(
+                                          hintStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 13.0),
+                                          contentPadding: EdgeInsets.only(top: 0, bottom: 0, right: 5, left: 10),
+                                          hintText: "Min : Rp. 500.000,-"),
+                                      onTap: () {},
+                                      onChanged: (String string) {
+                                        string = '${_formatNumber(string.replaceAll(',', ''))}';
+                                        _controllerJumlahPinjaman.value = TextEditingValue(
+                                          text: string,
+                                          selection: TextSelection.collapsed(offset: string.length),
+                                        );
+                                      }))),
                           Expanded(
                               flex: 3,
                               child: Container(
@@ -362,17 +426,15 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
                   children: [
                     Container(
                         alignment: Alignment.topLeft,
-                        margin: EdgeInsets.only(bottom: 20),
                         child: Text("Pilih durasi pinjaman",
                             style: TextStyle(fontSize: 12, color: getColorFromHex('00000A')))),
                     (dataDurasi.isNotEmpty
                         ? GridView.count(
                             primary: false,
                             shrinkWrap: true,
-                            childAspectRatio: (1 / .2),
-                            padding: const EdgeInsets.all(5),
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
+                            childAspectRatio: 7,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
                             crossAxisCount: 1,
                             children: _buildListToken(dataKuotaPinjaman['bulan']))
                         : Container(height: 0, width: 0))
@@ -380,17 +442,41 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
                 )),
             Container(
                 margin: EdgeInsets.only(top: 10),
-                padding: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 20),
+                padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
                 color: Colors.white,
-                child: Row(
+                child: Column(
                   children: [
-                    const Expanded(
-                        flex: 4, child: Text("Jumlah angsuran Kamu senilai", style: TextStyle(fontSize: 12))),
-                    Expanded(
-                        flex: 3,
-                        child: Text(" Rp. " + angsuranPerbulan.toString(),
-                            style: TextStyle(color: getColorFromHex('32C8B1'), fontSize: 16))),
-                    Expanded(flex: 2, child: Text("/ bulan", style: TextStyle(fontSize: 12)))
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: Text("Keperuntukan", style: TextStyle(fontSize: 12)),
+                    ),
+                    Container(
+                        height: 40,
+                        margin: EdgeInsets.only(top: 5),
+                        child: TextFormField(
+                          obscureText: true,
+                          validator: (val) {
+                            if (val.isEmpty) {
+                              return "Keperuntukan harus diisi";
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.only(top: 0, bottom: 0, right: 10, left: 10),
+                              border: OutlineInputBorder(
+                                  //   borderRadius: BorderRadius.circular(8.0),
+                                  )),
+                          onSaved: (value) {
+                            setState(() {
+                              keperuntukan = value;
+                            });
+                          },
+                        ))
+                    /**
+                     * 
+                     * ditambah keperuntukan  bisa multiple 
+
+                     */
                   ],
                 )),
             Container(
@@ -429,39 +515,39 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
                                     style: TextStyle(fontSize: 12, color: getColorFromHex('666666')))),
                             Container(
                                 alignment: Alignment.topLeft,
-                                child: Text("2. Cacat Total & Tetap",
+                                child: Text("2. Cacat Tetap Total",
                                     style: TextStyle(fontSize: 12, color: getColorFromHex('666666'))))
                           ],
                         )),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(left: 37, top: 15),
-                      child: ButtonTheme(
-                          minWidth: double.infinity,
-                          height: 30.0,
-                          child: SizedBox(
-                              width: 100,
-                              height: 30.0,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: getColorFromHex("4ec9b2"),
-                                ),
-                                onPressed: () {
-                                  konfirmasiProteksi(context);
-                                },
-                                child: const Text('Konfirmasi', style: TextStyle(color: Colors.white, fontSize: 12)),
-                              ))),
-                    ),
                     (proteksiPinjaman
                         ? Container(
                             margin: EdgeInsets.only(left: 34, top: 15),
                             child: Row(
                               children: [
-                                Icon(CupertinoIcons.checkmark_square_fill, color: getColorFromHex('32c8b1')),
-                                const Text("Setuju")
+                                Icon(CupertinoIcons.checkmark_square_fill, size: 20, color: getColorFromHex('32c8b1')),
+                                const Text("Setuju", style: TextStyle(fontSize: 12))
                               ],
                             ))
-                        : Container(height: 0, width: 0))
+                        : Container(
+                            alignment: Alignment.topLeft,
+                            margin: EdgeInsets.only(left: 37, top: 15),
+                            child: ButtonTheme(
+                                minWidth: double.infinity,
+                                height: 30.0,
+                                child: SizedBox(
+                                    width: 100,
+                                    height: 30.0,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: getColorFromHex("4ec9b2"),
+                                      ),
+                                      onPressed: () {
+                                        konfirmasiProteksi(context);
+                                      },
+                                      child:
+                                          const Text('Konfirmasi', style: TextStyle(color: Colors.white, fontSize: 12)),
+                                    ))),
+                          ))
                   ],
                 )),
             Container(
@@ -469,41 +555,11 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
                 margin: const EdgeInsets.only(top: 10),
                 padding: const EdgeInsets.only(left: 15),
                 child: const Text(
-                  "Pilih metode pencairan pinjaman kamu",
+                  "Pilih bank untuk pencairan pinjaman kamu",
                   style: TextStyle(fontSize: 12),
                 )),
             Container(
-                margin: const EdgeInsets.only(right: 10, left: 10, top: 10, bottom: 0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    width: 1.5,
-                    color: metodePencairan == 1 ? getColorFromHex('#32C8B1') : Colors.grey[50],
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-                padding: const EdgeInsets.only(bottom: 10, top: 10),
-                child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        metodePencairan = 1;
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        Expanded(flex: 2, child: Image.asset('icon_wallet.png', height: 30)),
-                        Expanded(
-                            flex: 8,
-                            child: Container(
-                                child: Text("Koperasi",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: (metodePencairan == 3 ? getColorFromHex('#32C8B1') : Colors.black))))),
-                      ],
-                    ))),
-            Container(
-                margin: const EdgeInsets.only(right: 10, left: 10, top: 10, bottom: 0),
+                margin: const EdgeInsets.only(right: 10, left: 10, top: 5, bottom: 0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
@@ -525,7 +581,7 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
                         Expanded(
                             flex: 6,
                             child: Container(
-                                child: Text("Transfer",
+                                child: Text("Pilih Bank",
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
@@ -533,6 +589,82 @@ class PinjamanTunaiAddScreenState extends State<PinjamanTunaiAddScreen> {
                         const Expanded(flex: 2, child: Icon(Icons.arrow_right_outlined, color: Colors.grey)),
                       ],
                     ))),
+            Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 20),
+                color: Colors.white,
+                child: Column(children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                            margin: const EdgeInsets.only(right: 8),
+                            child: Icon(Icons.info, color: getColorFromHex('#32C8B1'))),
+                      ),
+                      Expanded(
+                          flex: 9,
+                          child: Container(
+                              alignment: Alignment.topLeft,
+                              child: Text("Detail Pinjaman",
+                                  style: TextStyle(
+                                      fontSize: 12, color: getColorFromHex('000000'), fontWeight: FontWeight.w500))))
+                    ],
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          const Expanded(
+                              flex: 5,
+                              child: Text("Jumlah Pengajuan",
+                                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
+                          Expanded(
+                              flex: 5,
+                              child: Text(_controllerJumlahPinjaman.text != "" ? _controllerJumlahPinjaman.text : '-',
+                                  textAlign: TextAlign.right))
+                        ],
+                      )),
+                  Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: const [
+                          Expanded(
+                              flex: 5,
+                              child:
+                                  Text("Biaya Layanan", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
+                          Expanded(flex: 5, child: Text("Rp. 5.000,-", textAlign: TextAlign.right))
+                        ],
+                      )),
+                  Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              flex: 5,
+                              child: Text("Proteksi Pinjaman",
+                                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
+                          Expanded(
+                              flex: 5,
+                              child: Text(proteksiPinjamanAmount == "" ? "-" : proteksiPinjamanAmount,
+                                  textAlign: TextAlign.right))
+                        ],
+                      )),
+                  Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              flex: 5,
+                              child: Text("Angsuran Perbulan",
+                                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
+                          Expanded(
+                              flex: 5,
+                              child: Text(angsuranPerbulan == "" ? "-" : angsuranPerbulan, textAlign: TextAlign.right))
+                        ],
+                      )),
+                ]))
           ],
         )),
         bottomNavigationBar: Container(

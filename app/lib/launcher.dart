@@ -57,7 +57,7 @@ class LauncherScreenState extends State<LauncherScreen> with Validation {
                     (isLogin
                         ? Container(
                             margin: const EdgeInsets.only(bottom: 5),
-                            width: 148,
+                            width: 200,
                             child: ButtonTheme(
                                 minWidth: double.infinity,
                                 height: 50.0,
@@ -65,11 +65,17 @@ class LauncherScreenState extends State<LauncherScreen> with Validation {
                                     width: double.infinity,
                                     height: 50,
                                     child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(backgroundColor: getColorFromHex("157874")),
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(32.0),
+                                          ),
+                                          // backgroundColor: getColorFromHex("157874")),
+                                          backgroundColor: Colors.white),
                                       onPressed: () {
                                         Navigator.of(context).pushNamed('/login');
                                       },
-                                      child: const Text('Masuk', style: TextStyle(color: Colors.white, fontSize: 20)),
+                                      child: Text('Masuk',
+                                          style: TextStyle(color: getColorFromHex("157874"), fontSize: 20)),
                                     ))))
                         : Container(height: 0)),
                   ],
@@ -103,28 +109,35 @@ class LauncherScreenState extends State<LauncherScreen> with Validation {
         log('User declined or has not accepted permission');
       }
       setState(() {
+        log('Device Token : ' + token);
         deviceToken = token.toString();
       });
 
       FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        log("message recieved : " + message.notification.toString());
+        // log("message recieved : " + message.notification.toString());
 
         RemoteNotification notification = message.notification;
         AndroidNotification android = message.notification.android;
         if (notification != null && android != null) {
-          log("hascode : " + notification.hashCode.toString());
-          log("title : " + notification.title.toString());
-          log("body : " + notification.body.toString());
-          log('Data : ' + message.data.toString());
-          log('Type : ' + message.data['type'].toString());
-          log('value : ' + message.data['value']);
+          // log("hascode : " + notification.hashCode.toString());
+          // log("title : " + notification.title.toString());
+          // log("body : " + notification.body.toString());
+          // log('Data : ' + message.data.toString());
+          // log('Type : ' + message.data['type'].toString());
+          // log('value : ' + message.data['value']);
 
+          // Update saldo DIDOMPET
           if (message.data['type'].toString() == '3') {
-            log('value inside : ' + message.data['value']);
             setState(() {
               session.simpananKu = message.data['value'];
+            });
+          }
+          // Update saldo sisa Bayar Nanti
+          if (message.data['type'].toString() == '4') {
+            setState(() {
+              session.sisaPlafond = message.data['value'];
             });
           }
           displayDialog(context, notification.title.toString(), notification.body.toString());
@@ -223,9 +236,10 @@ class LauncherScreenState extends State<LauncherScreen> with Validation {
       session.pinjamanAstra = data['data']['pinjama_astra'].toString();
       session.plafond = data['data']['plafond'].toString();
       session.sisaPlafond = data['data']['plafond_sisa'].toString();
-      session.plafondDigunakan = data['data']['plafond_sisa'].toString();
+      session.plafondDigunakan = data['data']['plafond_digunakan'].toString();
       session.simpananKu = data['data']['simpanan_ku'];
       session.koperasi = data['data']['koperasi'];
+      session.isKasir = data['data']['is_kasir'];
     });
   }
 }

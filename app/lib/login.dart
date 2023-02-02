@@ -20,15 +20,13 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen> with Validation {
   final formKey = GlobalKey<FormState>();
 
-  String email = '';
-  String password = '';
-  String deviceToken = "";
-  String type_ = "";
+  String email = '', password = '', deviceToken = "", type_ = "";
   bool isSubmited = false;
 
   @override
   void initState() {
     super.initState();
+    initializeFlutterFire();
   }
 
   void initializeFlutterFire() async {
@@ -56,6 +54,7 @@ class LoginScreenState extends State<LoginScreen> with Validation {
         log('User declined or has not accepted permission');
       }
       setState(() {
+        log('Device Token : ' + token);
         deviceToken = token.toString();
       });
     } catch (e) {
@@ -79,7 +78,7 @@ class LoginScreenState extends State<LoginScreen> with Validation {
                     child: Column(children: [
                       Container(
                         margin: EdgeInsets.only(bottom: 20),
-                        child: Image.asset("logo_green.png", width: 153.0, height: 152.0),
+                        child: Image.asset("logo_green2.png", width: 153.0, height: 152.0),
                       ),
                       emailField(),
                       passwordField(),
@@ -158,6 +157,7 @@ class LoginScreenState extends State<LoginScreen> with Validation {
       session.sisaPlafond = data['data']['plafond_digunakan'].toString();
       session.simpananKu = data['data']['simpanan_ku'];
       session.koperasi = data['data']['koperasi'];
+      session.isKasir = data['data']['is_kasir'];
     });
   }
 
@@ -170,10 +170,13 @@ class LoginScreenState extends State<LoginScreen> with Validation {
             height: 50.0,
             child: SizedBox(
                 width: double.infinity,
-                height: 50.0,
+                height: 45.0,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: getColorFromHex("4ec9b2"),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32.0),
+                    ),
                   ),
                   onPressed: () {
                     if (formKey.currentState.validate()) {
@@ -182,7 +185,7 @@ class LoginScreenState extends State<LoginScreen> with Validation {
                       });
                       formKey.currentState.save();
                       log('Submit login');
-
+                      log("Device Token : " + deviceToken);
                       submitLogin('/login', {"username": email, "password": password, "device_token": deviceToken})
                           .then((result) {
                         if (result.data != null) {
@@ -211,7 +214,7 @@ class LoginScreenState extends State<LoginScreen> with Validation {
                           child: CircularProgressIndicator(
                             color: Colors.white,
                           ))
-                      : const Text('Login', style: TextStyle(color: Colors.white, fontSize: 20))),
+                      : const Text('Login', style: TextStyle(color: Colors.white, fontSize: 18))),
                 ))));
   }
 }

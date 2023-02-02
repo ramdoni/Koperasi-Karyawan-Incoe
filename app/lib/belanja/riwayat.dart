@@ -2,6 +2,7 @@ import 'package:coopzone_application/belanja/riwayat_token.dart';
 import 'package:flutter/material.dart';
 import '../helpers/util.dart';
 import '../helpers/session.dart' as session;
+import 'riwayat_pulsa.dart';
 
 class BelanjaRiwayatScreen extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
   Map<String, dynamic> _deviceData = <String, dynamic>{};
 
   int filterTahun;
+  String filterType;
   bool isSubmited = false;
   List data;
   bool isLoading = false;
@@ -24,7 +26,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
       setState(() {
         isLoading = true;
       });
-      getData('/transaction').then((res) {
+      sendData('/transaction', {'filter_tahun': filterTahun}).then((res) {
         setState(() {
           data = res.data['data'];
           isLoading = false;
@@ -79,15 +81,15 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                             Container(
                                 alignment: Alignment.topLeft,
                                 child: Text(data[i]['items'],
-                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
+                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))),
                             Container(
                                 alignment: Alignment.topLeft,
                                 child: Text(data[i]['date'],
                                     style:
-                                        const TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w500)))
+                                        TextStyle(fontSize: 11, color: Colors.grey[500], fontWeight: FontWeight.w400)))
                           ])),
                       Expanded(
-                          flex: 3,
+                          flex: 2,
                           child: Container(
                               alignment: Alignment.center,
                               margin: EdgeInsets.only(left: 10, right: 10),
@@ -100,7 +102,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                                     left: BorderSide(width: 1, color: getColorFromHex('41c8b1')),
                                     right: BorderSide(width: 1, color: getColorFromHex('41c8b1'))),
                               ),
-                              child: Text(data[i]['metode_pembayaran'], style: TextStyle(fontSize: 10)))),
+                              child: Text(data[i]['status'], style: TextStyle(fontSize: 9)))),
                       Expanded(
                           flex: 2,
                           child: Container(
@@ -111,10 +113,15 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                 ],
               )),
           onTap: () {
-            if (data[i]['type_produk'] == 'token') {
+            if (data[i]['type_produk'] == 'Pulsa') {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => BelanjaRiwayatPulsaScreen(argument: data[i])));
+            }
+            if (data[i]['type_produk'] == 'PLN') {
               data[i]['data_json']['no_transaksi'] = data[i]['no_transaksi'];
               data[i]['data_json']['date'] = data[i]['date'];
               data[i]['data_json']['metode_pembayaran'] = data[i]['metode_pembayaran'];
+              data[i]['data_json']['price'] = data[i]['price'];
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => BelanjaRiwayatTokenScreen(argument: data[i]['data_json'])));
             }
@@ -176,7 +183,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                                                     color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700))),
                                         Container(
                                             margin: EdgeInsets.only(bottom: 10, top: 10),
-                                            child: Text("Rp. " + session.simpananPokok + ",-",
+                                            child: Text("Rp. " + session.sisaPlafond + ",-",
                                                 style: const TextStyle(
                                                     color: Colors.white, fontSize: 32, fontWeight: FontWeight.w700))),
                                         Container(
@@ -255,6 +262,8 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                                     onChanged: (value) {
                                       setState(() {
                                         filterTahun = value;
+
+                                        _loadData();
                                       });
                                     },
                                   )),
@@ -271,7 +280,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                                     isExpanded: true,
                                     hint: const Text(" Semua Transaksi ",
                                         style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13)),
-                                    value: filterTahun,
+                                    value: filterType,
                                     underline: Container(),
                                     items: ['Transaksi In', 'Transaksi Out'].map((item) {
                                       return DropdownMenuItem(
@@ -281,7 +290,7 @@ class BelanjaRiwayatScreenState extends State<BelanjaRiwayatScreen> {
                                     }).toList(),
                                     onChanged: (value) {
                                       setState(() {
-                                        filterTahun = value;
+                                        filterType = value;
                                       });
                                     },
                                   ))

@@ -41,44 +41,66 @@ class BelanjaRiwayatTokenState extends State<BelanjaRiwayatTokenScreen> {
             child: Column(
               children: [
                 Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 5),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    decoration:
+                        BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: getColorFromHex('41c8b1')))),
                     child: Row(children: [
                       Expanded(flex: 5, child: Text("No Transaksi", style: TextStyle(fontWeight: FontWeight.w600))),
-                      Expanded(flex: 5, child: Text(data['no_transaksi'].toString()))
+                      Expanded(flex: 5, child: Text(data['no_transaksi'].toString(), textAlign: TextAlign.right))
                     ])),
                 Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 5),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    decoration:
+                        BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: getColorFromHex('41c8b1')))),
                     child: Row(children: [
                       Expanded(
                           flex: 5, child: Text("Metode Pembayaran", style: TextStyle(fontWeight: FontWeight.w600))),
-                      Expanded(flex: 5, child: Text(data['metode_pembayaran']))
+                      Expanded(flex: 5, child: Text(data['metode_pembayaran'], textAlign: TextAlign.right))
                     ])),
                 Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 5),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    decoration:
+                        BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: getColorFromHex('41c8b1')))),
+                    child: Row(children: [
+                      Expanded(flex: 5, child: Text("Harga", style: TextStyle(fontWeight: FontWeight.w600))),
+                      Expanded(flex: 5, child: Text(data['price'], textAlign: TextAlign.right))
+                    ])),
+                Container(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    decoration:
+                        BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: getColorFromHex('41c8b1')))),
                     child: Row(children: [
                       Expanded(flex: 5, child: Text("Nomor Pelanggan", style: TextStyle(fontWeight: FontWeight.w600))),
-                      Expanded(flex: 5, child: Text(data['no'].toString()))
+                      Expanded(flex: 5, child: Text(data['no'].toString(), textAlign: TextAlign.right))
                     ])),
                 Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 5),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    decoration:
+                        BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: getColorFromHex('41c8b1')))),
                     child: Row(children: [
                       Expanded(flex: 5, child: Text("Nama", style: TextStyle(fontWeight: FontWeight.w600))),
-                      Expanded(flex: 5, child: Text(data['nama']))
+                      Expanded(flex: 5, child: Text(data['nama'], textAlign: TextAlign.right))
                     ])),
                 Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 5),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    decoration:
+                        BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: getColorFromHex('41c8b1')))),
                     child: Row(children: [
                       Expanded(flex: 5, child: Text("Kwh", style: TextStyle(fontWeight: FontWeight.w600))),
-                      Expanded(flex: 5, child: Text(data['kwh']))
+                      Expanded(flex: 5, child: Text(data['kwh'], textAlign: TextAlign.right))
                     ])),
                 Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 5),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    decoration:
+                        BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: getColorFromHex('41c8b1')))),
                     child: Row(children: [
                       Expanded(flex: 5, child: Text("Tanggal", style: TextStyle(fontWeight: FontWeight.w600))),
-                      Expanded(flex: 5, child: Text(data['date']))
+                      Expanded(flex: 5, child: Text(data['date'], textAlign: TextAlign.right))
                     ])),
                 Container(
-                    margin: EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    decoration:
+                        BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: getColorFromHex('41c8b1')))),
                     alignment: Alignment.topLeft,
                     child: Text("No Token", style: TextStyle(fontWeight: FontWeight.w600))),
                 Container(
