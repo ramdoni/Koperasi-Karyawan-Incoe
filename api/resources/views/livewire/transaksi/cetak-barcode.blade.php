@@ -16,6 +16,7 @@
     </style>
     </head>
 <body style="padding-top:20px;padding-left:20px">    
+    {{$product->keterangan}}
     {!! DNS1D::getBarcodeHTML($no, 'EAN13')!!}
     <b style="letter-spacing: 10px;">{{$no}}</b>
 </body>

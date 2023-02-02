@@ -28,16 +28,10 @@
                            <tr>
                                 <th>No</th>
                                 <th class="text-center">Status</th>
-                                <th>Purchase Request</th>
-                                <th>Purchase Order</th>
-                                <th>Work Order</th>
-                                <th>Vendor / Supplier</th>
                                 <th>Kode Produksi / Barcode</th>
                                 <th>Produk</th>
                                 <th>UOM</th>
                                 <th>Stok</th>
-                                <th class="text-right">HPP</th>
-                                <th class="text-right">Margin</th>
                                 <th class="text-right">Harga Jual</th>
                                 <th></th>
                            </tr>
@@ -55,20 +49,10 @@
                                         <span class="badge badge-default">Tidak Aktif</span>
                                     @endif
                                 </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    @livewire('product.editable',['field'=>'kode_produksi','data'=>$item->kode_produksi,'id'=>$item->id],key('kode_produksi'.$item->id))
-                                </td>
-                                <td>
-                                    <a href="{{route('product.detail',$item->id)}}">{{$item->keterangan}}</a>
-                                </td>
+                                <td>@livewire('product.editable',['field'=>'kode_produksi','data'=>$item->kode_produksi,'id'=>$item->id],key('kode_produksi'.$item->id))</td>
+                                <td><a href="{{route('product.detail',$item->id)}}">{{$item->keterangan}}</a></td>
                                 <td>@livewire('product.editable',['field'=>'product_uom_id','data'=>(isset($item->uom->name) ? $item->uom->name : ''),'id'=>$item->id],key('uom'.$item->id))</td>
                                 <td>@livewire('product.editable',['field'=>'qty','data'=>$item->qty,'id'=>$item->id],key('qty'.$item->id))</td>
-                                <td class="text-right">{{format_idr($item->harga)}}</td>
-                                <td class="text-right">{{format_idr($item->harga_jual-$item->harga)}}</td>
                                 <td class="text-right">{{format_idr($item->harga_jual)}}</td>
                                 <td></td>
                             </tr>

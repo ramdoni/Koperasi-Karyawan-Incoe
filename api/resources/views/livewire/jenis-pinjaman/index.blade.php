@@ -1,4 +1,4 @@
-@section('title', 'Jenis Pinjaman')
+@section('title', 'Jenis Pembiayaan')
 
 <div class="row clearfix">
     <div class="col-lg-4">
@@ -9,7 +9,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Jenis Pinjaman</th>
+                                <th>Jenis Pembiayaan</th>
                                 <th></th>
                             </tr> 
                         </thead>

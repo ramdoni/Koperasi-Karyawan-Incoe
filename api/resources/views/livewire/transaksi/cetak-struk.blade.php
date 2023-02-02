@@ -17,15 +17,17 @@
     </head>
 <body>
     <div style="border-bottom:1px dotted black;margin-top:20px;width:100%">
-        <img src="{{get_setting('logo')}}" style="width:20px;float:left;margin-right:20px;" />
-        <p style="float:left;margin-top:0;padding-top:0;text-align:center;">
+        <p style="text-align:center;">
             {{get_setting('company')}}<br />
             <small>{!!get_setting('address')!!}</small>
         </p>
         <div style="clear:both"></div>
     </div>
     <div style="border-bottom:1px dotted black;width:100%">
-        <div style="width:50%;float:left;margin:0;padding:0;">{{$data->no_transaksi}} </div>
+        <div style="width:50%;float:left;margin:0;padding:0;">
+            {{$data->no_transaksi}}<br />
+            Kasir : {{isset($data->user->name) ? $data->user->name : '-'}} 
+        </div>
         <div style="width:50%;float:right;margin:0;padding:0;text-align:right;">{{date('d.F.Y H:i:s',strtotime($data->created_at))}}</div>
         <div style="clear:both"></div>
     </div>
@@ -41,21 +43,54 @@
             @php($total += $item->price)
         @endforeach
         <tr>
-            <td colspan="2" style="border-top:1px dotted black; text-align:right">Harga Jual</td>
-            <td style="text-align:right;border-top:1px dotted black;"> : </td>
+            <td colspan="3" style="border-top:1px dotted black;">Sub Total</td>
             <td style="text-align:right;border-top:1px dotted black;">Rp.{{format_idr($total)}}</td>
         </tr>
         <tr>
-            <td colspan="2" style="text-align:right">PPN</td>
-            <td style="text-align:right;"> : </td>
-            <td style="text-align:right;">Rp.{{format_idr($total*0.11)}}</td>
+            <td colspan="3">Rounding</td>
+            <td style="text-align:right;">-</td>
         </tr>
         <tr>
-            <td colspan="2" style="text-align:right">Total</td>
-            <td style="text-align:right;"></td>
-            <td style="text-align:right;">Rp.{{format_idr(($total*0.11) + $total)}}</td>
+            <td colspan="3">Total</td>
+            <td style="text-align:right;">{{format_idr($total)}}</td>
+        </tr>
+        
+        <tr>
+            <td colspan="4" style="border-top:1px dotted black;" >
+                <strong>{{$item->metode_pembayaran ? metode_pembayaran($item->metode_pembayaran) : 'TUNAI'}}</strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">Amount</td>
+            <td style="text-align:right;" colspan="2">Rp. {{format_idr($data->uang_tunai)}}</td>
+        </tr>
+        <tr>
+            <td colspan="2">Change</td>
+            <td style="text-align:right;" colspan="2">Rp. {{format_idr($data->uang_tunai_change)}}</td>
+        </tr>
+        <tr>
+            <td colspan="2">Saving</td>
+            <td style="text-align:right;" colspan="2">Rp. 0</td>
+        </tr>
+        <tr>
+            <td colspan="2">DPP</td>
+            <td style="text-align:right;" colspan="2">Rp. {{format_idr($total - ($total * 0.11))}}</td>
+        </tr>
+        <tr>
+            <td colspan="2">Pajak</td>
+            <td style="text-align:right;" colspan="2">Rp. {{format_idr($total * 0.11)}}</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="border-top:1px dotted black;" ></td>
         </tr>
     </table>
-    <p style="text-align:center;">Layanan Konsumen WA/SMS ke -<br />Call: - Email : info@stalavista.com</p>
+    <p style="text-align:center;">
+    Yuk segera download<br/>
+    Coopzone mobile apps &<br />
+    dapatkan penawaran seru!<br />
+    di google play/apps store</p>
+    <p style="text-align:center">
+        <img src="{{$data->id}}.png" style="width:60px;" />
+    </p>
 </body>
 </html>

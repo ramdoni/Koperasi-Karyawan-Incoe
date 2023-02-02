@@ -74,11 +74,11 @@
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12">
-                            <h6>Pinjaman</h6>
+                            <h6>Pembiayaan</h6>
                             <hr />
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Jasa (%)</label>                                                
+                                    <label>Margin (%)</label>                                                
                                     <input type="text" class="form-control" wire:model="pinjaman_jasa" />
                                 </div>
                             </div>

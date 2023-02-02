@@ -22,7 +22,7 @@ class TransactionController extends Controller
             'metode_pembayaran'=>'required'
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails()){
             $msg = '';
             foreach ($validator->errors()->getMessages() as $key => $value) {
                 $msg .= $value[0]."\n";
@@ -32,12 +32,11 @@ class TransactionController extends Controller
 
         $transaksi = Transaksi::where(['amount'=>$r->amount,'is_temp'=>1])->first();
 
-        if($r->amount <0 || !$transaksi) return response()->json(['status'=>3,'message'=>"Transaksi tidak bisa dilakukan karna harga tidak sesuai"], 200);
+        if($r->amount < 0 || !$transaksi) return response()->json(['status'=>3,'message'=>"Transaksi tidak bisa dilakukan karna harga tidak sesuai"], 200);
         
         $member = UserMember::where('no_anggota_platinum',$r->no_anggota)->first();
     
         if(!$member) return response()->json(['status'=>3,'message'=>"Anggota tidak ditemukan"], 200);
-        
         // 3 Bayar Nanti
         if($r->metode_pembayaran==3){
             $sisa = $member->plafond - $member->plafond_digunakan;
@@ -46,7 +45,6 @@ class TransactionController extends Controller
                 return response()->json(['status'=>3,'message'=>"Kuota tidak mencukupi untuk melakukan transaksi"], 200);
             else{
                 $this->status = 1;
-                
                 $transaksi->payment_date = date('Y-m-d');
                 $transaksi->is_temp = 0;
                 $transaksi->status = 1;
@@ -54,8 +52,7 @@ class TransactionController extends Controller
                 $member->plafond_digunakan = $member->plafond_digunakan + $r->amount;
                 $member->save();
                 
-                event(new KasirEvent('Pembayaran berhasil dilakukan',$transaksi->id));
-
+                event(new KasirEvent('Pembayaran berhasil dilakukan',$transaksi->no_transaksi));
 
                 // Sinkron Coopzone
                 $response = sinkronCoopzone([
@@ -69,7 +66,7 @@ class TransactionController extends Controller
 
         if($r->metode_pembayaran==5){
             if($member->simpanan_ku<$r->amount)
-                return response()->json(['status'=>3,'message'=>"Saldo DIDOMPET tidak mencukupi untuk melakukan transaksi"], 200);
+                return response()->json(['status'=>3,'message'=>"Saldo Coopay tidak mencukupi untuk melakukan transaksi"], 200);
             else{
                 $this->status = 1;
                 $member->simpanan_ku = $member->simpanan_ku - $r->amount;
@@ -87,7 +84,7 @@ class TransactionController extends Controller
                 $transaksi->is_temp = 0;
                 $transaksi->status = 1;
 
-                event(new KasirEvent('Pembayaran berhasil dilakukan',$transaksi->id));
+                event(new KasirEvent('Pembayaran berhasil dilakukan',$transaksi->no_transaksi));
             }
         }
         

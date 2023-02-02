@@ -6,7 +6,7 @@
             <div class="body">
                 <form id="basic-form" method="post" wire:submit.prevent="save">
                     <div class="form-group">
-                        <label>{{ __('Kode Produksi') }}</label>
+                        <label>{{ __('Kode Produksi / Barcode') }}</label>
                         <input type="text" class="form-control" wire:model="kode_produksi" >
                         @error('kode_produksi')
                             <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
@@ -41,13 +41,6 @@
                         <input type="text" class="form-control"  wire:model="harga_jual" >
                         @error('harga_jual')
                             <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label>{{ __('Address') }}</label>
-                        <textarea class="form-control" wire:model="address"></textarea>
-                        @error('address')
-                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                         @enderror
                     </div>
                     <hr>

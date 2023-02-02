@@ -53,10 +53,11 @@
         <div class="card">
             <div class="body">
                 <div class="table-responsive" style="min-height:400px;">
-                    <table class="table table-hover m-b-0 c_list">
+                    <table class="table table-hover table-bordered m-b-0 c_list">
                         <thead style="background: #eee;">
                            <tr>
                                 <th style="width:50px">No</th>
+                                <th>Barcode</th>
                                 <th>Produk</th>
                                 <th class="text-center">Qty</th>
                                 <th class="text-right">Nominal</th>
@@ -68,6 +69,7 @@
                             @foreach($data->items as $k => $item)
                                 <tr>
                                     <td>{{$k+1}}</td>
+                                    <td>{{$item->product->kode_produksi}}</td>
                                     <td>{{$item->description}}</td>
                                     <td class="text-center">{{$item->qty}}</td>
                                     <td class="text-right">{{format_idr($item->price)}}</td>
@@ -78,7 +80,7 @@
                         </tbody>
                         <tfoot style="background: #eee;">
                             <tr>
-                                <th colspan="4" class="text-right">Total</th>
+                                <th colspan="5" class="text-right">Total</th>
                                 <th class="text-right">{{format_idr($total)}}</th>
                             </tr>
                         </tfoot>
@@ -89,6 +91,6 @@
             </div>
         </div>
     </div>
-    <iframe src="{{route('transaksi.cetak-struk',$data->id)}}#toolbar=0&navpanes=0&scrollbar=0" id="printf" name="printf" style="height:500px;display:none;"></iframe>
+    <iframe src="{{route('transaksi.cetak-struk-admin',$data->id)}}#toolbar=0&navpanes=0&scrollbar=0" id="printf" name="printf" style="height:500px;display:none;"></iframe>
 </div>
 
