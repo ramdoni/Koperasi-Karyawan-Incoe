@@ -15,19 +15,17 @@
                     <p class="lead">Yang Dicakup oleh Kebijakan Privasi ini</p>
                 </div>
                 <div class="body mt-0 pt-0 pb-1">
-                    <p>Kebijakan Privasi ini mencakup perlakuan kami atas informasi yang dapat mengidentifikasi diri (data pribadi) Anda saat sedang berada di situs kii.stalavista.co.id, dan saat Anda menggunakan layanan kami. Kebijakan ini juga mencakup perlakukan kami atas data pribadi yang digunakan bersama oleh kami.
-
-Kebijakan ini tidak berlaku pada praktik perusahaan yang bukan grup unit usaha milik kami atau di luar kendali kami atau pada orang-orang yang bukan karyawan kami atau di luar pengelolaan kami.</p>
+                    <p>Kebijakan Privasi ini mencakup perlakuan kami atas informasi yang dapat mengidentifikasi diri (data pribadi) Anda saat sedang berada di situs kii.stalavista.co.id, dan saat Anda menggunakan layanan kami. Kebijakan ini juga mencakup perlakukan kami atas data pribadi yang digunakan bersama oleh kami.Kebijakan ini tidak berlaku pada praktik perusahaan yang bukan grup unit usaha milik kami atau di luar kendali kami atau pada orang-orang yang bukan karyawan kami atau di luar pengelolaan kami.</p>
                 </div>
-                    
-
                 <div class="header">
                     <p class="lead">Pengumpulan dan Penggunaan Informasi</p>
                 </div>
                 <div class="body mt-0 pt-0 pb-1">
-                    <p>Saat Anda mendaftar pada kami, kami menanyakan nama, alamat email, alamat tempat tinggal, tanggal lahir, kode pos, dan nomor telepon. Setelah Anda mendaftar dan masuk ke layanan kami, Anda bukanlah orang yang anonim bagi kami.
-
-Kami menggunakan informasi untuk memenuhi permintaan Anda akan produk dan layanan tertentu, dan untuk menghubungi Anda mengenai tawaran khusus dan produk baru.</p>
+                    <p>
+                        Saat Anda mendaftar pada kami, kami menanyakan nama, alamat email, alamat tempat tinggal, tanggal lahir, kode pos, dan nomor telepon.<br /><br />
+                        Setelah Anda mendaftar aplikasi akan meminta persetujuan user untuk mengakses gambar, daftar kontak dan kamera. <br /><br />
+                        Kami menggunakan informasi untuk memenuhi permintaan Anda akan produk dan layanan tertentu, dan untuk menghubungi Anda mengenai tawaran khusus dan produk baru.
+                    </p>
                 </div>
 
                 <div class="header">

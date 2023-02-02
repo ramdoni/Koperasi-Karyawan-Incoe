@@ -7,8 +7,17 @@
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_simpanan">Simpanan</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_pinjaman">Pinjaman</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_transaksi">Transaksi</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_log">Log Activity</a></li>
+            <li class="nav-item">
+                <a class="nav-item" data-toggle="tab" href="#tab_coopay" style="padding-bottom:17px">
+                    <img src="{{asset('assets/img/coopay-1.png')}}" style="height:25px;" />
+                </a>
+            </li>
         </ul>
         <div class="tab-content">
+            <div class="tab-pane" id="tab_coopay">
+                @livewire('user-member.coopay',['data'=>$data->id])
+            </div>
             <div class="tab-pane show active" id="tab_profile">
                 <div class="row">
                     <div class="col-md-4">
@@ -74,10 +83,13 @@
                     </div>
                     <div class="col-md-8">
                         <div class="row">
-                            <div class="col-md-3 text-center">
-                                <label>Simpanan Pokok</label>
-                                <h4>{{format_idr($data->simpanan_pokok)}}</h4>
-                            </div>
+                            @foreach($data->simpanan as $simpanan)
+                                <div class="col-md-3 text-center">
+                                    <label>{{isset($simpanan->jenis_simpanan->name) ? $simpanan->jenis_simpanan->name : '-'}}</label>
+                                    <h4>{{format_idr($simpanan->amount)}}</h4>
+                                </div>
+                            @endforeach
+<!--                             
                             <div class="col-md-3 text-center">
                                 <label>Simpanan Wajib</label>
                                 <h4>{{format_idr($data->simpanan_wajib)}}</h4>
@@ -89,7 +101,7 @@
                             <div class="col-md-3 text-center">
                                 <label>Simpanan Lain-lain</label>
                                 <h4>{{format_idr($data->simpanan_lainnya)}}</h4>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -105,6 +117,9 @@
             </div>
             <div class="tab-pane" id="tab_transaksi">
                 @livewire('user-member.detail-transaksi',['data'=>$data->id])
+            </div>
+            <div class="tab-pane" id="tab_log">
+                @livewire('user-member.detail-log',['data'=>$data->id])
             </div>
         </div>
         <div class="form-group">

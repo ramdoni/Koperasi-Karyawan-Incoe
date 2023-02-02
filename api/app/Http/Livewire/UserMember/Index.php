@@ -13,7 +13,8 @@ class Index extends Component
     public $keyword,$koordinator_id,$status;
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $dataMember,$selected,$password;
+    public $dataMember,$selected,$password,$insert=false;
+    public $no_anggota,$error_no_anggota,$nama,$no_telepon;
     public function render()
     {
         $data = UserMember::select('user_member.*')->join('users','users.id','=','user_member.user_id')
@@ -59,6 +60,50 @@ class Index extends Component
     public function delete($id)
     {
         UserMember::find($id)->delete();
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'no_anggota'=>'required',
+            'nama'=>'required',
+            'no_telepon'=>'required'
+        ]);
+
+        $find = UserMember::where('no_anggota_platinum',$this->no_anggota)->first();
+        if($find){
+            $this->error_no_anggota = 'No Anggota sudah digunakan';
+            return;
+        }
+
+        $user = new User();
+        $user->user_access_id = 4; // Member
+        $user->name = $this->nama;
+        // $user->email = $this->email;
+        $user->telepon = $this->no_telepon;
+        $user->password = Hash::make('12345678');
+		$user->username = $this->no_anggota;
+        $user->save();
+
+        $data = new UserMember();
+     	$data->no_anggota_platinum = $this->no_anggota;
+     	$data->name = $this->nama;
+     	$data->phone_number = $this->no_telepon;
+        $data->user_id = $user->id;
+        $data->save();
+
+        // Sinkron Coopzone
+        $response = sinkronCoopzone([
+            'url'=>'koperasi/user/insert',
+            'data'=>[
+                'no_anggota'=>$this->no_anggota,
+                'nama'=>$this->nama,
+                'no_telepon'=>$this->no_telepon
+            ],
+        ]);
+
+        $this->reset(['no_anggota','nama','no_telepon']);
+        $this->insert = false;
     }
     
     public function downloadExcel()

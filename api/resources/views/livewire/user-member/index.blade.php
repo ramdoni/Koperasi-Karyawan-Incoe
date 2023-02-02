@@ -19,10 +19,10 @@
                         <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                             <a class="dropdown-item" href="javascript:void(0);" wire:click="downloadExcel"><i class="fa fa-download"></i> Download</a>
-                            <a href="{{route('user-member.insert')}}" class="dropdown-item"><i class="fa fa-plus"></i> Anggota</a>
                             <a href="javascript:void(0)" class="dropdown-item" data-toggle="modal" data-target="#modal_upload"><i class="fa fa-upload"></i> Upload</a>
                         </div>
                     </div>
+                    <a href="javascript:void(0)" wire:click="$set('insert',true)" class="btn btn-warning"><i class="fa fa-plus"></i> Anggota</a>
                     <span wire:loading>
                         <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
                         <span class="sr-only">{{ __('Loading...') }}</span>
@@ -43,12 +43,13 @@
                                 <th rowspan="2">Tempat</th>
                                 <th rowspan="2">Tanggal Lahir</th>
                                 <th rowspan="2"></th>
-                                <th rowspan="2">Agama</th>
                                 <th colspan="4" class="text-center">Simpanan</th>
                                 <th colspan="4" class="text-center">Pinjaman</th>
                                 <th rowspan="2" style="background:#35a2b869;text-align:center;">SHU</th>
                                 <th colspan="2" class="text-center">Plafond Pinjaman</th>
-                                <th rowspan="2">Simpanan Ku</th>
+                                <th rowspan="2">
+                                    <img src="{{asset('assets/img/coopay-1.png')}}" style="height:25px;" />
+                                </th>
                                 <th rowspan="2"></th>
                             </tr>
                             <tr>
@@ -65,6 +66,28 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if($insert)
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input type="text" class="form-control" wire:model="no_anggota" />
+                                        @error('no_anggota') <span class="text-danger">{{ $message }}</span> @enderror
+                                        @if($error_no_anggota) <span class="text-danger">{{ $error_no_anggota }}</span> @endif
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" wire:model="nama" />
+                                        @error('nama') <span class="text-danger">{{ $message }}</span> @enderror
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" wire:model="no_telepon" />
+                                        @error('no_telepon') <span class="text-danger">{{ $message }}</span> @enderror
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" wire:click="save" class="btn btn-info"><i class="fa fa-save"></i> Simpan</a>
+                                        <a href="javascript:void(0)" wire:click="$set('insert',false)" class="btn btn-danger"><i class="fa fa-close"></i> Batal</a>
+                                    </td>
+                                </tr>
+                            @endif
                             @php($number= $data->total() - (($data->currentPage() -1) * $data->perPage()) )
                             @foreach($data as $k => $item)
                             <tr>
@@ -77,7 +100,6 @@
                                 <td>@livewire('user-member.editable',['field'=>'tempat_lahir','data'=>$item->tempat_lahir,'id'=>$item->id],key('tempat_lahir'.$item->id))</td>
                                 <td>@livewire('user-member.editable',['field'=>'tanggal_lahir','data'=>$item->tanggal_lahir,'id'=>$item->id],key('tanggal_lahir'.$item->id))</td>
                                 <td>{{$item->tanggal_lahir ? hitung_umur($item->tanggal_lahir) .' thn' : ''}}</td>
-                                <td>@livewire('user-member.editable',['field'=>'agama','data'=>$item->agama,'id'=>$item->id],key('agama'.$item->id))</td>
                                 <td>@livewire('user-member.editable',['field'=>'simpanan_pokok','data'=>$item->simpanan_pokok,'id'=>$item->id],key('simpanan_pokok'.$item->id))</td>
                                 <td>@livewire('user-member.editable',['field'=>'simpanan_wajib','data'=>$item->simpanan_wajib,'id'=>$item->id],key('simpanan_wajib'.$item->id))</td>
                                 <td>@livewire('user-member.editable',['field'=>'simpanan_sukarela','data'=>$item->simpanan_sukarela,'id'=>$item->id],key('simpanan_sukarela'.$item->id))</td>
@@ -89,24 +111,13 @@
                                 <td>@livewire('user-member.editable',['field'=>'shu','data'=>$item->shu,'id'=>$item->id],key('shu'.$item->id))</td>
                                 <td class="text-right">@livewire('user-member.editable',['field'=>'plafond','data'=>$item->plafond,'id'=>$item->id],key('plafond'.$item->id))</td>
                                 <td class="text-right">@livewire('user-member.editable',['field'=>'plafond_digunakan','data'=>$item->plafond_digunakan,'id'=>$item->id],key('plafond_digunakan'.$item->id))</td>
-                                <td class="text-right">@livewire('user-member.editable',['field'=>'simpanan_ku','data'=>$item->simpanan_ku,'id'=>$item->id],key('simpanan_ku'.$item->id))</td>
+                                <td class="text-right">{{format_idr($item->simpanan_ku)}}</td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-navicon"></i></a>
                                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                            @if($item->user_id && $item->status < 4)
-                                            <a href="#" class="dropdown-item text-success" onclick="autologin('{{ route('users.autologin',['id'=>$item->user_id]) }}','{{$item->name}}')" title="Autologin"><i class="fa fa-sign-in"></i> Autologin</a>
-                                            @endif
                                             <a class="dropdown-item" href="{{route('user-member.edit',['id'=>$item->id])}}"><i class="fa fa-search-plus"></i> Detail</a>
-                                            <a class="dropdown-item" href="{{route('user-member.print-member',['id'=>$item->id])}}" target="_blank"><i class="fa fa-print"></i> Print</a>
-                                            @if($item->status_pembayaran < 1)
-                                                <a class="dropdown-item text-danger" href="{{route('user-member.proses',['id'=>$item->id])}}"><i class="fa fa-check"></i> Konfirmasi</a>
-                                            @endif
-                                            @if($item->status_pembayaran == 1)
-                                                @if($item->admin_approval === NULL || $item->admin_approval < 0)
-                                                <a class="dropdown-item text-danger" href="{{route('user-member.approval',['id'=>$item->id])}}"><i class="fa fa-check"></i> Konfirmasi</a>
-                                                @endif
-                                            @endif
+                                            <a class="dropdown-item text-danger" href="javascript:void(0)" wire:click="delete({{$item->id}})"><i class="fa fa-trash"></i> Hapus</a>
                                             <a class="dropdown-item" href="javascript:void(0)" wire:click="set_member({{$item->id}})" data-toggle="modal" data-target="#modal_set_password"><i class="fa fa-key"></i> Set Password</a>
                                         </div>
                                     </div>    
@@ -115,13 +126,7 @@
                             @php($number--)
                             @endforeach
                         </tbody>
-                        @if($number==0)
-                            <tfoot>
-                                <tr>
-                                    <td colspan="9" class="text-center">Empty data</td>
-                                </tr>
-                            </tfoot>
-                        @endif
+                        
                     </table>
                 </div>
                 <br />

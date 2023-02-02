@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Iuran;
+use App\Models\UserMemberSimpanan;
 use App\Models\UserMember;
 
 class UserMember extends Model
@@ -14,6 +14,8 @@ class UserMember extends Model
     protected $guarded = [];
     
     protected $table = 'user_member';
+
+
 
     public function provinsi()
     {
@@ -28,9 +30,9 @@ class UserMember extends Model
         return $this->hasOne('\App\Models\Koordinator','id','koordinator_id');
     }
     
-    public function iuran()
+    public function simpanan()
     {
-        return $this->hasMany(Iuran::class,'user_member_id','id');
+        return $this->hasMany(UserMemberSimpanan::class,'user_member_id','id');
     }
     
     public function klaim()
@@ -41,31 +43,5 @@ class UserMember extends Model
     public function kota()
     {
         return $this->hasOne('\App\Models\City','code','city');
-    }
-
-    public function user_rekomendasi()
-    {
-        return $this->belongsTo(UserMember::class,'user_id_recomendation','id')->where('status',2);
-    }
-
-    public function anggota_rekomendasi()
-    {
-        return $this->hasMany('\App\Models\UserMember','user_id_recomendation','id');
-    }
-
-    public function koordinatorUser()
-    {
-        return $this->hasOne('\App\Models\UserMember','id','koordinator_id');
-    }
-
-    public function asuransi()
-    {
-        return $this->hasMany('\App\Models\Asuransi','user_member_id','id')->latest();
-    }
-
-    public function asuransiMax()
-    {
-        return $this->hasOne('\App\Models\Asuransi','user_member_id','id')->latest();
-    }
-   
+    }   
 }

@@ -8,7 +8,7 @@ use App\Models\PinjamanItem;
 
 class Edit extends Component
 {
-    public $data;
+    public $data,$selected_id,$payment_date,$metode_pembayaran_;
     protected $listeners = ['reload'=>'$refresh'];
     public function render()
     {
@@ -20,9 +20,18 @@ class Edit extends Component
         $this->data = $data;
     }
 
-    public function lunas($id)
+    public function lunas()
     {
-        PinjamanItem::find($id)->update(['status'=>1]);
+        $this->validate(
+            [
+                'payment_date'=>'required',
+                'metode_pembayaran_'=>'required'
+            ]);
+
+        PinjamanItem::find($this->selected_id)->update([
+            'status'=>1,
+            'payment_date'=>$this->payment_date,
+            'metode_pembayaran'=>$this->metode_pembayaran_]);
 
         $this->emit('reload');
     }

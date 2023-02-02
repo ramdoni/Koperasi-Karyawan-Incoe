@@ -21,7 +21,6 @@ class Edit extends Component
     public $url;
 
     protected $rules = [
-        'nik' => 'required',
         'name' => 'required|string',
         'email' => 'required|email',
         //'password' => 'required|string',
@@ -41,28 +40,20 @@ class Edit extends Component
     public function mount($id)
     {
         $this->data = User::find($id);
-        $this->nik = $this->data->nik;
         $this->name = $this->data->name;
         $this->email = $this->data->email;
         $this->telepon = $this->data->telepon;
-        $this->address = $this->data->address;
         $this->user_access_id = $this->data->user_access_id;
-        $this->referal_code = $this->data->referal_code;
-        $this->url = $this->data->url;
     }
 
     public function save(){
         $this->validate();
         
-        $this->data->nik = $this->nik;
         $this->data->name = $this->name;
         $this->data->email = $this->email;
         if($this->password!="") $this->data->password = Hash::make($this->password);
         $this->data->telepon = $this->telepon;
-        $this->data->address = $this->address;
         $this->data->user_access_id = $this->user_access_id;
-        $this->data->referal_code = $this->referal_code;
-        $this->data->url = $this->url;
         $this->data->save();
 
         session()->flash('message-success',__('Data saved successfully'));

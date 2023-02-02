@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Home;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,7 +24,6 @@ Route::get('linksakti',function(){
 
     return 'test';
 });
-
 Route::get('generate',function(){
     $user_member = \App\Models\UserMember::whereNull('no_anggota_platinum')->get();
     $num = 1;
@@ -52,6 +50,8 @@ Route::post('ajax/get-member', [\App\Http\Controllers\AjaxController::class,'get
 
 // Administrator
 Route::group(['middleware' => ['auth','access:1']], function(){    
+    
+    Route::get('qrcode',[\App\Http\Controllers\UserMemberController::class,'qrcode'])->name('qrcode');
     Route::get('setting',App\Http\Livewire\Setting::class)->name('setting');
     Route::get('users/insert',App\Http\Livewire\User\Insert::class)->name('users.insert');
     Route::get('user-access', App\Http\Livewire\UserAccess\Index::class)->name('user-access.index');
@@ -82,4 +82,30 @@ Route::group(['middleware' => ['auth','access:1']], function(){
     Route::get('jenis-pinjaman',App\Http\Livewire\JenisPinjaman\Index::class)->name('jenis-pinjaman.index');
     Route::get('transaksi',App\Http\Livewire\Transaksi\Index::class)->name('transaksi.index');
     Route::get('transaksi/items/{data}',App\Http\Livewire\Transaksi\Items::class)->name('transaksi.items');
+    Route::get('transaksi/cetak-struk/{data}',[\App\Http\Controllers\TransaksiController::class,'cetakStruk'])->name('transaksi.cetak-struk');
+    Route::get('transaksi/cetak-barcode/{no}',[\App\Http\Controllers\TransaksiController::class,'cetakBarcode'])->name('transaksi.cetak-barcode');
+
+    // Produk
+    Route::get('vendor/index',App\Http\Livewire\Vendor\Index::class)->name('vendor.index');
+    Route::get('product/index',App\Http\Livewire\Product\Index::class)->name('product.index');
+    Route::get('product/insert',App\Http\Livewire\Product\Insert::class)->name('product.insert');
+    Route::get('product/detail/{data}',App\Http\Livewire\Product\Detail::class)->name('product.detail');
+    Route::get('purchase-request/index',App\Http\Livewire\PurchaseRequest\Index::class)->name('purchase-request.index');
+    Route::get('purchase-order/index',App\Http\Livewire\PurchaseOrder\Index::class)->name('purchase-order.index');
+});
+
+// Administrator dan Kasir
+Route::group(['middleware' => ['auth','access:1,6']], function(){
+    Route::get('product/index',App\Http\Livewire\Product\Index::class)->name('product.index');
+    Route::get('product/insert',App\Http\Livewire\Product\Insert::class)->name('product.insert');
+    Route::get('product/detail/{data}',App\Http\Livewire\Product\Detail::class)->name('product.detail');
+ 
+    Route::get('konsinyasi/index',App\Http\Livewire\Konsinyasi\Index::class)->name('konsinyasi.index');
+    Route::get('konsinyasi/insert',App\Http\Livewire\Konsinyasi\Insert::class)->name('konsinyasi.insert');
+    Route::get('konsinyasi/detail/{data}',App\Http\Livewire\Konsinyasi\Detail::class)->name('konsinyasi.detail');
+});
+
+// Kasir
+Route::group(['middleware' => ['auth','access:6']], function(){
+    Route::get('kasir/index',App\Http\Livewire\Kasir\Index::class)->name('kasir.index');
 });

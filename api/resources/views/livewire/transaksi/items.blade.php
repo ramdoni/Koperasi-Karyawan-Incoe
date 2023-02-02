@@ -14,9 +14,21 @@
                         <td>{{$data->no_transaksi}}</td>
                     </tr>
                     <tr>
+                        <th>Jenis Transaksi</th>
+                        <td style="width:20px"> : </td>
+                        <td>
+                            @if($data->jenis_transaksi==1)
+                                <span class="badge badge-info">Anggota</span>
+                            @endif
+                            @if($data->jenis_transaksi==2)
+                                <span class="badge badge-warning">Non Anggota</span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Tanggal Transaksi</th>
                         <td style="width:20px"> : </td>
-                        <td>{{date('d-M-Y',strtotime($data->tanggal_transaksi))}}</td>
+                        <td>{{date('d-M-Y',strtotime($data->created_at))}}</td>
                     </tr>
                     <tr>
                         <th>Tanggal Pembayaran</th>
@@ -26,7 +38,7 @@
                     <tr>
                         <th>Metode Pembayaran</th>
                         <td style="width:20px"> : </td>
-                        <td>{{metode_pembayaran($data->metode_pembayaran)}}</td>
+                        <td>{{$data->metode_pembayaran ? metode_pembayaran($data->metode_pembayaran) : '-'}}</td>
                     </tr>
                     <tr>
                         <th>Status</th>
@@ -71,11 +83,12 @@
                             </tr>
                         </tfoot>
                     </table>
+                    <a href="javascript:void(0)" onclick='document.getElementById("printf").contentWindow.print();' class="btn btn-info btn-sm mt-2"><i class="fa fa-print"></i> Cetak Struk</a>
                 </div>
                 <br />
             </div>
         </div>
     </div>
-
+    <iframe src="{{route('transaksi.cetak-struk',$data->id)}}#toolbar=0&navpanes=0&scrollbar=0" id="printf" name="printf" style="height:500px;display:none;"></iframe>
 </div>
 
